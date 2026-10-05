@@ -12,7 +12,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f7bfd0'/%3E%3Cpath d='M17 18h30v28H17z' fill='%23fff8f8' stroke='%232c2529' stroke-width='4'/%3E%3Cpath d='M24 18v28M40 18v28M17 29h30M17 38h30' stroke='%232c2529' stroke-width='3'/%3E%3Ccircle cx='46' cy='17' r='7' fill='%23ed6d98'/%3E%3C/svg%3E">
   <style>
     :root {
-      --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
+      --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --mist:#eddee3; /* Contact·footer 배경 */ --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
       /* 글자 계층 — 위에서부터 한 단계씩 약 1.3배씩 줄어듭니다. 크기는 여기서만 바꾸세요.
          1400px 기준: 48 / 42 / 34 / 21 / 15.5 / 13.8 / 12.4 / 10.7 px */
       --fs-display:clamp(2.3rem,3.7vw,3.49rem);  /* 히어로 대제목 */
@@ -185,20 +185,11 @@
     .ability-track { height:4px; border-radius:79.2px; background:rgba(255,255,255,.12); overflow:hidden; }
     .ability-track i { display:block; width:var(--level); height:100%; border-radius:inherit; background:var(--pink); }
 
-    .contact { position:relative; padding:100px 0 32px; background:var(--pink); }
-    /* Contact · footer 뒷배경의 점 패턴.
-       background-attachment:fixed 라 기준이 화면이어서, 스크롤하면 내용만 올라가고
-       점은 제자리에 머뭅니다. 두 영역에 같은 패턴을 쓰면 기준이 같아
-       경계에서 점 간격이 어긋나지 않습니다.
-       (iOS 사파리는 fixed 를 무시해 함께 스크롤되지만 패턴 자체는 그대로 보입니다.)
-       패턴은 작품 placeholder · 로딩 화면 바닥과 같은 격자 방식(가로선 + 세로선)입니다.
-       색·간격 수정 위치: 아래 rgba 값과 background-size.
-       핑크 위에 흰 선이라 팔레트에 새 색을 더하지 않습니다. */
-    .contact::before,footer::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none; background-image:linear-gradient(rgba(255,255,255,.22) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px); background-size:36px 36px; background-attachment:fixed; }
-    .contact > .wrap,footer > .wrap { position:relative; z-index:1; }
+    .contact { padding:100px 0 32px; background:var(--mist); }
     .contact-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
     .contact h2 { max-width:608px; font-size:var(--fs-h1); }
-    .contact h2 i { display:inline-block; margin-top:10px; color:#fff; font-size:.52em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
+    /* 맺음말은 제목에 딸린 보조 문장이라 굵기를 낮추고(800 → 600) 색도 어둡게 둡니다. */
+    .contact h2 i { display:inline-block; margin-top:10px; color:rgba(41,36,41,.66); font-weight:600; font-size:.5em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
     /* 세 줄(메일 · 카카오 · 아트스테이션)을 완전히 같은 색·크기로 맞춥니다.
        전에는 메일만 화살표가 본문색 굵은 글씨라 혼자 진하게 떠 보였습니다. */
@@ -212,7 +203,7 @@
     .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
     .download-btn:hover,.download-btn:focus-visible { background:#fff; transform:translateY(-2px); }
     .download-btn.is-pending { opacity:.48; cursor:not-allowed; }
-    footer { position:relative; background:var(--pink); padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
+    footer { background:var(--mist); padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
     footer .wrap { display:flex; justify-content:space-between; gap:16px; }
 
     dialog { width:min(896px,calc(100% - 27.2px)); max-height:calc(100vh - 27.2px); border:0; border-radius:22.4px; padding:0; overflow:auto; background:var(--milk); color:var(--ink); box-shadow:0 24px 80px rgba(24,18,22,.28); }
