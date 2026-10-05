@@ -14,17 +14,19 @@
     :root {
       --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
       /* 글자 계층 — 위에서부터 한 단계씩 약 1.3배씩 줄어듭니다. 크기는 여기서만 바꾸세요.
-         1400px 기준: 48 / 36 / 28 / 21 / 15.5 / 13.8 / 12.4 / 10.7 px */
+         1400px 기준: 48 / 42 / 34 / 21 / 15.5 / 13.8 / 12.4 / 10.7 px */
       --fs-display:clamp(2.3rem,3.7vw,3.49rem);  /* 히어로 대제목 */
-      --fs-h1:clamp(1.95rem,2.8vw,2.62rem);      /* 이름 · 맺음말 */
-      --fs-h2:clamp(1.6rem,2.2vw,2.03rem);       /* 섹션 제목 */
+      --fs-h1:clamp(2.2rem,3.2vw,3.05rem);       /* 이름 · 맺음말 */
+      --fs-h2:clamp(1.85rem,2.6vw,2.48rem);      /* 섹션 제목 */
       --fs-h3:clamp(1.25rem,1.7vw,1.53rem);      /* 카드 · 모달 제목 */
       --fs-h4:1.13rem;                           /* 소제목 */
       --fs-body:1rem; --fs-sm:.9rem; --fs-xs:.78rem;
     }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; font-size:86%; }
-    body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",sans-serif; font-size:var(--fs-body); line-height:1.6; }
+    /* 한글은 DM Sans · Manrope 에 글립이 없어 OS 기본 글꼴로 떨어집니다.
+       한글 전용 대체 글꼴을 명시해 윈도우/맥에서 같은 인상이 나오도록 맞췄습니다. */
+    body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",Pretendard,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif; font-size:var(--fs-body); line-height:1.6; }
     body.loading { overflow:hidden; }
     button,a { -webkit-tap-highlight-color:transparent; }
     button { font:inherit; }
@@ -36,13 +38,15 @@
     .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
-    .loader-kicker { display:flex; justify-content:space-between; margin-bottom:12.8px; font:700 .75rem "Manrope"; letter-spacing:.14em; text-transform:uppercase; }
-    .loader-title { margin:0; font:800 clamp(2.8rem,9vw,5rem)/.86 "Manrope"; letter-spacing:-.08em; }
+    /* 로딩 화면: PORTFOLIO / 2026 을 큰 덩어리로 쌓고,
+       그 아래 구분선 한 줄에 직군과 퍼센트를 좌우로 벌린 뒤 진행 바를 깝니다. */
+    .loader-title { margin:0; font:800 clamp(2.8rem,9vw,5rem)/.92 "Manrope"; letter-spacing:-.08em; }
     .loader-title span { display:block; color:#fff; }
-    .loader-bottom { display:flex; align-items:center; gap:14.4px; margin-top:27.2px; }
-    .loader-track { flex:1; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
+    .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:32px; padding-top:14.4px; border-top:1px solid rgba(41,36,41,.22); }
+    .loader-role { font:700 .76rem "Manrope"; letter-spacing:.15em; }
+    .loader-track { margin-top:13.6px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
     .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
-    .loader-count { min-width:33.6px; font:700 .82rem "Manrope"; text-align:right; }
+    .loader-count { min-width:33.6px; font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
 
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
@@ -62,8 +66,9 @@
     .hero-grid { display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
-    h1 { margin:0; font:800 var(--fs-display)/.98 "Manrope"; letter-spacing:-.07em; }
-    h1 em { display:block; font-style:normal; color:var(--pink-strong); }
+    /* 한글 두 줄이라 영문 기준(.98)으로는 행간이 붙어 보여 넉넉하게 띄웠습니다. */
+    h1 { margin:0; font:800 var(--fs-display)/1.2 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
+    h1 em { display:block; margin-top:.06em; font-style:normal; color:var(--pink-strong); }
     .hero-copy { margin:20px 0 0; color:var(--muted); max-width:328px; font-size:1.03rem; }
     .hero-meta { display:flex; flex-wrap:wrap; gap:6.4px; margin-top:20px; }
     .tag { padding:5.6px 8.8px; border:1px solid var(--line); border-radius:799.2px; font-size:.78rem; font-weight:600; background:rgba(255,255,255,.55); }
@@ -77,7 +82,7 @@
 
     .selected { padding:72px 0 104px; }
     .section-head { display:flex; align-items:end; justify-content:space-between; gap:19.2px; margin-bottom:32px; }
-    .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.05 "Manrope"; letter-spacing:-.055em; }
+    .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.12 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
     .counter { color:var(--muted); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
     .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
@@ -95,7 +100,7 @@
     .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 2rem/1 "Manrope"; }
 
     /* ──────────────────────────────────────────────────────────────
-       05·06 파트 (AI / UI·상세페이지)
+       AI & Design 파트 (AI / UI·상세페이지)
        3D 캐릭터 파트와 성격이 달라 핑크 톤 배경 + 가로형 카드로 분리했습니다.
        작품 추가 위치: .lab-grid 안에 .lab-card 를 하나 더 넣고
        projects 데이터에 같은 data-project 키로 상세 정보를 추가하세요.
@@ -110,7 +115,6 @@
     .lab-shot { position:relative; overflow:hidden; aspect-ratio:4/3; background:#211b1f; }
     .lab-shot img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
     .lab-card:hover .lab-shot img { transform:scale(1.04); }
-    .lab-no { position:absolute; left:12.8px; top:12.8px; padding:5.6px 10.4px; border-radius:799.2px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(9.6px); font:700 .68rem "Manrope"; letter-spacing:.14em; }
     .lab-body { padding:25.6px 25.6px 22.4px; display:flex; flex-direction:column; gap:11.2px; }
     .lab-kind { color:var(--pink-strong); font:700 .68rem "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
     .lab-body h3 { margin:0; font:800 var(--fs-h3)/1.1 "Manrope"; letter-spacing:-.05em; }
@@ -127,34 +131,49 @@
     .profile-identity h2 { font-size:var(--fs-h1); word-break:keep-all; }
     .profile-name-en { display:block; margin-top:11.2px; color:var(--pink); font:700 .84rem "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
     .profile-contact { align-self:end; display:grid; gap:10.4px; padding-bottom:4px; }
-    .profile-contact div { display:grid; grid-template-columns:62.4px 1fr; gap:14.4px; align-items:baseline; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.14); }
+    .profile-contact div { display:grid; grid-template-columns:92px 1fr; gap:14.4px; align-items:baseline; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.14); }
     .profile-contact small { color:var(--pink); font:700 .7rem "Manrope"; letter-spacing:.12em; }
-    .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(1rem,1.8vw,1.35rem) "Manrope"; overflow-wrap:anywhere; }
+    .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(1rem,1.8vw,1.35rem) "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; overflow-wrap:anywhere; }
+    /* 카카오톡·아트스테이션은 '읽는 정보'가 아니라 '누르는 링크'라, 전화번호와 달리
+       화살표를 붙이고 호버 반응을 줘서 눌리는 곳임이 보이도록 했습니다. */
+    .profile-contact a { text-decoration:none; transition:color .2s ease; }
+    .profile-contact a:hover,.profile-contact a:focus-visible { color:var(--pink); }
+    .contact-link i { display:inline-block; margin-left:.28em; font-style:normal; transition:transform .25s ease; }
+    .profile-contact a:hover .contact-link i,.contact-link:hover i { transform:translate(2px,-2px); }
     .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:9.6px; margin-top:24px; }
-    .profile-card { min-height:184px; padding:19.2px; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.14); border-radius:16px; background:rgba(255,255,255,.035); }
+    /* 하단 개수 표기(1 ENTRY 등)를 뺐으므로 최소 높이를 낮춰 빈 공간이 남지 않게 했습니다.
+       세 장의 높이는 그리드가 알아서 가장 긴 카드에 맞춰 줍니다. */
+    .profile-card { min-height:136px; padding:19.2px 19.2px 22.4px; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.14); border-radius:16px; background:rgba(255,255,255,.035); }
     .profile-card small { color:var(--pink); font:700 .72rem "Manrope"; letter-spacing:.12em; text-transform:uppercase; }
     .profile-card h3 { margin:23.2px 0 6.4px; font:700 var(--fs-h4)/1.4 "Manrope"; letter-spacing:-.025em; }
     .profile-card p { margin:0; color:rgba(255,255,255,.66); font-size:.86rem; }
-    .profile-card .date { margin-top:auto; padding-top:16px; color:rgba(255,255,255,.5); font-size:.75rem; }
     .cert-list { display:grid; gap:4.8px; margin-top:16px; color:rgba(255,255,255,.82); font-size:.83rem; }
     .cert-list span { display:flex; gap:9.6px; }
     .cert-list b { flex:0 0 auto; min-width:2.6em; color:var(--pink); white-space:nowrap; }
     .cert-list.is-range b { min-width:6.3em; } /* "2000~2000" 형식 */
     .ability { grid-column:1/-1; margin-top:44px; display:grid; grid-template-columns:.45fr 1.55fr; gap:40px; align-items:start; }
-    .ability h3 { margin:0; font:700 1.2rem "Manrope"; }
-    .ability-list { display:grid; grid-template-columns:1fr 1fr; gap:14.4px 24px; }
-    .ability-item { display:grid; gap:6.4px; }
-    .ability-label { display:flex; justify-content:space-between; color:rgba(255,255,255,.8); font-size:.82rem; }
+    /* "활용 능력" 은 한글인데 Manrope 에 한글 글립이 없어 OS 기본 글꼴로 떨어졌습니다.
+       한글 글꼴을 함께 지정하고, 임의값(1.2rem) 대신 타입 스케일의 소제목 단계를 씁니다. */
+    .ability h3 { margin:0; font:700 var(--fs-h4)/1.4 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.02em; }
+    .ability-list { display:grid; grid-template-columns:1fr 1fr; gap:15.2px 32px; }
+    /* 이름 · 막대 · 퍼센트를 한 줄에 나란히 둡니다.
+       전에는 퍼센트가 줄 맨 오른쪽 끝에 떨어져 있어 어느 막대의 수치인지 눈이 한 번 더 움직였습니다. */
+    .ability-item { display:grid; grid-template-columns:minmax(0,11em) minmax(0,1fr) 2.6em; gap:14.4px; align-items:center; }
+    .ability-name { color:rgba(255,255,255,.88); font:500 var(--fs-sm)/1.4 "DM Sans",sans-serif; letter-spacing:-.005em; }
+    /* 자릿수가 달라도(40% / 100%) 오른쪽 끝이 흔들리지 않도록 고정폭 숫자 사용 */
+    .ability-pct { color:rgba(255,255,255,.62); font:600 var(--fs-sm)/1 "Manrope"; font-variant-numeric:tabular-nums; text-align:right; }
     .ability-track { height:4px; border-radius:79.2px; background:rgba(255,255,255,.12); overflow:hidden; }
     .ability-track i { display:block; width:var(--level); height:100%; border-radius:inherit; background:var(--pink); }
 
     .contact { padding:100px 0 32px; background:var(--pink); }
     .contact-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
     .contact h2 { max-width:608px; font-size:var(--fs-h1); }
-    .contact h2 i { display:inline-block; margin-top:8px; color:#fff; font-size:.46em; font-style:normal; line-height:1.4; letter-spacing:-.035em; }
+    .contact h2 i { display:inline-block; margin-top:10px; color:#fff; font-size:.52em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
     .contact-info a { font-weight:700; }
     .contact-info span { color:rgba(41,36,41,.56); font-size:.86rem; }
+    .contact-sub { color:rgba(41,36,41,.62); font-size:.86rem; text-decoration:none; transition:color .2s ease; }
+    .contact-sub:hover,.contact-sub:focus-visible { color:var(--ink); }
     .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(3,auto); gap:9.6px; align-items:center; }
     .documents-copy b { display:block; font:700 1rem "Manrope"; }
     .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
@@ -219,8 +238,10 @@
     .details b { font-weight:600; overflow-wrap:anywhere; }
     /* 갤러리 패널: 이미지 아래에 설명이 붙는 블록 단위로 쌓입니다.
        breakdown(3컷 참고 이미지) → steps(제작 과정) → gallery(최종 렌더) 순으로 자동 생성됩니다. */
-    .modal-gallery { padding:19.2px 19.2px 70.4px; display:grid; gap:22.4px; }
-    .g-head { display:block; margin-bottom:9.6px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    /* 블록 사이 간격(Focus 3컷 ↔ 제작 과정 ↔ Final render)을 넉넉히 둬
+       한 화면에 여러 블록이 몰려 보이지 않게 했습니다. */
+    .modal-gallery { padding:24px 22.4px 78.4px; display:grid; gap:52px; }
+    .g-head { display:block; margin-bottom:15.2px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
     .g-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .g-row { display:grid; gap:9.6px; align-items:start; }
     .g-row.cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -232,9 +253,15 @@
     .g-fig .gallery-image img { max-height:460px; object-fit:contain; }
     /* 한 줄에 한 장만 깔리는 경우엔 높이 제한 없이 원래 비율 그대로 */
     .g-row.cols-1 .gallery-image img { max-height:none; object-fit:fill; }
-    /* 3컷 참고 이미지는 높이를 맞춰 캡션 줄이 가지런히 떨어지도록 */
-    .g-block .cols-3 .gallery-image { height:200px; }
-    .g-block .cols-3 .gallery-image img { height:100%; }
+    /* 참고 3컷(Focus 이미지): 원본 비율 그대로 보여주되 세 장의 높이는 같게 맞춥니다.
+       flex-grow 에 가로세로비(--r)를 넣으면 폭이 비율에 비례해 나뉘고,
+       같은 --r 을 aspect-ratio 로 쓰면 높이(=폭÷비율)가 자동으로 모두 같아집니다.
+       그래서 Steampunk 처럼 세로로 긴 묶음은 줄 전체가 높아지고,
+       SD Elf 처럼 가로로 긴 두 장 + 짧은 한 장이면 폭만 달라집니다. */
+    .bd-row { display:flex; gap:11.2px; align-items:flex-start; }
+    .bd-row .g-fig { flex:var(--r,1.3) 1 0; min-width:0; }
+    .bd-row .gallery-image { aspect-ratio:var(--r,1.3); }
+    .g-row.bd-row .g-fig .gallery-image img { width:100%; height:100%; max-height:none; object-fit:cover; }
     .g-step { display:grid; gap:12.8px; padding:14.4px; border:1px solid rgba(255,255,255,.1); border-radius:16px; background:rgba(255,255,255,.04); }
     .g-media { display:grid; gap:9.6px; }
     /* layout:'side' — 세로로 긴 이미지는 왼쪽, 설명은 오른쪽에 나란히 둡니다. */
@@ -271,16 +298,17 @@
     .reveal { opacity:0; transform:translateY(16px); transition:.7s cubic-bezier(.2,.7,.2,1); }
     .reveal.in { opacity:1; transform:none; }
 
-    /* 패널이 3열을 담을 만큼 넓지 않으면 렌더는 2열로, 참고 3컷은 한 장씩 세로로 쌓고
-       높이 제한을 풀어 각 이미지 원래 비율 그대로 보여줍니다. */
+    /* 패널이 3열을 담을 만큼 넓지 않으면 최종 렌더는 2열로 접습니다.
+       단 참고 3컷(.bd-row)은 태블릿에서도 3열을 유지합니다 — 한 장씩 세로로 쌓으면
+       화질이 낮은 참고 이미지가 확대되어 화면을 꽉 채워 버리기 때문입니다. */
     @media (max-width:1099px) {
       .g-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .g-step.is-side,.g-step.is-split { grid-template-columns:1fr; }
       /* 한 열로 접히면 aside 이미지가 전체폭을 먹어 너무 길어지므로 절반 폭으로 가운데 정렬 */
       .g-aside .g-row.cols-1 { grid-template-columns:52%; justify-content:center; }
-      .g-row.cols-3 { grid-template-columns:1fr; gap:14.4px; }
-      .g-block .cols-3 .gallery-image { height:auto; }
-      .g-block .cols-3 .gallery-image img,.g-fig .gallery-image img { height:auto; max-height:none; object-fit:fill; }
+      .g-row.cols-3:not(.bd-row) { grid-template-columns:1fr; gap:14.4px; }
+      .g-fig .gallery-image img { height:auto; max-height:none; object-fit:fill; }
+      .bd-row { gap:8.8px; }
     }
     @media (max-width:720px) {
       .wrap { width:min(100% - 24px,576px); }
@@ -304,7 +332,8 @@
       .about-grid { grid-template-columns:1fr; gap:27.2px; }
       .profile-contact { align-self:auto; }
       .profile-facts { grid-column:auto; grid-template-columns:1fr; margin-top:6.4px; }
-      .profile-card { min-height:152px; }
+      /* 한 열로 쌓이면 카드마다 높이가 따로 잡히므로 최소 높이를 풀어 빈 공간을 없앱니다. */
+      .profile-card { min-height:0; }
       .ability { grid-column:auto; grid-template-columns:1fr; gap:17.6px; }
       .ability-list { grid-template-columns:1fr; }
       .contact { padding:62.4px 0 20.8px; }
@@ -326,6 +355,9 @@
       .g-say span,.g-group { color:var(--pink-strong); }
       .g-step { border-color:var(--line); background:rgba(255,255,255,.6); }
       .g-fig .gallery-image { background:rgba(41,36,41,.06); }
+      /* 모바일은 폭이 좁아 3열이 너무 작아지므로 한 장씩 세로로 쌓습니다(원본 비율 유지). */
+      .bd-row { flex-direction:column; gap:14.4px; }
+      .bd-row .g-fig { flex:none; }
       .project-gallery-pane { height:auto; overflow:visible; }
       .close { position:sticky; float:right; right:12.8px; top:12.8px; margin:12.8px 12.8px -48px 0; }
       .dialog-scroll-cue { position:fixed; bottom:22.4px; }
@@ -355,7 +387,7 @@
   </style>
 </head>
 <body class="loading">
-  <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><div class="loader-kicker"><span>3D CHARACTER MODELING</span><span>PORTFOLIO 2026</span></div><p class="loader-title">Building<span>the character.</span></p><div class="loader-bottom"><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div><span class="loader-count" id="loader-count">00</span></div></div></div>
+  <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><p class="loader-title">PORTFOLIO<span>2026</span></p><div class="loader-bottom"><span class="loader-role">3D Character Modeler</span><span class="loader-count" id="loader-count">00</span></div><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div></div></div>
 
   <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work">WORK</a><a href="#lab">AI &amp; DESIGN</a><a href="#about">PROFILE</a><a class="contact-pill" href="#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
 
@@ -378,30 +410,30 @@
       <div class="section-head"><div><p class="eyebrow">Beyond modeling</p><h2>AI &amp; Design</h2></div><span class="counter">02 PROJECTS</span></div>
       <p class="lab-lead">3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다.</p>
       <div class="lab-grid">
-        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"><span class="lab-no">05</span></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
-        <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"><span class="lab-no">06</span></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
+        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
+        <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
       </div>
     </div></section>
 
     <section class="about" id="about"><div class="wrap about-grid reveal">
       <div class="profile-identity"><p class="eyebrow">Profile</p><h2 data-profile="name">이름 입력</h2><span class="profile-name-en" data-profile="englishName">YOUR NAME</span></div>
-      <div class="profile-contact"><div><small>EMAIL</small><a data-profile-link="email" href="mailto:your-email@example.com" data-profile="email">your-email@example.com</a></div><div><small>PHONE</small><span data-profile="phone">010-0000-0000</span></div></div>
+      <div class="profile-contact"><div><small>EMAIL</small><a data-profile-link="email" href="mailto:your-email@example.com" data-profile="email">your-email@example.com</a></div><div><small>KAKAO</small><a class="contact-link" data-profile-link="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener">오픈채팅방 바로가기<i aria-hidden="true">↗</i></a></div><div><small>ARTSTATION</small><a class="contact-link" data-profile-link="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener">작업물 더 보기<i aria-hidden="true">↗</i></a></div></div>
       <div class="profile-facts">
-        <article class="profile-card"><small>Education</small><div class="cert-list is-range" data-profile-list="education"></div><span class="date" data-profile-count="education"></span></article>
-        <article class="profile-card"><small>Experience & Training</small><div class="cert-list is-range" data-profile-list="experience"></div><span class="date" data-profile-count="experience"></span></article>
-        <article class="profile-card"><small>Certificates</small><div class="cert-list"><span><b>2023</b> 게임그래픽전문가</span><span><b>2023</b> 컴퓨터그래픽스운용기능사</span><span><b>2022</b> GTQi 일러스트</span><span><b>2022</b> GTQ 포토샵</span></div><span class="date">4 CERTIFICATES</span></article>
+        <article class="profile-card"><small>Education</small><div class="cert-list is-range" data-profile-list="education"></div></article>
+        <article class="profile-card"><small>Experience & Training</small><div class="cert-list is-range" data-profile-list="experience"></div></article>
+        <article class="profile-card"><small>Certificates</small><div class="cert-list"><span><b>2023</b> 게임그래픽전문가</span><span><b>2023</b> 컴퓨터그래픽스운용기능사</span><span><b>2022</b> GTQi 일러스트</span><span><b>2022</b> GTQ 포토샵</span></div></article>
       </div>
-      <div class="ability"><h3>활용 능력</h3><!-- 활용 능력 수정 위치: 각 항목의 --level 값만 바꾸면 바와 퍼센트 표기가 함께 바뀝니다. --><div class="ability-list">
-        <div class="ability-item"><span class="ability-label"><b>3ds Max</b><span>75%</span></span><div class="ability-track"><i style="--level:75%"></i></div></div>
-        <div class="ability-item"><span class="ability-label"><b>ZBrush</b><span>90%</span></span><div class="ability-track"><i style="--level:90%"></i></div></div>
-        <div class="ability-item"><span class="ability-label"><b>Substance 3D Painter</b><span>68%</span></span><div class="ability-track"><i style="--level:68%"></i></div></div>
-        <div class="ability-item"><span class="ability-label"><b>Marmoset Toolbag</b><span>64%</span></span><div class="ability-track"><i style="--level:64%"></i></div></div>
-        <div class="ability-item"><span class="ability-label"><b>Photoshop</b><span>90%</span></span><div class="ability-track"><i style="--level:90%"></i></div></div>
-        <div class="ability-item"><span class="ability-label"><b>Unreal Engine</b><span>42%</span></span><div class="ability-track"><i style="--level:42%"></i></div></div>
+      <div class="ability"><h3>활용 능력</h3><!-- 활용 능력 수정 위치: 각 항목의 --level 값만 바꾸면 막대와 퍼센트 표기가 함께 바뀝니다. --><div class="ability-list">
+        <div class="ability-item"><span class="ability-name">3ds Max</span><div class="ability-track"><i style="--level:75%"></i></div><span class="ability-pct">75%</span></div>
+        <div class="ability-item"><span class="ability-name">ZBrush</span><div class="ability-track"><i style="--level:90%"></i></div><span class="ability-pct">90%</span></div>
+        <div class="ability-item"><span class="ability-name">Substance 3D Painter</span><div class="ability-track"><i style="--level:70%"></i></div><span class="ability-pct">70%</span></div>
+        <div class="ability-item"><span class="ability-name">Marmoset Toolbag</span><div class="ability-track"><i style="--level:65%"></i></div><span class="ability-pct">65%</span></div>
+        <div class="ability-item"><span class="ability-name">Photoshop</span><div class="ability-track"><i style="--level:90%"></i></div><span class="ability-pct">90%</span></div>
+        <div class="ability-item"><span class="ability-name">Unreal Engine</span><div class="ability-track"><i style="--level:40%"></i></div><span class="ability-pct">40%</span></div>
       </div></div>
     </div></section>
 
-    <section class="contact" id="contact"><div class="wrap reveal"><div class="contact-row"><h2>Thank you for your time.<br><i>끝까지 읽어주셔서 진심으로 감사드립니다.</i></h2><div class="contact-info"><a data-profile-link="email" href="mailto:your-email@example.com"><span data-profile="email">your-email@example.com</span> ↗</a><span data-profile="phone">010-0000-0000</span></div></div><div class="documents"><div class="documents-copy"><b>Description</b><span>포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다.</span></div><!-- 문서 수정 위치: 개인정보를 채운 최종 포트폴리오 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">포트폴리오 PDF · 추후 연결</span><!-- 문서 수정 위치: 실제 이력서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">이력서 · 추후 연결</span><!-- 문서 수정 위치: 실제 자기소개서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">자기소개서 · 추후 연결</span></div></div></section>
+    <section class="contact" id="contact"><div class="wrap reveal"><div class="contact-row"><h2>Thank you for your time.<br><i>끝까지 읽어주셔서 진심으로 감사드립니다.</i></h2><div class="contact-info"><a data-profile-link="email" href="mailto:your-email@example.com"><span data-profile="email">your-email@example.com</span> ↗</a><a class="contact-sub" data-profile-link="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener">카카오톡 오픈채팅 ↗</a><a class="contact-sub" data-profile-link="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener">ArtStation ↗</a></div></div><div class="documents"><div class="documents-copy"><b>Description</b><span>포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다.</span></div><!-- 문서 수정 위치: 개인정보를 채운 최종 포트폴리오 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">포트폴리오 PDF · 추후 연결</span><!-- 문서 수정 위치: 실제 이력서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">이력서 · 추후 연결</span><!-- 문서 수정 위치: 실제 자기소개서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">자기소개서 · 추후 연결</span></div></div></section>
   </main>
   <footer><div class="wrap"><span>© 2026 <span data-profile="name">YOUR NAME</span></span><span>3D Character Modeler Portfolio</span></div></footer>
 
@@ -421,7 +453,10 @@
       englishName: 'YOUR NAME',
       shortName: 'Y.N',
       email: 'your-email@example.com',
-      phone: '010-0000-0000',
+      /* 링크 수정 위치: 실제 카카오톡 오픈채팅방 / 아트스테이션 주소로 바꾸면
+         프로필과 맨 아래 Contact 양쪽 링크가 한 번에 바뀝니다. */
+      kakaoOpenChat: 'https://kakaocorp.com', /* 임시 — 실제 오픈채팅방 주소로 교체 */
+      artstation: 'https://www.artstation.com/',
       // 학력·경력은 { period: 연도, text: 설명 } 를 한 줄씩. 줄을 추가/삭제하면 카드와 개수 표기가 같이 바뀝니다.
       education: [
         { period: '2000', text: '00고등학교' }
@@ -433,15 +468,16 @@
       ]
     };
     Object.entries(profileConfig).forEach(([key,value]) => { if(typeof value==='string') document.querySelectorAll(`[data-profile="${key}"]`).forEach(element => { element.textContent=value; }); });
-    const profileCountLabel={ education:n => `${n} ${n===1?'ENTRY':'ENTRIES'}`, experience:n => `${n} EXPERIENCE${n===1?'':'S'}` };
     ['education','experience'].forEach(key => {
       const items=profileConfig[key]||[];
       const list=document.querySelector(`[data-profile-list="${key}"]`);
       list.replaceChildren(...items.map(item => { const row=document.createElement('span'); const b=document.createElement('b'); b.textContent=item.period; row.append(b,' '+item.text); return row; }));
-      const count=document.querySelector(`[data-profile-count="${key}"]`);
-      if(count) count.textContent=profileCountLabel[key](items.length);
     });
-    document.querySelectorAll('[data-profile-link="email"]').forEach(link => { link.href=`mailto:${profileConfig.email}`; });
+    const profileLinks={ email:`mailto:${profileConfig.email}`, kakao:profileConfig.kakaoOpenChat, artstation:profileConfig.artstation };
+    Object.entries(profileLinks).forEach(([key,href]) => {
+      if(!href) return;
+      document.querySelectorAll(`[data-profile-link="${key}"]`).forEach(link => { link.href=href; });
+    });
     document.title=`${profileConfig.name} - 3D Character Modeler Portfolio`;
 
     /*
@@ -473,9 +509,11 @@
         ],
         meta:{ PERIOD:'2025.10 ~ 2026.06 (약 6주)', SCOPE:SCOPE_3D, SPECS:'139,600 Tris / 4K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Artstation - DS K' },
         breakdown:[
-          { img:'bd-gunslinger-1', cap:'실루엣 수정' },
-          { img:'bd-gunslinger-2', cap:'팔 디테일 추가' },
-          { img:'bd-gunslinger-3', cap:'무릎 장식 수정' }
+          /* r = 이미지 원본 가로÷세로. 세 장의 폭이 이 비율대로 나뉘고 높이는 서로 같아집니다.
+             이미지를 교체하면 새 파일의 비율로 r 값도 같이 바꿔주세요. */
+          { img:'bd-gunslinger-1', cap:'실루엣 수정', r:1.308 },
+          { img:'bd-gunslinger-2', cap:'팔 디테일 추가', r:1.308 },
+          { img:'bd-gunslinger-3', cap:'무릎 장식 수정', r:1.315 }
         ],
         video:'assets/portfolio/video/gunslinger.webm',
         gallery:['gunslinger-01','gunslinger-02','gunslinger-03','gunslinger-04','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08']
@@ -491,9 +529,9 @@
         ],
         meta:{ PERIOD:'2026.05 ~ 2026.09 (약 7주)', SCOPE:SCOPE_3D, SPECS:'116,600 Tris / 4K Texture × 4', TOOLS:TOOLS_3D, CONCEPT:'Artstation - Kang jihun' },
         breakdown:[
-          { img:'bd-steampunk-1', cap:'스티치 추가' },
-          { img:'bd-steampunk-2', cap:'가죽 텍스처 적용' },
-          { img:'bd-steampunk-3', cap:'무기 제작' }
+          { img:'bd-steampunk-1', cap:'스티치 추가', r:1.031 },
+          { img:'bd-steampunk-2', cap:'가죽 텍스처 적용', r:0.870 },
+          { img:'bd-steampunk-3', cap:'무기 제작', r:1.049 }
         ],
         video:'assets/portfolio/video/steampunk.webm',
         gallery:['steampunk-01','steampunk-02','steampunk-03','steampunk-04','steampunk-05','steampunk-06','steampunk-07','steampunk-08','steampunk-09','steampunk-10','steampunk-11']
@@ -509,9 +547,9 @@
         ],
         meta:{ PERIOD:'2025.06 ~ 2026.09 (약 3주)', SCOPE:SCOPE_3D, SPECS:'26,900 Tris / 2K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Pinterest - Q Dreamy AI Studio' },
         breakdown:[
-          { img:'bd-elf-1', cap:'헤어 수정 전' },
-          { img:'bd-elf-2', cap:'헤어 수정 후' },
-          { img:'bd-elf-3', cap:'헤어 텍스처' }
+          { img:'bd-elf-1', cap:'헤어 수정 전', r:1.825 },
+          { img:'bd-elf-2', cap:'헤어 수정 후', r:1.825 },
+          { img:'bd-elf-3', cap:'헤어 텍스처', r:0.930 }
         ],
         video:'assets/portfolio/video/elf.webm',
         gallery:['elf-01','elf-02','elf-03','elf-04','elf-05','elf-06']
@@ -527,9 +565,9 @@
         ],
         meta:{ PERIOD:'2025.05 ~ 2026.06 (약 1주)', SCOPE:SCOPE_3D, SPECS:'11,000 Tris / 2K Texture × 1', TOOLS:'3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag', CONCEPT:'Instagram - dereklaufman, hanska3d' },
         breakdown:[
-          { img:'bd-monster-1', cap:'윤곽선 추가' },
-          { img:'bd-monster-2', cap:'텍스처 깊이감 추가' },
-          { img:'bd-monster-3', cap:'배경 제작' }
+          { img:'bd-monster-1', cap:'윤곽선 추가', r:1.308 },
+          { img:'bd-monster-2', cap:'텍스처 깊이감 추가', r:1.308 },
+          { img:'bd-monster-3', cap:'배경 제작', r:1.315 }
         ],
         video:'assets/portfolio/video/monster.webm',
         gallery:['monster-01','monster-02','monster-03','monster-04','monster-05','monster-06']
@@ -592,7 +630,7 @@
         gallery:[]
       }
     };
-    document.querySelectorAll('.ability-item').forEach(item => { const level=item.querySelector('.ability-track i').style.getPropertyValue('--level').trim(); if(level) item.querySelector('.ability-label span').textContent=level; });
+    document.querySelectorAll('.ability-item').forEach(item => { const level=item.querySelector('.ability-track i').style.getPropertyValue('--level').trim(); if(level) item.querySelector('.ability-pct').textContent=level; });
     const heroSlides=[...document.querySelectorAll('.hero-slide')];
     const heroNote=document.querySelector('#hero-note');
     let heroIndex=0;
@@ -726,10 +764,12 @@
         button.append(image);
         return button;
       };
-      const figureRow=(items,cols) => {
-        const row=el('div',`g-row cols-${cols||Math.min(items.length,2)}`);
+      const figureRow=(items,cols,extraClass) => {
+        const row=el('div',`g-row cols-${cols||Math.min(items.length,2)}${extraClass?' '+extraClass:''}`);
         row.append(...items.map(item => {
           const figure=el('figure','g-fig');
+          // r : 이미지 원본 가로세로비. 폭을 비율대로 나누고 높이를 서로 맞추는 데 씁니다.
+          if(item.r) figure.style.setProperty('--r',item.r);
           figure.append(tile(item.img,`${project.title} ${item.cap||''}`.trim()));
           if(item.cap) figure.append(el('figcaption',null,item.cap));
           return figure;
@@ -740,7 +780,7 @@
 
       if(project.breakdown&&project.breakdown.length){
         const block=el('section','g-block');
-        block.append(el('span','g-head','Breakdown'),figureRow(project.breakdown,3));
+        block.append(el('span','g-head','Focus'),figureRow(project.breakdown,3,'bd-row'));
         blocks.push(block);
       }
 
@@ -778,7 +818,7 @@
 
       if(project.gallery&&project.gallery.length){
         const block=el('section','g-block');
-        if(project.galleryHead) block.append(el('span','g-head',project.galleryHead));
+        block.append(el('span','g-head',project.galleryHead||'Final render'));
         const grid=el('div','g-grid');
         // galleryCols 를 지정하면 첫 장 전체폭 없이 모두 같은 크기로 깔립니다.
         if(project.galleryCols){ grid.classList.add('is-even'); grid.style.setProperty('--cols',project.galleryCols); }
