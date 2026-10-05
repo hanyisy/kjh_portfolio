@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="게임 캐릭터를 제작하는 신입 3D 캐릭터 모델러의 포트폴리오">
+  <meta name="description" content="3D 캐릭터 모델러 포트폴리오">
   <meta name="theme-color" content="#f7bfd0">
   <title>3D Character Modeler Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,10 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f7bfd0'/%3E%3Cpath d='M17 18h30v28H17z' fill='%23fff8f8' stroke='%232c2529' stroke-width='4'/%3E%3Cpath d='M24 18v28M40 18v28M17 29h30M17 38h30' stroke='%232c2529' stroke-width='3'/%3E%3Ccircle cx='46' cy='17' r='7' fill='%23ed6d98'/%3E%3C/svg%3E">
   <style>
-    :root { --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px; }
+    :root {
+      --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
+      /* 글자 계층 — 위에서부터 한 단계씩 약 1.3배씩 줄어듭니다. 크기는 여기서만 바꾸세요.
+         1400px 기준: 48 / 36 / 28 / 21 / 15.5 / 13.8 / 12.4 / 10.7 px */
+      --fs-display:clamp(2.3rem,3.7vw,3.49rem);  /* 히어로 대제목 */
+      --fs-h1:clamp(1.95rem,2.8vw,2.62rem);      /* 이름 · 맺음말 */
+      --fs-h2:clamp(1.6rem,2.2vw,2.03rem);       /* 섹션 제목 */
+      --fs-h3:clamp(1.25rem,1.7vw,1.53rem);      /* 카드 · 모달 제목 */
+      --fs-h4:1.13rem;                           /* 소제목 */
+      --fs-body:1rem; --fs-sm:.9rem; --fs-xs:.78rem;
+    }
     * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; font-size:80%; }
-    body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",sans-serif; font-size:12.8px; line-height:1.6; }
+    html { scroll-behavior:smooth; font-size:86%; }
+    body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",sans-serif; font-size:var(--fs-body); line-height:1.6; }
     body.loading { overflow:hidden; }
     button,a { -webkit-tap-highlight-color:transparent; }
     button { font:inherit; }
@@ -27,7 +37,7 @@
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
     .loader-kicker { display:flex; justify-content:space-between; margin-bottom:12.8px; font:700 .75rem "Manrope"; letter-spacing:.14em; text-transform:uppercase; }
-    .loader-title { margin:0; font:800 clamp(3.5rem,12vw,7rem)/.82 "Manrope"; letter-spacing:-.08em; }
+    .loader-title { margin:0; font:800 clamp(2.8rem,9vw,5rem)/.86 "Manrope"; letter-spacing:-.08em; }
     .loader-title span { display:block; color:#fff; }
     .loader-bottom { display:flex; align-items:center; gap:14.4px; margin-top:27.2px; }
     .loader-track { flex:1; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
@@ -48,11 +58,11 @@
     .contact-pill { padding:8px 12.8px; border-radius:799.2px; background:var(--ink); color:#fff; }
     main { overflow:hidden; }
 
-    .hero { padding:43.2px 0 33.6px; }
+    .hero { padding:43.2px 0 56px; }
     .hero-grid { display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
-    h1 { margin:0; font:800 clamp(3.3rem,6.4vw,6.3rem)/.91 "Manrope"; letter-spacing:-.075em; }
+    h1 { margin:0; font:800 var(--fs-display)/.98 "Manrope"; letter-spacing:-.07em; }
     h1 em { display:block; font-style:normal; color:var(--pink-strong); }
     .hero-copy { margin:20px 0 0; color:var(--muted); max-width:328px; font-size:1.03rem; }
     .hero-meta { display:flex; flex-wrap:wrap; gap:6.4px; margin-top:20px; }
@@ -65,9 +75,9 @@
     .hero-slide.is-portrait img { object-position:center 18%; }
     .hero-note { position:absolute; z-index:5; right:-14.4px; bottom:-14.4px; padding:10.4px 12.8px; border-radius:11.2px; background:var(--pink); font:700 .76rem "Manrope"; letter-spacing:.08em; transform:rotate(-3deg); }
 
-    .selected { padding:28.8px 0 86.4px; }
-    .section-head { display:flex; align-items:end; justify-content:space-between; gap:19.2px; margin-bottom:19.2px; }
-    .section-head h2,.about h2,.contact h2 { margin:0; font:800 clamp(2rem,4vw,3.35rem)/1 "Manrope"; letter-spacing:-.055em; }
+    .selected { padding:72px 0 104px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:19.2px; margin-bottom:32px; }
+    .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.05 "Manrope"; letter-spacing:-.055em; }
     .counter { color:var(--muted); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
     .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
@@ -76,65 +86,76 @@
     .thumb img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
     .project-card:hover .thumb img { transform:scale(1.035); }
     .card-label { position:absolute; inset:auto 14.4px 14.4px 14.4px; padding:13.6px 14.4px; display:flex; justify-content:space-between; align-items:center; gap:14.4px; border-radius:14.4px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(9.6px); }
-    .card-label strong { display:block; font:700 1.05rem/1.25 "Manrope"; }
-    .card-label small { color:rgba(255,255,255,.7); font-size:.76rem; }
+    .card-label strong { display:block; font:700 var(--fs-h4)/1.25 "Manrope"; }
+    .card-label small { color:rgba(255,255,255,.78); font-size:.76rem; }
     .arrow { width:28.8px; height:28.8px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); font-size:1.15rem; transition:transform .25s; }
     .project-card:hover .arrow { transform:rotate(-35deg); }
-    .more-wrap { display:flex; justify-content:center; padding-top:30.4px; }
-    .more-btn { width:min(100%,232px); min-height:46.4px; padding:0 16px 0 20px; display:inline-flex; align-items:center; justify-content:space-between; gap:14.4px; border:1px solid var(--ink); border-radius:799.2px; background:transparent; color:var(--ink); font:700 .78rem "Manrope"; letter-spacing:.1em; cursor:pointer; transition:.25s ease; }
-    .more-btn:hover,.more-btn:focus-visible { background:var(--ink); color:#fff; transform:translateY(-2px); }
-    .more-btn .more-label { white-space:nowrap; }
-    .more-btn .more-icon { display:grid; place-items:center; flex:0 0 22.4px; width:22.4px; height:22.4px; border-radius:50%; background:var(--pink); color:var(--ink); font-size:1.05rem; letter-spacing:0; }
-    .archive { padding-top:57.6px; }
-    .archive[hidden] { display:none; }
-    .archive.is-opening { animation:archive-in .65s cubic-bezier(.2,.7,.2,1) both; }
-    .archive.is-closing { animation:archive-out .35s ease both; }
-    @keyframes archive-in { from { opacity:0; transform:translateY(28.8px); } to { opacity:1; transform:none; } }
-    @keyframes archive-out { to { opacity:0; transform:translateY(14.4px); } }
-    .archive-top { display:flex; align-items:end; justify-content:space-between; gap:20px; padding-bottom:16px; border-bottom:1px solid var(--line); }
-    .archive-top h3 { margin:0; font:800 clamp(2rem,4vw,3.25rem)/1 "Manrope"; letter-spacing:-.055em; }
-    .archive-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; padding-top:19.2px; }
-    .archive-card { width:100%; }
-    .archive-card .thumb { aspect-ratio:2/3; }
     .project-placeholder { position:relative; min-width:0; opacity:.42; pointer-events:none; }
     .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgba(247,191,208,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(247,191,208,.08) 1px,transparent 1px); background-size:24px 24px; }
     .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 2rem/1 "Manrope"; }
 
-    .about { padding:83.2px 0; background:var(--ink); color:#fff; }
+    /* ──────────────────────────────────────────────────────────────
+       05·06 파트 (AI / UI·상세페이지)
+       3D 캐릭터 파트와 성격이 달라 핑크 톤 배경 + 가로형 카드로 분리했습니다.
+       작품 추가 위치: .lab-grid 안에 .lab-card 를 하나 더 넣고
+       projects 데이터에 같은 data-project 키로 상세 정보를 추가하세요.
+       ────────────────────────────────────────────────────────────── */
+    .lab { padding:88px 0 104px; border-top:1px solid var(--line); background:linear-gradient(180deg,rgba(247,191,208,.22),rgba(247,191,208,0) 68%); }
+    .lab .eyebrow { color:var(--pink-strong); }
+    .lab-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:.9rem; }
+    .lab-grid { display:grid; gap:16px; }
+    .lab-card { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); width:100%; padding:0; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:#fff; color:inherit; text-align:left; cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s ease; }
+    .lab-card:hover { transform:translateY(-3px); border-color:rgba(41,36,41,.26); box-shadow:0 18px 44px rgba(28,22,26,.13); }
+    .lab-card:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:4px; }
+    .lab-shot { position:relative; overflow:hidden; aspect-ratio:4/3; background:#211b1f; }
+    .lab-shot img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
+    .lab-card:hover .lab-shot img { transform:scale(1.04); }
+    .lab-no { position:absolute; left:12.8px; top:12.8px; padding:5.6px 10.4px; border-radius:799.2px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(9.6px); font:700 .68rem "Manrope"; letter-spacing:.14em; }
+    .lab-body { padding:25.6px 25.6px 22.4px; display:flex; flex-direction:column; gap:11.2px; }
+    .lab-kind { color:var(--pink-strong); font:700 .68rem "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
+    .lab-body h3 { margin:0; font:800 var(--fs-h3)/1.1 "Manrope"; letter-spacing:-.05em; }
+    .lab-body p { margin:0; color:var(--muted); font-size:.85rem; line-height:1.55; }
+    .lab-tags { display:flex; flex-wrap:wrap; gap:6.4px; }
+    .lab-tags span { padding:5.6px 10.4px; border:1px solid var(--line); border-radius:799.2px; color:var(--muted); font:600 .71rem "Manrope"; }
+    .lab-open { margin-top:auto; padding-top:6px; display:inline-flex; align-items:center; gap:9.6px; font:700 .74rem "Manrope"; letter-spacing:.1em; }
+    .lab-open i { display:grid; place-items:center; width:27.2px; height:27.2px; border-radius:50%; background:var(--pink); color:var(--ink); font-style:normal; font-size:1.1rem; transition:transform .25s; }
+    .lab-card:hover .lab-open i { transform:rotate(-35deg); }
+
+    .about { padding:100px 0; background:var(--ink); color:#fff; }
     .about-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:72px; }
     .about .eyebrow { color:var(--pink); }
-    .profile-identity h2 { font-size:clamp(2.8rem,5.5vw,5.2rem); word-break:keep-all; }
+    .profile-identity h2 { font-size:var(--fs-h1); word-break:keep-all; }
     .profile-name-en { display:block; margin-top:11.2px; color:var(--pink); font:700 .84rem "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
     .profile-contact { align-self:end; display:grid; gap:10.4px; padding-bottom:4px; }
     .profile-contact div { display:grid; grid-template-columns:62.4px 1fr; gap:14.4px; align-items:baseline; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.14); }
     .profile-contact small { color:var(--pink); font:700 .7rem "Manrope"; letter-spacing:.12em; }
     .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(1rem,1.8vw,1.35rem) "Manrope"; overflow-wrap:anywhere; }
-    .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:9.6px; margin-top:14.4px; }
+    .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:9.6px; margin-top:24px; }
     .profile-card { min-height:184px; padding:19.2px; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.14); border-radius:16px; background:rgba(255,255,255,.035); }
     .profile-card small { color:var(--pink); font:700 .72rem "Manrope"; letter-spacing:.12em; text-transform:uppercase; }
-    .profile-card h3 { margin:23.2px 0 6.4px; font:700 1.08rem/1.4 "Manrope"; letter-spacing:-.025em; }
-    .profile-card p { margin:0; color:rgba(255,255,255,.55); font-size:.86rem; }
-    .profile-card .date { margin-top:auto; padding-top:16px; color:rgba(255,255,255,.36); font-size:.75rem; }
-    .cert-list { display:grid; gap:4.8px; margin-top:16px; color:rgba(255,255,255,.74); font-size:.83rem; }
+    .profile-card h3 { margin:23.2px 0 6.4px; font:700 var(--fs-h4)/1.4 "Manrope"; letter-spacing:-.025em; }
+    .profile-card p { margin:0; color:rgba(255,255,255,.66); font-size:.86rem; }
+    .profile-card .date { margin-top:auto; padding-top:16px; color:rgba(255,255,255,.5); font-size:.75rem; }
+    .cert-list { display:grid; gap:4.8px; margin-top:16px; color:rgba(255,255,255,.82); font-size:.83rem; }
     .cert-list span { display:flex; gap:9.6px; }
     .cert-list b { flex:0 0 auto; min-width:2.6em; color:var(--pink); white-space:nowrap; }
     .cert-list.is-range b { min-width:6.3em; } /* "2000~2000" 형식 */
-    .ability { grid-column:1/-1; margin-top:30.4px; display:grid; grid-template-columns:.45fr 1.55fr; gap:40px; align-items:start; }
+    .ability { grid-column:1/-1; margin-top:44px; display:grid; grid-template-columns:.45fr 1.55fr; gap:40px; align-items:start; }
     .ability h3 { margin:0; font:700 1.2rem "Manrope"; }
     .ability-list { display:grid; grid-template-columns:1fr 1fr; gap:14.4px 24px; }
     .ability-item { display:grid; gap:6.4px; }
-    .ability-label { display:flex; justify-content:space-between; color:rgba(255,255,255,.72); font-size:.82rem; }
+    .ability-label { display:flex; justify-content:space-between; color:rgba(255,255,255,.8); font-size:.82rem; }
     .ability-track { height:4px; border-radius:79.2px; background:rgba(255,255,255,.12); overflow:hidden; }
     .ability-track i { display:block; width:var(--level); height:100%; border-radius:inherit; background:var(--pink); }
 
-    .contact { padding:86.4px 0 28.8px; background:var(--pink); }
+    .contact { padding:100px 0 32px; background:var(--pink); }
     .contact-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
-    .contact h2 { max-width:608px; font-size:clamp(2.7rem,6vw,5.7rem); }
+    .contact h2 { max-width:608px; font-size:var(--fs-h1); }
     .contact h2 i { display:inline-block; margin-top:8px; color:#fff; font-size:.46em; font-style:normal; line-height:1.4; letter-spacing:-.035em; }
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
     .contact-info a { font-weight:700; }
     .contact-info span { color:rgba(41,36,41,.56); font-size:.86rem; }
-    .documents { margin-top:46.4px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(3,auto); gap:9.6px; align-items:center; }
+    .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(3,auto); gap:9.6px; align-items:center; }
     .documents-copy b { display:block; font:700 1rem "Manrope"; }
     .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
     .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
@@ -145,10 +166,12 @@
 
     dialog { width:min(896px,calc(100% - 27.2px)); max-height:calc(100vh - 27.2px); border:0; border-radius:22.4px; padding:0; overflow:auto; background:var(--milk); color:var(--ink); box-shadow:0 24px 80px rgba(24,18,22,.28); }
     dialog::backdrop { background:rgba(35,28,33,.72); backdrop-filter:blur(4.8px); }
-    #project-dialog { height:min(656px,calc(100vh - 27.2px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+    /* 오른쪽 이미지 패널이 3열을 넉넉히 담도록 상세 모달을 넓게 씁니다. */
+    #project-dialog { width:min(1280px,calc(100% - 32px)); height:min(812px,calc(100vh - 32px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
     #project-dialog::-webkit-scrollbar { display:none; width:0; height:0; }
     .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:1.2rem; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
-    .project-detail-layout { height:100%; display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr); }
+    /* 왼쪽(썸네일+설명)은 기존 폭을 유지하고, 늘어난 폭은 전부 오른쪽 이미지 패널이 가져갑니다. */
+    .project-detail-layout { height:100%; display:grid; grid-template-columns:minmax(280px,.6fr) minmax(0,1.4fr); }
     .project-overview { min-width:0; overflow-y:auto; scrollbar-width:none; border-right:1px solid var(--line); background:var(--milk); }
     .project-overview::-webkit-scrollbar { display:none; width:0; height:0; }
     .project-gallery-wrap { position:relative; min-width:0; min-height:0; background:#1c181b; }
@@ -162,6 +185,10 @@
     /* 메인 썸네일 비율 = 영상 비율(1500×1920). 패널 폭을 여백 없이 꽉 채우고, 영상은 잘리지 않으며 썸네일 이미지는 cover 로 잘려서 채워진다.
        화면이 낮아 아래 텍스트가 밀리면 왼쪽 패널(.project-overview)이 스크롤된다. */
     .modal-hero { position:relative; width:100%; height:auto; aspect-ratio:1500/1920; margin:0; overflow:hidden; background:#161216; }
+    /* 세로로 긴 화면 설계물(UI 등)은 잘리지 않도록 전체를 보여주고 배경을 사이트 톤으로 깔아줍니다. */
+    .modal-hero.is-contain,.lab-shot.is-contain { background:linear-gradient(160deg,#fff9fb,#f8dde6); }
+    .modal-hero.is-contain img,.lab-shot.is-contain img { object-fit:contain; padding:16px; }
+    .lab-shot.is-contain img { padding:12px; }
     .modal-hero img,.modal-hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
     .modal-hero video { z-index:1; opacity:0; transition:opacity .35s ease; }
     .modal-hero.is-started video { opacity:1; }
@@ -179,15 +206,53 @@
     @media (hover:none) { .modal-hero.has-video:not(.is-started) .hero-play { opacity:1; transform:translate(-50%,-50%) scale(1); } }
     .hero-drag-hint { position:absolute; z-index:3; left:50%; bottom:18px; padding:6px 11px; border-radius:999px; color:rgba(255,255,255,.9); background:rgba(28,22,26,.6); backdrop-filter:blur(8px); font:700 .62rem "Manrope"; letter-spacing:.1em; white-space:nowrap; pointer-events:none; opacity:0; transform:translateX(-50%); transition:opacity .3s ease; }
     .modal-hero.is-started.show-hint .hero-drag-hint { opacity:1; }
-    .modal-body { padding:12px 20px 12px; display:grid; gap:10px; }
-    .modal-body h3 { margin:0 0 4px; font:800 clamp(1.5rem,2.4vw,1.9rem)/1 "Manrope"; letter-spacing:-.05em; }
-    .modal-body p { color:var(--muted); margin:0; font-size:.84rem; line-height:1.4; }
-    .details { display:grid; align-content:start; gap:4px; font-size:.76rem; }
-    .details div { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
-    .details span { color:var(--muted); }
-    .modal-gallery { padding:19.2px 19.2px 70.4px; display:grid; grid-template-columns:1fr 1fr; gap:11.2px; }
-    .gallery-image { position:relative; padding:0; overflow:hidden; border:0; border-radius:12.8px; background:#eee; cursor:zoom-in; }
-    .gallery-image:first-child { grid-column:1/-1; }
+    .modal-body { padding:14px 20px 26px; display:grid; gap:14px; }
+    .modal-body h3 { margin:0; font:800 var(--fs-h3)/1.05 "Manrope"; letter-spacing:-.05em; }
+    .modal-sub { margin:5px 0 0; color:var(--pink-strong); font:700 .87rem "Manrope"; letter-spacing:.02em; }
+    /* 본문 블록(Focus / 브레이크다운 / 제작 과정) 공통 소제목 */
+    .block-title { display:block; margin-bottom:6px; color:var(--ink); font:700 .78rem "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
+    .focus-block p { margin:0 0 3px; color:var(--muted); font-size:.94rem; line-height:1.55; }
+    .focus-block p:last-child { margin-bottom:0; }
+    .details { display:grid; align-content:start; gap:4px; font-size:.89rem; }
+    .details div { display:grid; grid-template-columns:5.2em minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
+    .details span { color:var(--muted); font-weight:700; letter-spacing:.04em; }
+    .details b { font-weight:600; overflow-wrap:anywhere; }
+    /* 갤러리 패널: 이미지 아래에 설명이 붙는 블록 단위로 쌓입니다.
+       breakdown(3컷 참고 이미지) → steps(제작 과정) → gallery(최종 렌더) 순으로 자동 생성됩니다. */
+    .modal-gallery { padding:19.2px 19.2px 70.4px; display:grid; gap:22.4px; }
+    .g-head { display:block; margin-bottom:9.6px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    .g-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
+    .g-row { display:grid; gap:9.6px; align-items:start; }
+    .g-row.cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .g-row.cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .g-fig { margin:0; display:grid; gap:6.4px; align-content:start; }
+    .g-fig figcaption { color:rgba(255,255,255,.68); font-size:.82rem; letter-spacing:.01em; }
+    /* 세로로 긴 참고 이미지가 패널을 다 차지하지 않도록 높이를 제한하고 가운데 정렬 */
+    .g-fig .gallery-image { background:rgba(255,255,255,.06); }
+    .g-fig .gallery-image img { max-height:460px; object-fit:contain; }
+    /* 한 줄에 한 장만 깔리는 경우엔 높이 제한 없이 원래 비율 그대로 */
+    .g-row.cols-1 .gallery-image img { max-height:none; object-fit:fill; }
+    /* 3컷 참고 이미지는 높이를 맞춰 캡션 줄이 가지런히 떨어지도록 */
+    .g-block .cols-3 .gallery-image { height:200px; }
+    .g-block .cols-3 .gallery-image img { height:100%; }
+    .g-step { display:grid; gap:12.8px; padding:14.4px; border:1px solid rgba(255,255,255,.1); border-radius:16px; background:rgba(255,255,255,.04); }
+    .g-media { display:grid; gap:9.6px; }
+    /* layout:'side' — 세로로 긴 이미지는 왼쪽, 설명은 오른쪽에 나란히 둡니다. */
+    .g-step.is-side { grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr); gap:16px; align-items:start; }
+    .g-step.is-side .g-fig .gallery-image img { max-height:none; object-fit:fill; }
+    /* layout:'split' — 왼쪽은 전/후 짝 이미지, 오른쪽은 단독 이미지 + 그 아래 설명 */
+    .g-step.is-split { grid-template-columns:minmax(0,1.34fr) minmax(0,.66fr); gap:16px; align-items:start; }
+    .g-aside { display:grid; gap:12.8px; align-content:start; }
+    .g-group { margin:0 0 -8px; color:var(--pink); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    .g-say { display:grid; gap:4.8px; }
+    .g-say span { color:var(--pink); font:700 .74rem "Manrope"; letter-spacing:.16em; }
+    .g-say b { color:#fff; font:700 var(--fs-h4) "Manrope"; }
+    .g-say p { margin:0; color:rgba(255,255,255,.74); font-size:.93rem; line-height:1.6; }
+    .g-say p b { font:inherit; font-weight:700; color:rgba(255,255,255,.96); }
+    .gallery-image { position:relative; display:block; width:100%; padding:0; overflow:hidden; border:0; border-radius:12.8px; background:#eee; cursor:zoom-in; }
+    .g-grid .gallery-image:first-child { grid-column:1/-1; }
+    .g-grid.is-even { grid-template-columns:repeat(var(--cols,2),minmax(0,1fr)); }
+    .g-grid.is-even .gallery-image:first-child { grid-column:auto; }
     .gallery-image img { width:100%; transition:transform .35s ease; }
     .gallery-image::after { content:"확대 보기 +"; position:absolute; right:9.6px; bottom:9.6px; padding:5.6px 8px; border-radius:799.2px; color:#fff; background:rgba(25,20,23,.76); backdrop-filter:blur(6.4px); font:700 .72rem "Manrope"; letter-spacing:.04em; opacity:0; transform:translateY(4px); transition:.25s ease; }
     .gallery-image:hover img { transform:scale(1.018); }
@@ -206,21 +271,35 @@
     .reveal { opacity:0; transform:translateY(16px); transition:.7s cubic-bezier(.2,.7,.2,1); }
     .reveal.in { opacity:1; transform:none; }
 
+    /* 패널이 3열을 담을 만큼 넓지 않으면 렌더는 2열로, 참고 3컷은 한 장씩 세로로 쌓고
+       높이 제한을 풀어 각 이미지 원래 비율 그대로 보여줍니다. */
+    @media (max-width:1099px) {
+      .g-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .g-step.is-side,.g-step.is-split { grid-template-columns:1fr; }
+      /* 한 열로 접히면 aside 이미지가 전체폭을 먹어 너무 길어지므로 절반 폭으로 가운데 정렬 */
+      .g-aside .g-row.cols-1 { grid-template-columns:52%; justify-content:center; }
+      .g-row.cols-3 { grid-template-columns:1fr; gap:14.4px; }
+      .g-block .cols-3 .gallery-image { height:auto; }
+      .g-block .cols-3 .gallery-image img,.g-fig .gallery-image img { height:auto; max-height:none; object-fit:fill; }
+    }
     @media (max-width:720px) {
       .wrap { width:min(100% - 24px,576px); }
       nav { height:51.2px; }
       .page-progress { height:2.4px; }
       .nav-links a:not(.contact-pill) { display:none; }
-      .hero { padding-top:35.2px; }
+      .hero { padding:35.2px 0 40px; }
       .hero-grid { grid-template-columns:1fr; gap:27.2px; }
-      h1 { font-size:clamp(3.3rem,14vw,5.7rem); }
+
       .hero-copy { max-width:448px; }
       .hero-note { right:8px; }
-      .selected { padding-bottom:60.8px; }
+      .selected { padding:48px 0 60.8px; }
       .project-grid { grid-template-columns:1fr; }
       .thumb { height:auto; min-height:0; aspect-ratio:4/3; }
-      .archive-grid { grid-template-columns:1fr; }
-      .archive-card .thumb,.project-placeholder .thumb { aspect-ratio:4/3; }
+      .project-placeholder .thumb { aspect-ratio:4/3; }
+      .lab { padding:51.2px 0 60.8px; }
+      .lab-card { grid-template-columns:1fr; }
+      .lab-shot { aspect-ratio:16/10; }
+      .lab-body { padding:20.8px 17.6px 22.4px; }
       .about { padding:60.8px 0; }
       .about-grid { grid-template-columns:1fr; gap:27.2px; }
       .profile-contact { align-self:auto; }
@@ -233,14 +312,20 @@
       .contact-info { text-align:left; }
       .documents { grid-template-columns:1fr; }
       .download-btn { justify-content:space-between; }
-      #project-dialog { height:auto; overflow:auto; }
+      #project-dialog { width:min(896px,calc(100% - 27.2px)); height:auto; overflow:auto; }
       .project-detail-layout { height:auto; display:block; }
       .project-overview { overflow:visible; border-right:0; }
       .modal-body { padding:22px 14.4px; gap:18px; }
-      .modal-body h3 { font-size:clamp(1.7rem,6vw,2.2rem); }
+      .modal-body h3 { font-size:1.45rem; }
       .modal-body p { font-size:.95rem; }
-      .details { font-size:.82rem; gap:7px; }
+      .details { font-size:.92rem; gap:7px; }
       .project-gallery-wrap { position:static; background:var(--milk); }
+      /* 모바일에선 갤러리 패널이 밝은 배경으로 바뀌므로 글자색도 함께 뒤집어 줍니다. */
+      .g-head,.g-fig figcaption,.g-say p { color:var(--muted); }
+      .g-say b,.g-say p b { color:var(--ink); }
+      .g-say span,.g-group { color:var(--pink-strong); }
+      .g-step { border-color:var(--line); background:rgba(255,255,255,.6); }
+      .g-fig .gallery-image { background:rgba(41,36,41,.06); }
       .project-gallery-pane { height:auto; overflow:visible; }
       .close { position:sticky; float:right; right:12.8px; top:12.8px; margin:12.8px 12.8px -48px 0; }
       .dialog-scroll-cue { position:fixed; bottom:22.4px; }
@@ -250,9 +335,12 @@
     @media (max-width:448px) {
       .card-label { inset:auto 8px 8px 8px; padding:10.4px 11.2px; }
       .hero-frame { border-radius:17.6px; }
-      .loader-title { font-size:clamp(3.2rem,20vw,5.2rem); }
-      .modal-gallery { grid-template-columns:1fr; padding:0 14.4px 19.2px; }
-      .gallery-image:first-child { grid-column:auto; }
+      .loader-title { font-size:clamp(2.4rem,15vw,4rem); }
+      .modal-gallery { padding:0 14.4px 19.2px; }
+      /* 전/후 비교나 2장 묶음은 모바일에서도 PC처럼 2열로 둬야 비교도 되고 길이도 짧습니다.
+         전체 렌더 그리드만 1열로 내립니다. */
+      .g-grid,.g-grid.is-even { grid-template-columns:1fr; }
+      .g-grid .gallery-image:first-child { grid-column:auto; }
       .modal-body { padding:22.4px 14.4px; }
       .modal-hero { aspect-ratio:1500/1920; }
       .lightbox-stage { padding:56px 9.6px 60.8px; }
@@ -269,21 +357,31 @@
 <body class="loading">
   <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><div class="loader-kicker"><span>3D CHARACTER MODELING</span><span>PORTFOLIO 2026</span></div><p class="loader-title">Building<span>the character.</span></p><div class="loader-bottom"><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div><span class="loader-count" id="loader-count">00</span></div></div></div>
 
-  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work">WORK</a><a href="#about">PROFILE</a><a class="contact-pill" href="#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
+  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work">WORK</a><a href="#lab">AI &amp; DESIGN</a><a href="#about">PROFILE</a><a class="contact-pill" href="#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
 
   <main id="top">
-    <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow">Junior 3D Character Modeler</p><h1>Shape the<em>character.</em></h1><p class="hero-copy">정교한 하드서페이스부터 귀여운 SD 캐릭터까지, 실루엣과 재질의 설득력을 고민하며 게임 캐릭터를 제작합니다.</p><div class="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-active" data-label="01 · STEAMPUNK"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide is-portrait" data-label="02 · GUNSLINGER"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="assets/portfolio/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · STEAMPUNK</span></div></div></section>
+    <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow">3D Character Modeler</p><h1>3D 캐릭터 모델러<em>000입니다.</em></h1><p class="hero-copy">반실사 캐릭터부터 캐주얼한 캐릭터까지, 다양한 스타일을 유연하게 제작합니다.</p><div class="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-portrait is-active" data-label="01 · GUNSLINGER"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide" data-label="02 · STEAMPUNK"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="assets/portfolio/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · GUNSLINGER</span></div></div></section>
 
     <section class="selected wrap reveal" id="work">
-      <div class="section-head"><h2>Selected work</h2><span class="counter" id="project-counter">03 / 04 Projects</span></div>
+      <div class="section-head"><h2>Selected work</h2><span class="counter" id="project-counter">04 PROJECTS</span></div>
       <div class="project-grid">
         <button class="project-card" data-project="gunslinger" aria-label="Gunslinger 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 캐릭터 렌더"></div><span class="card-label"><span><strong>Gunslinger</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
         <button class="project-card" data-project="steampunk" aria-label="Steampunk 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 캐릭터 렌더"></div><span class="card-label"><span><strong>Steampunk</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
         <button class="project-card" data-project="elf" aria-label="SD Elf 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 캐릭터 렌더"></div><span class="card-label"><span><strong>SD Elf</strong><small>SD Character · Stylized</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button class="project-card" data-project="monster" aria-label="Monster 프로젝트 상세 보기"><div class="thumb"><img loading="lazy" src="assets/portfolio/hero-monster.webp" alt="Monster 캐릭터 렌더"></div><span class="card-label"><span><strong>Monster</strong><small>Character · Diorama</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <!-- 작품 추가 위치: 아래 project-placeholder 를 project-card 버튼으로 교체하고 projects 데이터에 상세 정보를 추가하세요. 마지막 6번째 칸은 비워둔 자리입니다. -->
+        <article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article>
       </div>
-      <div class="archive" id="archive" hidden><div class="archive-top"><div><p class="eyebrow">Project archive</p><h3>More characters.</h3></div><span class="counter">MORE WORKS</span></div><div class="archive-grid"><button class="project-card archive-card" data-project="monster" aria-label="Monster 프로젝트 상세 보기"><div class="thumb"><img loading="lazy" src="assets/portfolio/hero-monster.webp" alt="Monster 캐릭터 렌더"></div><span class="card-label"><span><strong>Monster</strong><small>Character · Diorama</small></span><span class="arrow" aria-hidden="true">↗</span></span></button><!-- 작품 추가 위치: 프로젝트가 완성되면 아래 project-placeholder 하나를 archive-card 버튼으로 교체하고 projects 데이터에 상세 정보를 추가하세요. --><article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article><article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article></div></div>
-      <div class="more-wrap"><button class="more-btn" id="more-works" type="button" aria-expanded="false"><span class="more-label">SHOW MORE PROJECTS</span><span class="more-icon" aria-hidden="true">＋</span></button></div>
     </section>
+
+    <section class="lab" id="lab"><div class="wrap reveal">
+      <div class="section-head"><div><p class="eyebrow">Beyond modeling</p><h2>AI &amp; Design</h2></div><span class="counter">02 PROJECTS</span></div>
+      <p class="lab-lead">3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다.</p>
+      <div class="lab-grid">
+        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"><span class="lab-no">05</span></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
+        <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"><span class="lab-no">06</span></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
+      </div>
+    </div></section>
 
     <section class="about" id="about"><div class="wrap about-grid reveal">
       <div class="profile-identity"><p class="eyebrow">Profile</p><h2 data-profile="name">이름 입력</h2><span class="profile-name-en" data-profile="englishName">YOUR NAME</span></div>
@@ -307,7 +405,7 @@
   </main>
   <footer><div class="wrap"><span>© 2026 <span data-profile="name">YOUR NAME</span></span><span>3D Character Modeler Portfolio</span></div></footer>
 
-  <dialog id="project-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="닫기">×</button><div class="project-detail-layout"><section class="project-overview"><div class="modal-hero" id="modal-hero"><img id="dialog-image" src="" alt=""><video id="dialog-video" preload="none" playsinline loop></video><button class="hero-play" id="dialog-play" type="button" aria-label="작품 영상 재생" hidden></button><span class="hero-drag-hint" id="dialog-drag-hint" aria-hidden="true">◀ DRAG TO ROTATE ▶</span></div><div class="modal-body"><div><h3 id="dialog-title"></h3><p id="dialog-copy"></p></div><div class="details"><div><span>SPECS</span><b>00000000 Tris</b></div><div><span>TOOLS</span><b id="dialog-tools"></b></div><div><span>TEXTURE</span><b id="dialog-texture"></b></div></div></div></section><div class="project-gallery-wrap"><div class="project-gallery-pane" id="project-gallery-pane"><div class="modal-gallery" id="dialog-gallery"></div></div><button class="dialog-scroll-cue" id="dialog-scroll-cue" type="button"><i aria-hidden="true"></i><span>SCROLL TO EXPLORE</span></button></div></div></dialog>
+  <dialog id="project-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="닫기">×</button><div class="project-detail-layout"><section class="project-overview"><div class="modal-hero" id="modal-hero"><img id="dialog-image" src="" alt=""><video id="dialog-video" preload="none" playsinline loop></video><button class="hero-play" id="dialog-play" type="button" aria-label="작품 영상 재생" hidden></button><span class="hero-drag-hint" id="dialog-drag-hint" aria-hidden="true">◀ DRAG TO ROTATE ▶</span></div><div class="modal-body"><div><h3 id="dialog-title"></h3><p class="modal-sub" id="dialog-sub"></p></div><div class="focus-block" id="dialog-focus"></div><div class="details" id="dialog-meta"></div></div></section><div class="project-gallery-wrap"><div class="project-gallery-pane" id="project-gallery-pane"><div class="modal-gallery" id="dialog-gallery"></div></div><button class="dialog-scroll-cue" id="dialog-scroll-cue" type="button"><i aria-hidden="true"></i><span>SCROLL TO EXPLORE</span></button></div></div></dialog>
   <dialog class="lightbox" id="image-lightbox" aria-label="작품 이미지 확대 보기"><button class="lightbox-close" type="button" aria-label="확대 보기 닫기">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="이전 이미지">‹</button><div class="lightbox-stage"><img id="lightbox-image" src="" alt=""></div><button class="lightbox-nav lightbox-next" type="button" aria-label="다음 이미지">›</button><span class="lightbox-status" id="lightbox-status" aria-live="polite"></span></dialog>
 
   <script>
@@ -326,12 +424,12 @@
       phone: '010-0000-0000',
       // 학력·경력은 { period: 연도, text: 설명 } 를 한 줄씩. 줄을 추가/삭제하면 카드와 개수 표기가 같이 바뀝니다.
       education: [
-        { period: '2000', text: '00고등학교' },
-        { period: '2000~2000', text: '강의명 학원' },
-        { period: '2000~2000', text: '강의명 학원2' }
+        { period: '2000', text: '00고등학교' }
       ],
       experience: [
-        { period: '2000~2000', text: '(주)000 디자인팀' }
+        { period: '2000~2000', text: '(주)000 디자인팀' },
+                { period: '2000~2000', text: '강의명 학원' },
+        { period: '2000~2000', text: '강의명 학원2' }
       ]
     };
     Object.entries(profileConfig).forEach(([key,value]) => { if(typeof value==='string') document.querySelectorAll(`[data-profile="${key}"]`).forEach(element => { element.textContent=value; }); });
@@ -347,16 +445,152 @@
     document.title=`${profileConfig.name} - 3D Character Modeler Portfolio`;
 
     /*
-     * 작품 영상 수정 위치
+     * ============================================================
+     * 작품 데이터 수정 위치
+     * kind:'character' → 3D 캐릭터 (Focus + 스펙 표 + 브레이크다운 칩)
+     * kind:'story'     → AI / 디자인 작업 (Focus + 메타 표 + 제작 과정)
      * video 에 경로를 넣으면 상세 모달 메인 썸네일 위에 재생 버튼이 생기고,
      * 클릭 시 썸네일(image)을 포스터로 한 채 영상이 재생됩니다. null 이면 썸네일만 표시.
-     * 파일은 assets/portfolio/video/ 에 webm 으로 넣고 아래 주석의 경로로 교체하세요.
+     * 영상 파일은 assets/portfolio/video/ 에 webm 으로 넣으세요.
+     * ============================================================
+     */
+    const SCOPE_3D = '모델링 · 리토폴로지 · UV · 텍스처링 · 렌더';
+    const TOOLS_3D = '3ds Max, ZBrush, Photoshop, Substance 3D Painter, Marmoset Toolbag';
+    /*
+     * breakdown : 참고용 3컷. 이미지 아래에 캡션이 붙어 갤러리 맨 위에 깔립니다.
+     * steps     : 제작 과정. images(이미지 줄) 아래에 title/body 설명이 붙습니다.
+     *             group 을 적으면 그 위에 구분 라벨이 들어갑니다.
+     * gallery   : 설명 없이 보여줄 최종 렌더. 2열 그리드이고 첫 장만 전체폭입니다.
      */
     const projects = {
-      gunslinger:{ title:'Gunslinger', image:'assets/portfolio/hero-gunslinger.webp', alt:'Gunslinger 캐릭터 렌더', copy:'하드서페이스의 정밀한 모델링과 무늬의 디테일한 표현에 중점을 두어 작업했습니다.', tools:'3ds Max · ZBrush · Substance 3D Painter · Marmoset Toolbag', texture:'4K Texture × 3', video:null, /* 영상 추가 위치: assets/portfolio/video/gunslinger.webm 을 넣은 뒤 video:'assets/portfolio/video/gunslinger.webm' 으로 교체 */ gallery:['gunslinger-01','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08','gunslinger-09','gunslinger-10','gunslinger-11'] },
-      steampunk:{ title:'Steampunk', image:'assets/portfolio/hero-steampunk.webp', alt:'Steampunk 캐릭터 렌더', copy:'하드서페이스의 정밀한 모델링과 가죽 코트의 자연스러운 주름 및 질감 표현에 중점을 두어 작업했습니다.', tools:'3ds Max · ZBrush · Substance 3D Painter · Marmoset Toolbag', texture:'4K Texture × 4', video:'assets/portfolio/video/steampunk.webm', gallery:['steampunk-new-01','steampunk-new-02','steampunk-new-03','steampunk-new-04','steampunk-new-05','steampunk-new-06','steampunk-new-07','steampunk-new-08','steampunk-new-09','steampunk-new-10','steampunk-new-11'] },
-      elf:{ title:'SD Elf', image:'assets/portfolio/hero-elf.webp', alt:'SD Elf 캐릭터 렌더', copy:'SD 특유의 귀여운 비율과 동글동글한 실루엣을 매력적으로 표현하는 데 집중했습니다.', tools:'3ds Max · ZBrush · Photoshop · Marmoset Toolbag', texture:'2K Texture × 3', video:null, /* 영상 추가 위치: assets/portfolio/video/elf.webm 을 넣은 뒤 video:'assets/portfolio/video/elf.webm' 으로 교체 */ gallery:['elf-16','elf-17','elf-18','elf-19','elf-20','elf-21'] },
-      monster:{ title:'Monster', image:'assets/portfolio/hero-monster.webp', alt:'Monster 캐릭터 렌더', copy:'캐릭터뿐만 아니라 배경 오브젝트도 캐릭터와 어울리게 제작해 장면의 완성도를 높이고, 포토샵으로 디테일을 추가해 세계관을 풍성하게 연출했습니다.', tools:'3ds Max · ZBrush · Photoshop · Cinema 4D · Marmoset Toolbag', texture:'2K Texture', video:null, /* 영상 추가 위치: assets/portfolio/video/monster.webm 을 넣은 뒤 video:'assets/portfolio/video/monster.webm' 으로 교체 */ gallery:['monster-23','monster-24','monster-25','monster-26','monster-27','monster-28'] }
+      gunslinger:{
+        kind:'character', title:'Gunslinger', sub:'반실사 여성 건슬리어 스타일 캐릭터',
+        image:'assets/portfolio/hero-gunslinger.webp', alt:'Gunslinger 캐릭터 렌더',
+        focus:[
+          '원화의 퍼 코트는 캐릭터의 전체적인 실루엣을 가리고 애니메이션에선 움직임이 둔해 보일 수 있어 실루엣을 가리지 않는 폭이 좁고 긴 일자형 망토와 어깨 장식으로 제작했습니다.',
+          '가벼워진 상체의 디테일을 보완하고자 레이스와 시스루 옷을 추가했습니다.',
+          '무릎은 반복되는 총알 형태나 부피감이 부족했던 장식 대신, 입체감을 살린 경량 갑주 형태로 제작하여 원화의 밀도감을 유지하면서도 조화로운 실루엣이 되도록 제작했습니다.'
+        ],
+        meta:{ PERIOD:'2025.10 ~ 2026.06 (약 6주)', SCOPE:SCOPE_3D, SPECS:'139,600 Tris / 4K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Artstation - DS K' },
+        breakdown:[
+          { img:'bd-gunslinger-1', cap:'실루엣 수정' },
+          { img:'bd-gunslinger-2', cap:'팔 디테일 추가' },
+          { img:'bd-gunslinger-3', cap:'무릎 장식 수정' }
+        ],
+        video:'assets/portfolio/video/gunslinger.webm',
+        gallery:['gunslinger-01','gunslinger-02','gunslinger-03','gunslinger-04','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08']
+      },
+      steampunk:{
+        kind:'character', title:'Steampunk', sub:'반실사 남성 스팀펑크 스타일 캐릭터',
+        image:'assets/portfolio/hero-steampunk.webp', alt:'Steampunk 캐릭터 렌더',
+        focus:[
+          '반실사적인 느낌을 주기 위해서 단순하게 표현된 원화의 가죽 코트에 디테일을 추가했습니다.',
+          '모델링 단계에선 스티치 디테일을 넣었고 텍스처 작업시엔 4종의 가죽 재질을 적용하고 채도는 원화보다 낮춰 제작했습니다.',
+          '또한 실루엣 및 시각적 밀도를 높이기 위해, AI 원화를 참고하여 컨셉에 맞는 무기를 추가 제작했습니다.',
+          '렌더링 단계에서는 굴절 효과를 적용한 액체 표현과 파티클 연출, 바닥 에셋을 사용하여 완성도를 높였습니다.'
+        ],
+        meta:{ PERIOD:'2026.05 ~ 2026.09 (약 7주)', SCOPE:SCOPE_3D, SPECS:'116,600 Tris / 4K Texture × 4', TOOLS:TOOLS_3D, CONCEPT:'Artstation - Kang jihun' },
+        breakdown:[
+          { img:'bd-steampunk-1', cap:'스티치 추가' },
+          { img:'bd-steampunk-2', cap:'가죽 텍스처 적용' },
+          { img:'bd-steampunk-3', cap:'무기 제작' }
+        ],
+        video:'assets/portfolio/video/steampunk.webm',
+        gallery:['steampunk-01','steampunk-02','steampunk-03','steampunk-04','steampunk-05','steampunk-06','steampunk-07','steampunk-08','steampunk-09','steampunk-10','steampunk-11']
+      },
+      elf:{
+        kind:'character', title:'SD Elf', sub:'스타일라이즈 판타지 스타일 캐릭터',
+        image:'assets/portfolio/hero-elf.webp', alt:'SD Elf 캐릭터 렌더',
+        focus:[
+          '헤어에 불필요하게 쏠려 있던 폴리곤 밀도를 바디와 비슷하게 수정하여 메쉬를 최적화했습니다.',
+          'UV 가독성 또한 정돈한 뒤 서브스턴스 페인터를 사용해 텍스처를 보완했습니다.',
+          '이마와 헤어가 맞닿는 부분이 튀지 않도록 헤어 텍스처에 피부 톤을 섞어 헤어라인을 부드럽게 표현했습니다.',
+          '원화의 투명한 분위기는 그라데이션으로 표현했으며, 지브러쉬에서 추출한 노멀 맵을 더해 손맵만으로 부족했던 입체감도 보완했습니다.'
+        ],
+        meta:{ PERIOD:'2025.06 ~ 2026.09 (약 3주)', SCOPE:SCOPE_3D, SPECS:'26,900 Tris / 2K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Pinterest - Q Dreamy AI Studio' },
+        breakdown:[
+          { img:'bd-elf-1', cap:'헤어 수정 전' },
+          { img:'bd-elf-2', cap:'헤어 수정 후' },
+          { img:'bd-elf-3', cap:'헤어 텍스처' }
+        ],
+        video:'assets/portfolio/video/elf.webm',
+        gallery:['elf-01','elf-02','elf-03','elf-04','elf-05','elf-06']
+      },
+      monster:{
+        kind:'character', title:'Monster', sub:'스타일라이즈 몬스터 스타일 캐릭터',
+        image:'assets/portfolio/hero-monster.webp', alt:'Monster 캐릭터 렌더',
+        focus:[
+          '파츠 경계마다 또렷한 윤곽선 텍스처를 적용하여 캐주얼 특유의 선명한 가독성을 살렸습니다.',
+          '또한 부족한 깊이감을 주기 위해, ao맵 영향이 적은 굴곡에는 곱하기 레이어를 사용하여 명암 대비를 주었습니다.',
+          '최종 렌더링은 원화처럼 일러스트 느낌을 목표로 언덕 및 표지판, 깃발 에셋을 제작했습니다.',
+          '안정적인 삼각형 구도로 오브젝트들을 배치하여 시선이 중심 캐릭터에 집중되도록 구성했습니다.'
+        ],
+        meta:{ PERIOD:'2025.05 ~ 2026.06 (약 1주)', SCOPE:SCOPE_3D, SPECS:'11,000 Tris / 2K Texture × 1', TOOLS:'3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag', CONCEPT:'Instagram - dereklaufman, hanska3d' },
+        breakdown:[
+          { img:'bd-monster-1', cap:'윤곽선 추가' },
+          { img:'bd-monster-2', cap:'텍스처 깊이감 추가' },
+          { img:'bd-monster-3', cap:'배경 제작' }
+        ],
+        video:'assets/portfolio/video/monster.webm',
+        gallery:['monster-01','monster-02','monster-03','monster-04','monster-05','monster-06']
+      },
+      aihunter:{
+        kind:'story', title:'Ai SD Hunter', sub:'스타일라이즈 판타지 스타일 캐릭터 · AI 파이프라인',
+        image:'assets/portfolio/hero-ai.webp', alt:'Ai SD Hunter 캐릭터 렌더',
+        focus:[
+          "AI를 활용해 '장마 도시 조사원' 컨셉의 캐릭터 원화와 2D 배경, 3D 모델 리소스를 제작했습니다.",
+          '스프라이트 시트를 언리얼 엔진에서 세팅하여 대기·걷기·뛰기 3종의 2D 스프라이트 모션을 완성했습니다.',
+          '2D 배경을 포토샵으로 레이어 분할 및 보정 후 언리얼에 원근별로 배치하고, 나이아가라로 비 효과를 더해 씬을 구성했습니다.',
+          '생성된 3D 모델의 폴리곤과 텍스처를 정리하고 리깅을 적용한 뒤, 마모셋에서 렌더링했습니다.'
+        ],
+        meta:{ PERIOD:'2026.05 ~ 2026.08 (약 1주)', SCOPE:'3D 모델링(리토폴로지·UV·텍스처링) · 2D 스프라이트 애니메이션 · 언리얼 씬 구성 · 렌더', SPECS:'12,600 Tris / 2K Texture × 1, 1K Texture × 1', TOOLS:'3ds Max, Photoshop, Cinema 4D, Marmoset Toolbag, Unreal Engine, Aether AI, Tripo AI, ChatGPT, Gemini', CONCEPT:'AI로 자체 원화 제작' },
+        steps:[
+          { title:'원화 / 콘셉트 기획', layout:'side', images:[{ img:'ai-concept', cap:'캐릭터 원화' }],
+            body:"'장마 도시로 파견된 조사원'을 콘셉트로 설정하고, AI를 활용해 캐릭터 원화를 제작했습니다. 의상 및 소품 디테일이 설정에 가장 잘 어울리는 시안을 선별해 이후 2D 모션과 3D 제작의 기준 원화로 잡았습니다." },
+          { title:'2D 캐릭터 애니메이션', layout:'split', cols:1, images:[{ img:'ai-sprite', cap:'스프라이트 시트 (대기 · 걷기 · 뛰기)' },{ img:'ai-motion', cap:'플립북 세팅' }],
+            body:'원화를 바탕으로 AI를 통해 스프라이트 시트를 추출했습니다. 이를 언리얼 엔진을 활용해 자동 분할하고 플립북으로 세팅하여, 기본 동작인 대기, 걷기, 뛰기 3종 애니메이션을 구현했습니다.' },
+          { title:'2D 배경 및 씬 구성', layout:'split',
+            rows:[
+              { cols:2, items:[{ img:'ai-bg', cap:'배경 원화' },{ img:'ai-parts', cap:'파츠 분리' }] },
+              { cols:1, items:[{ img:'ai-scene', cap:'언리얼 엔진 세팅' }] }
+            ],
+            body:'AI로 생성한 배경 원화를 포토샵으로 가져와 원경 배경, 건물, 다리 및 주요 오브젝트를 보정했습니다. 언리얼 엔진 상에서 깊이감 있게 평면 레이어를 배치하고, 맨 앞에 나이아가라 시스템으로 비 효과를 적용해 입체적인 느낌이 들도록 구성했습니다.' },
+          { title:'3D 모델링 및 렌더링', layout:'split', cols:2,
+            images:[{ img:'ai-model-a', cap:'모델링 수정 전' },{ img:'ai-model-b', cap:'모델링 수정 후' },{ img:'ai-tex-a', cap:'텍스처 수정 전' },{ img:'ai-tex-b', cap:'텍스처 수정 후' },{ img:'ai-uv-a', cap:'UV 수정 전' },{ img:'ai-uv-b', cap:'UV 수정 후' }],
+            aside:[{ img:'ai-rig', cap:'리깅' }],
+            body:'AI로 도출한 3D 모델의 폴리곤 구조를 정리하고 텍스처를 리터칭했습니다. 기본적인 포즈가 가능하도록 리깅 작업을 진행한 뒤, 마모셋으로 가져가 렌더링했습니다.' }
+        ],
+        video:null, /* 영상 추가 위치: assets/portfolio/video/aihunter.webm 을 넣은 뒤 경로로 교체 */
+        galleryHead:'Final render', galleryCols:2,
+        gallery:['ai-turn-1','ai-turn-2']
+      },
+      uidesign:{
+        kind:'story', title:'UI & Content Design', sub:'UI · 상세페이지 디자인',
+        image:'assets/portfolio/ui-detail.webp', alt:'블랙프라이데이 프로모션 상세페이지', fit:'contain',
+        focus:[
+          'UI — 웹 템플릿을 당사 서비스에 맞춰 리뉴얼하는 과정에서, 템플릿에 없는 세부 화면을 채우고 최종 웹사이트의 완성도를 높이는 데 집중했습니다.',
+          '상세페이지 — 기획을 바탕으로, 신규 회원이 이벤트 참여 방법을 쉽게 이해하고 원활하게 행동할 수 있도록 정보 배치와 가독성에 집중하여 디자인했습니다.'
+        ],
+        meta:{ PROJECT:'자사몰 리뉴얼 및 블랙프라이데이 프로모션', ROLE:'UI & 콘텐츠 디자이너', SHARE:'UI 디자인 50%, 상세페이지 디자인 100%', TOOLS:'Figma, Photoshop, Illustrator' },
+        steps:[
+          { group:'UI', title:'디자인 통일 및 서브페이지 디자인', layout:'side', cols:2, images:[{ img:'ui-sub-a', cap:'마이페이지' },{ img:'ui-sub-b', cap:'포인트 내역' }],
+            body:'완성된 메인 템플릿 분위기에 맞춰 누락된 세부 서브페이지들을 기획하고 일관된 톤앤매너로 화면을 구성했습니다.' },
+          { title:'디자인 가이드 추가', layout:'split', cols:1, images:[{ img:'ui-guide', cap:'색상 · 글자 크기 · 간격 가이드' }],
+            body:'개발자가 원활하게 작업할 수 있도록 색상, 글자 크기, 간격 등 필요한 디자인 가이드를 추가로 정리했습니다.' },
+          { title:'화면 검토 및 수정', layout:'split', cols:1, images:[{ img:'ui-review', cap:'현재 사이트 / 수정 시안' }],
+            body:'개발 과정에서 발생한 오류를 확인하고, 수정 요청 및 직접 보완을 거쳐 웹사이트의 완성도를 높였습니다.' },
+          /* 상세페이지는 한 장으로 이어진 디자인이라 이미지를 쪼갤 수 없어, 설명을 통째로 묶었습니다. */
+          { group:'상세페이지', title:'컬러 · 그래픽 요소 · 정보 구조', layout:'side', cols:2,
+            images:[{ img:'ui-detail', cap:'상단 — 메인 문구 · 이벤트 설명' },{ img:'ui-detail-2', cap:'하단 — 참여 방법 · 이동 버튼 · 유의사항' }],
+            body:[
+              '[컬러 및 컨셉] 블랙프라이데이 특유의 다크한 무드를 유지하면서, 어두운 배경에서도 시선이 집중되도록 초록색과 보라색을 메인으로 사용하여 작년 블랙프라이데이 이벤트와 컬러가 겹치지 않도록 디자인했습니다.',
+              "[그래픽 요소] 상단 배경은 입체적인 세로 패턴을 넣어 미니멀하게 표현하고, 'Black Friday' 텍스트는 메인 내용을 해치지 않도록 했습니다. 핵심 혜택인 쿠폰은 실제 티켓처럼 측면 파임 디테일을 적용하고, 보라색 배경에는 흰색 텍스트를, 회색 배경에는 검은색 텍스트를 적용하는 등 배경에 맞춰 색상을 대비시켜 선명한 가독성을 확보했습니다.",
+              "[정보 구조 및 레이아웃] '메인 문구 – 이벤트 설명 – 참여 방법 – 유의사항' 순으로 흐름을 구성했습니다. 참여 방법 구간에는 실제 캡처 이미지를 넣어 이해를 도왔고, 접근성을 높이기 위해 하단에 이동 버튼을 2개 배치했습니다."
+            ] }
+        ],
+        video:null,
+        gallery:[]
+      }
     };
     document.querySelectorAll('.ability-item').forEach(item => { const level=item.querySelector('.ability-track i').style.getPropertyValue('--level').trim(); if(level) item.querySelector('.ability-label span').textContent=level; });
     const heroSlides=[...document.querySelectorAll('.hero-slide')];
@@ -417,6 +651,7 @@
       resetHeroVideo();
       const hasVideo=Boolean(project.video);
       modalHero.classList.toggle('has-video',hasVideo);
+      modalHero.classList.toggle('is-contain',project.fit==='contain');
       dialogPlay.hidden=!hasVideo;
       if(hasVideo){ dialogVideo.dataset.src=project.video; dialogVideo.poster=project.image; dialogPlay.setAttribute('aria-label',`${project.title} 작품 영상 재생`); }
       else delete dialogVideo.dataset.src;
@@ -461,20 +696,112 @@
     dialogVideo.addEventListener('pointerup',endVideoDrag);
     dialogVideo.addEventListener('pointercancel',endVideoDrag);
     dialog.addEventListener('close',resetHeroVideo);
-    document.querySelectorAll('.project-card').forEach(card => card.addEventListener('click',() => {
-      const project=projects[card.dataset.project];
+    /* 상세 모달 본문은 projects 데이터로 자동 생성됩니다. 요소를 직접 건드릴 필요 없이 데이터만 수정하세요. */
+    const el=(tag,cls,text) => { const node=document.createElement(tag); if(cls) node.className=cls; if(text!=null) node.textContent=text; return node; };
+    function renderOverview(project){
       document.querySelector('#dialog-title').textContent=project.title;
-      document.querySelector('#dialog-copy').textContent=project.copy;
+      document.querySelector('#dialog-sub').textContent=project.sub||'';
+
+      const focus=document.querySelector('#dialog-focus');
+      focus.replaceChildren(el('b','block-title','Focus'),...(project.focus||[]).map(line => el('p',null,line)));
+
+      document.querySelector('#dialog-meta').replaceChildren(...Object.entries(project.meta||{}).map(([label,value]) => {
+        const row=document.createElement('div');
+        row.append(el('span',null,label),el('b',null,value));
+        return row;
+      }));
+    }
+    /* 갤러리 패널 조립: breakdown → steps → gallery 순으로 블록을 쌓습니다.
+       확대 보기(라이트박스) 순번은 만들어진 이미지 순서대로 자동 부여됩니다. */
+    function renderGallery(project){
+      let index=0;
+      const tile=(name,alt) => {
+        const button=el('button','gallery-image');
+        button.type='button'; button.dataset.index=index++;
+        button.setAttribute('aria-label',`${alt} 크게 보기`);
+        const image=el('img');
+        image.src=`assets/portfolio/${name}.webp`;
+        image.alt=alt; image.loading='lazy';
+        image.addEventListener('load',updateDetailScrollCue,{once:true});
+        button.append(image);
+        return button;
+      };
+      const figureRow=(items,cols) => {
+        const row=el('div',`g-row cols-${cols||Math.min(items.length,2)}`);
+        row.append(...items.map(item => {
+          const figure=el('figure','g-fig');
+          figure.append(tile(item.img,`${project.title} ${item.cap||''}`.trim()));
+          if(item.cap) figure.append(el('figcaption',null,item.cap));
+          return figure;
+        }));
+        return row;
+      };
+      const blocks=[];
+
+      if(project.breakdown&&project.breakdown.length){
+        const block=el('section','g-block');
+        block.append(el('span','g-head','Breakdown'),figureRow(project.breakdown,3));
+        blocks.push(block);
+      }
+
+      (project.steps||[]).forEach((step,order) => {
+        if(step.group) blocks.push(el('p','g-group',step.group));
+        const block=el('section','g-step');
+        if(step.layout==='side') block.classList.add('is-side');
+        if(step.layout==='split') block.classList.add('is-split');
+        // rows 를 쓰면 이미지를 여러 줄로 나눠 배치하고, 없으면 images 를 한 줄로 깝니다.
+        const rows=step.rows||(step.images&&step.images.length?[{ cols:step.cols, items:step.images }]:[]);
+        if(rows.length){
+          const media=el('div','g-media');
+          rows.forEach(row => media.append(figureRow(row.items,row.cols)));
+          block.append(media);
+        }
+        const say=el('div','g-say');
+        const body=Array.isArray(step.body)?step.body:[step.body];
+        // 설명 맨 앞의 [소제목] 은 굵게 표시합니다.
+        const paragraph=text => {
+          const node=el('p');
+          const label=text.match(/^\[[^\]]+\]/);
+          if(label) node.append(el('b',null,label[0]),text.slice(label[0].length));
+          else node.textContent=text;
+          return node;
+        };
+        say.append(el('span',null,`STEP ${String(order+1).padStart(2,'0')}`),el('b',null,step.title),...body.map(paragraph));
+        // aside 를 쓰면 오른쪽 열에 이미지를 올리고 그 아래에 설명이 붙습니다.
+        if(step.aside&&step.aside.length){
+          const aside=el('div','g-aside');
+          aside.append(figureRow(step.aside,1),say);
+          block.append(aside);
+        } else block.append(say);
+        blocks.push(block);
+      });
+
+      if(project.gallery&&project.gallery.length){
+        const block=el('section','g-block');
+        if(project.galleryHead) block.append(el('span','g-head',project.galleryHead));
+        const grid=el('div','g-grid');
+        // galleryCols 를 지정하면 첫 장 전체폭 없이 모두 같은 크기로 깔립니다.
+        if(project.galleryCols){ grid.classList.add('is-even'); grid.style.setProperty('--cols',project.galleryCols); }
+        grid.append(...project.gallery.map((name,i) => tile(name,`${project.title} 작업 상세 이미지 ${i+1}`)));
+        block.append(grid);
+        blocks.push(block);
+      }
+
+      document.querySelector('#dialog-gallery').replaceChildren(...blocks);
+    }
+    function openProject(key){
+      const project=projects[key];
+      if(!project) return;
+      renderOverview(project);
       document.querySelector('#dialog-image').src=project.image;
       document.querySelector('#dialog-image').alt=project.alt;
       setupHeroVideo(project);
-      document.querySelector('#dialog-tools').textContent=project.tools;
-      document.querySelector('#dialog-texture').textContent=project.texture;
-      document.querySelector('#dialog-gallery').innerHTML=project.gallery.map((name,index) => `<button class="gallery-image" type="button" data-index="${index}" aria-label="${project.title} 작업 상세 이미지 ${index+1} 크게 보기"><img src="assets/portfolio/${name}.webp" alt="${project.title} 작업 상세 이미지 ${index+1}" loading="lazy"></button>`).join('');
-      document.querySelectorAll('#dialog-gallery img').forEach(image => image.addEventListener('load',updateDetailScrollCue,{once:true}));
+      renderGallery(project);
       dialog.showModal(); dialog.scrollTop=0; projectGalleryPane.scrollTop=0;
+      document.querySelector('.project-overview').scrollTop=0;
       requestAnimationFrame(updateDetailScrollCue);
-    }));
+    }
+    document.querySelectorAll('.project-card,.lab-card').forEach(card => card.addEventListener('click',() => openProject(card.dataset.project)));
     document.querySelector('.close').addEventListener('click',() => dialog.close());
     dialog.addEventListener('click',event => { if(event.target===dialog) dialog.close(); });
     dialog.addEventListener('scroll',updateDetailScrollCue,{passive:true});
@@ -509,24 +836,8 @@
       if(event.key==='ArrowLeft') showLightboxImage(lightboxIndex-1);
       if(event.key==='ArrowRight') showLightboxImage(lightboxIndex+1);
     });
-    const moreWorksButton=document.querySelector('#more-works');
-    const archive=document.querySelector('#archive');
-    document.querySelector('#project-counter').textContent=`03 / ${String(document.querySelectorAll('.project-card').length).padStart(2,'0')} Projects`;
-    moreWorksButton.addEventListener('click',() => {
-      const willOpen=archive.hidden;
-      moreWorksButton.setAttribute('aria-expanded',String(willOpen));
-      moreWorksButton.querySelector('.more-label').textContent=willOpen?'SHOW FEWER PROJECTS':'SHOW MORE PROJECTS';
-      moreWorksButton.querySelector('.more-icon').textContent=willOpen?'−':'＋';
-      if(willOpen){
-        archive.hidden=false;
-        archive.classList.remove('is-closing');
-        requestAnimationFrame(() => archive.classList.add('is-opening'));
-      }else{
-        archive.classList.remove('is-opening');
-        archive.classList.add('is-closing');
-        setTimeout(() => { archive.hidden=true; archive.classList.remove('is-closing'); },350);
-      }
-    });
+    /* 아카이브(More characters)는 처음부터 펼쳐진 상태로 보여주므로 더보기 버튼은 사용하지 않습니다. */
+    document.querySelector('#project-counter').textContent=`${String(document.querySelectorAll('.project-card').length).padStart(2,'0')} PROJECTS`;
     const observer=new IntersectionObserver(entries => entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target); } }),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
     const pageProgressBar=document.querySelector('#page-progress-bar');

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)https://hana-3d-portfolio.innysa.chatgpt.site/ -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="게임 캐릭터를 제작하는 신입 3D 캐릭터 모델러의 포트폴리오">
+  <meta name="theme-color" content="#f7bfd0">
+  <title>이름 입력 - 3D Character Modeler Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./3D Character Modeler Portfolio_files/css2" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 64 64&#39;%3E%3Crect width=&#39;64&#39; height=&#39;64&#39; rx=&#39;18&#39; fill=&#39;%23f7bfd0&#39;/%3E%3Cpath d=&#39;M17 18h30v28H17z&#39; fill=&#39;%23fff8f8&#39; stroke=&#39;%232c2529&#39; stroke-width=&#39;4&#39;/%3E%3Cpath d=&#39;M24 18v28M40 18v28M17 29h30M17 38h30&#39; stroke=&#39;%232c2529&#39; stroke-width=&#39;3&#39;/%3E%3Ccircle cx=&#39;46&#39; cy=&#39;17&#39; r=&#39;7&#39; fill=&#39;%23ed6d98&#39;/%3E%3C/svg%3E">
+  <style>
+    :root { --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:26px; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",sans-serif; font-size:16px; line-height:1.6; }
+    body.loading { overflow:hidden; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { font:inherit; }
+    a { color:inherit; text-decoration:none; }
+    img { display:block; max-width:100%; }
+    .wrap { width:min(1180px,calc(100% - 48px)); margin:0 auto; }
+
+    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:var(--pink); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s; }
+    .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:64px 64px; transform:perspective(500px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
+    .loader.is-done { transform:translateY(-100%); visibility:hidden; }
+    .loader-inner { position:relative; width:min(540px,calc(100% - 50px)); }
+    .loader-kicker { display:flex; justify-content:space-between; margin-bottom:16px; font:700 .75rem "Manrope"; letter-spacing:.14em; text-transform:uppercase; }
+    .loader-title { margin:0; font:800 clamp(3.5rem,12vw,7rem)/.82 "Manrope"; letter-spacing:-.08em; }
+    .loader-title span { display:block; color:#fff; }
+    .loader-bottom { display:flex; align-items:center; gap:18px; margin-top:34px; }
+    .loader-track { flex:1; height:4px; overflow:hidden; border-radius:99px; background:rgba(41,36,41,.18); }
+    .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
+    .loader-count { min-width:42px; font:700 .82rem "Manrope"; text-align:right; }
+
+    header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(18px); }
+    nav { height:72px; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+    .page-progress { height:4px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
+    .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,#f7bfd0 0%,#ed82a8 54%,#d94f84 100%); box-shadow:0 0 14px rgba(217,79,132,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
+    .brand { font:800 1rem/1 "Manrope"; letter-spacing:-.03em; display:flex; align-items:center; gap:10px; }
+    .brand-mark { width:34px; aspect-ratio:1; border-radius:11px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
+    .brand-mark svg { width:19px; }
+    .nav-links { display:flex; align-items:center; gap:28px; font-size:.9rem; font-weight:600; }
+    .nav-links a { position:relative; }
+    .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-6px; height:2px; background:var(--pink-strong); transition:.25s ease; }
+    .nav-links a:hover::after,.nav-links a:focus-visible::after { right:0; }
+    .contact-pill { padding:10px 16px; border-radius:999px; background:var(--ink); color:#fff; }
+    main { overflow:hidden; }
+
+    .hero { padding:54px 0 42px; }
+    .hero-grid { display:grid; grid-template-columns:minmax(0,.82fr) minmax(420px,1.18fr); gap:56px; align-items:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:9px; margin:0 0 18px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
+    .eyebrow::before { content:""; width:27px; height:2px; background:var(--pink-strong); }
+    h1 { margin:0; font:800 clamp(3.3rem,6.4vw,6.3rem)/.91 "Manrope"; letter-spacing:-.075em; }
+    h1 em { display:block; font-style:normal; color:var(--pink-strong); }
+    .hero-copy { margin:25px 0 0; color:var(--muted); max-width:410px; font-size:1.03rem; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:8px; margin-top:25px; }
+    .tag { padding:7px 11px; border:1px solid var(--line); border-radius:999px; font-size:.78rem; font-weight:600; background:rgba(255,255,255,.55); }
+    .hero-visual { position:relative; isolation:isolate; overflow:visible; }
+    .hero-frame { position:relative; z-index:1; overflow:hidden; aspect-ratio:16/10; border-radius:32px; background:#171316; box-shadow:0 28px 80px rgba(64,31,44,.15); pointer-events:none; user-select:none; }
+    .hero-slide { position:absolute; inset:0; opacity:0; transition:opacity 1.15s ease; }
+    .hero-slide.is-active { opacity:1; z-index:1; }
+    .hero-slide img,.hero-slide video { width:100%; height:100%; object-fit:cover; }
+    .hero-slide.is-portrait img { object-position:center 18%; }
+    .hero-note { position:absolute; z-index:5; right:-18px; bottom:-18px; padding:13px 16px; border-radius:14px; background:var(--pink); font:700 .76rem "Manrope"; letter-spacing:.08em; transform:rotate(-3deg); }
+
+    .selected { padding:36px 0 108px; }
+    .section-head { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:24px; }
+    .section-head h2,.about h2,.contact h2 { margin:0; font:800 clamp(2rem,4vw,3.35rem)/1 "Manrope"; letter-spacing:-.055em; }
+    .counter { color:var(--muted); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
+    .project-card:focus-visible { outline:3px solid var(--pink-strong); outline-offset:5px; border-radius:var(--radius); }
+    .thumb { position:relative; overflow:hidden; border-radius:var(--radius); background:#211b1f; border:1px solid rgba(41,36,41,.08); aspect-ratio:2/3; }
+    .thumb img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
+    .project-card:hover .thumb img { transform:scale(1.035); }
+    .card-label { position:absolute; inset:auto 18px 18px 18px; padding:17px 18px; display:flex; justify-content:space-between; align-items:center; gap:18px; border-radius:18px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(12px); }
+    .card-label strong { display:block; font:700 1.05rem/1.25 "Manrope"; }
+    .card-label small { color:rgba(255,255,255,.7); font-size:.76rem; }
+    .arrow { width:36px; height:36px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); font-size:1.15rem; transition:transform .25s; }
+    .project-card:hover .arrow { transform:rotate(-35deg); }
+    .more-wrap { display:flex; justify-content:center; padding-top:38px; }
+    .more-btn { width:min(100%,290px); min-height:58px; padding:0 20px 0 25px; display:inline-flex; align-items:center; justify-content:space-between; gap:18px; border:1px solid var(--ink); border-radius:999px; background:transparent; color:var(--ink); font:700 .78rem "Manrope"; letter-spacing:.1em; cursor:pointer; transition:.25s ease; }
+    .more-btn:hover,.more-btn:focus-visible { background:var(--ink); color:#fff; transform:translateY(-2px); }
+    .more-btn .more-label { white-space:nowrap; }
+    .more-btn .more-icon { display:grid; place-items:center; flex:0 0 28px; width:28px; height:28px; border-radius:50%; background:var(--pink); color:var(--ink); font-size:1.05rem; letter-spacing:0; }
+    .archive { padding-top:72px; }
+    .archive[hidden] { display:none; }
+    .archive.is-opening { animation:archive-in .65s cubic-bezier(.2,.7,.2,1) both; }
+    .archive.is-closing { animation:archive-out .35s ease both; }
+    @keyframes archive-in { from { opacity:0; transform:translateY(36px); } to { opacity:1; transform:none; } }
+    @keyframes archive-out { to { opacity:0; transform:translateY(18px); } }
+    .archive-top { display:flex; align-items:end; justify-content:space-between; gap:25px; padding-bottom:20px; border-bottom:1px solid var(--line); }
+    .archive-top h3 { margin:0; font:800 clamp(2rem,4vw,3.25rem)/1 "Manrope"; letter-spacing:-.055em; }
+    .archive-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; padding-top:24px; }
+    .archive-card { width:100%; }
+    .archive-card .thumb { aspect-ratio:2/3; }
+    .project-placeholder { position:relative; min-width:0; opacity:.42; pointer-events:none; }
+    .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgba(247,191,208,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(247,191,208,.08) 1px,transparent 1px); background-size:30px 30px; }
+    .placeholder-mark { display:grid; place-items:center; width:64px; height:64px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 2rem/1 "Manrope"; }
+
+    .about { padding:104px 0; background:var(--ink); color:#fff; }
+    .about-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:90px; }
+    .about .eyebrow { color:var(--pink); }
+    .profile-identity h2 { font-size:clamp(2.8rem,5.5vw,5.2rem); word-break:keep-all; }
+    .profile-name-en { display:block; margin-top:14px; color:var(--pink); font:700 .84rem "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
+    .profile-contact { align-self:end; display:grid; gap:13px; padding-bottom:5px; }
+    .profile-contact div { display:grid; grid-template-columns:78px 1fr; gap:18px; align-items:baseline; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.14); }
+    .profile-contact small { color:var(--pink); font:700 .7rem "Manrope"; letter-spacing:.12em; }
+    .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(1rem,1.8vw,1.35rem) "Manrope"; overflow-wrap:anywhere; }
+    .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px; }
+    .profile-card { min-height:230px; padding:24px; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.14); border-radius:20px; background:rgba(255,255,255,.035); }
+    .profile-card small { color:var(--pink); font:700 .72rem "Manrope"; letter-spacing:.12em; text-transform:uppercase; }
+    .profile-card h3 { margin:29px 0 8px; font:700 1.08rem/1.4 "Manrope"; letter-spacing:-.025em; }
+    .profile-card p { margin:0; color:rgba(255,255,255,.55); font-size:.86rem; }
+    .profile-card .date { margin-top:auto; padding-top:20px; color:rgba(255,255,255,.36); font-size:.75rem; }
+    .cert-list { display:grid; gap:6px; margin-top:20px; color:rgba(255,255,255,.74); font-size:.83rem; }
+    .cert-list span { display:flex; gap:12px; }
+    .cert-list b { color:var(--pink); }
+    .ability { grid-column:1/-1; margin-top:38px; display:grid; grid-template-columns:.45fr 1.55fr; gap:50px; align-items:start; }
+    .ability h3 { margin:0; font:700 1.2rem "Manrope"; }
+    .ability-list { display:grid; grid-template-columns:1fr 1fr; gap:18px 30px; }
+    .ability-item { display:grid; gap:8px; }
+    .ability-label { display:flex; justify-content:space-between; color:rgba(255,255,255,.72); font-size:.82rem; }
+    .ability-track { height:5px; border-radius:99px; background:rgba(255,255,255,.12); overflow:hidden; }
+    .ability-track i { display:block; width:var(--level); height:100%; border-radius:inherit; background:var(--pink); }
+
+    .contact { padding:108px 0 36px; background:var(--pink); }
+    .contact-row { display:flex; align-items:end; justify-content:space-between; gap:50px; }
+    .contact h2 { max-width:760px; font-size:clamp(2.7rem,6vw,5.7rem); }
+    .contact h2 i { display:inline-block; margin-top:10px; color:#fff; font-size:.46em; font-style:normal; line-height:1.4; letter-spacing:-.035em; }
+    .contact-info { flex:0 0 auto; display:grid; gap:8px; text-align:right; }
+    .contact-info a { font-weight:700; }
+    .contact-info span { color:rgba(41,36,41,.56); font-size:.86rem; }
+    .documents { margin-top:58px; padding-top:28px; display:grid; grid-template-columns:1fr repeat(3,auto); gap:12px; align-items:center; }
+    .documents-copy b { display:block; font:700 1rem "Manrope"; }
+    .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
+    .download-btn { min-height:54px; padding:0 18px; display:inline-flex; align-items:center; justify-content:center; gap:18px; border:1px solid rgba(41,36,41,.24); border-radius:15px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
+    .download-btn:hover,.download-btn:focus-visible { background:#fff; transform:translateY(-2px); }
+    .download-btn.is-pending { opacity:.48; cursor:not-allowed; }
+    footer { background:var(--pink); padding:32px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
+    footer .wrap { display:flex; justify-content:space-between; gap:20px; }
+
+    dialog { width:min(1120px,calc(100% - 34px)); max-height:calc(100vh - 34px); border:0; border-radius:28px; padding:0; overflow:auto; background:var(--milk); color:var(--ink); box-shadow:0 30px 100px rgba(24,18,22,.28); }
+    dialog::backdrop { background:rgba(35,28,33,.72); backdrop-filter:blur(6px); }
+    #project-dialog { height:min(820px,calc(100vh - 34px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+    #project-dialog::-webkit-scrollbar { display:none; width:0; height:0; }
+    .close { position:absolute; right:16px; top:16px; z-index:8; width:44px; height:44px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:1.2rem; cursor:pointer; box-shadow:0 8px 24px rgba(20,15,18,.14); }
+    .project-detail-layout { height:100%; display:grid; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr); }
+    .project-overview { min-width:0; overflow:hidden; border-right:1px solid var(--line); background:var(--milk); }
+    .project-gallery-wrap { position:relative; min-width:0; min-height:0; background:#1c181b; }
+    .project-gallery-pane { height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; }
+    .project-gallery-pane::-webkit-scrollbar { display:none; width:0; height:0; }
+    .dialog-scroll-cue { position:absolute; z-index:5; left:50%; bottom:20px; display:flex; align-items:center; gap:10px; min-height:44px; padding:0 16px; border:1px solid rgba(255,255,255,.28); border-radius:999px; color:#fff; background:rgba(28,22,26,.82); backdrop-filter:blur(12px); box-shadow:0 10px 32px rgba(20,15,18,.22); font:700 .7rem "Manrope"; letter-spacing:.12em; cursor:pointer; transform:translateX(-50%); transition:opacity .3s ease,visibility .3s ease,transform .3s ease; }
+    .dialog-scroll-cue i { position:relative; width:18px; height:24px; border:1px solid rgba(255,255,255,.58); border-radius:10px; }
+    .dialog-scroll-cue i::after { content:""; position:absolute; left:50%; top:5px; width:3px; height:6px; border-radius:99px; background:var(--pink); transform:translateX(-50%); animation:scroll-cue 1.5s ease-in-out infinite; }
+    .dialog-scroll-cue.is-hidden { opacity:0; visibility:hidden; transform:translate(-50%,8px); pointer-events:none; }
+    @keyframes scroll-cue { 0% { opacity:0; transform:translate(-50%,0); } 30% { opacity:1; } 75%,100% { opacity:0; transform:translate(-50%,8px); } }
+    .modal-hero { width:auto; height:min(54vh,500px); aspect-ratio:2/3; margin:0 auto; overflow:hidden; background:#161216; }
+    .modal-hero img { width:100%; height:100%; object-fit:cover; }
+    .modal-body { padding:30px; display:grid; gap:28px; }
+    .modal-body h3 { margin:0 0 10px; font:800 clamp(2rem,4vw,3rem)/1 "Manrope"; letter-spacing:-.05em; }
+    .modal-body p { color:var(--muted); margin:0; }
+    .details { display:grid; align-content:start; gap:9px; font-size:.82rem; }
+    .details div { display:flex; justify-content:space-between; gap:18px; border-bottom:1px solid var(--line); padding-bottom:8px; }
+    .details span { color:var(--muted); }
+    .modal-gallery { padding:24px 24px 88px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .gallery-image { position:relative; padding:0; overflow:hidden; border:0; border-radius:16px; background:#eee; cursor:zoom-in; }
+    .gallery-image:first-child { grid-column:1/-1; }
+    .gallery-image img { width:100%; transition:transform .35s ease; }
+    .gallery-image::after { content:"확대 보기 +"; position:absolute; right:12px; bottom:12px; padding:7px 10px; border-radius:999px; color:#fff; background:rgba(25,20,23,.76); backdrop-filter:blur(8px); font:700 .72rem "Manrope"; letter-spacing:.04em; opacity:0; transform:translateY(5px); transition:.25s ease; }
+    .gallery-image:hover img { transform:scale(1.018); }
+    .gallery-image:hover::after,.gallery-image:focus-visible::after { opacity:1; transform:none; }
+    .gallery-image:focus-visible { outline:3px solid var(--pink-strong); outline-offset:3px; }
+    .lightbox { width:100vw; max-width:none; height:100dvh; max-height:none; margin:0; border-radius:0; overflow:hidden; background:rgba(12,10,12,.97); color:#fff; }
+    .lightbox::backdrop { background:#0c0a0c; }
+    .lightbox-stage { width:100%; height:100%; display:grid; place-items:center; padding:64px 88px 78px; }
+    .lightbox-stage img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; user-select:none; }
+    .lightbox-close,.lightbox-nav { position:fixed; z-index:2; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); color:#fff; background:rgba(20,16,19,.72); backdrop-filter:blur(10px); cursor:pointer; }
+    .lightbox-close { top:18px; right:20px; width:48px; height:48px; border-radius:50%; font-size:1.5rem; }
+    .lightbox-nav { top:50%; width:52px; height:76px; border-radius:16px; font-size:1.8rem; transform:translateY(-50%); }
+    .lightbox-prev { left:20px; }
+    .lightbox-next { right:20px; }
+    .lightbox-status { position:fixed; left:50%; bottom:22px; z-index:2; min-width:92px; padding:8px 14px; border-radius:999px; background:rgba(20,16,19,.72); color:rgba(255,255,255,.82); font:700 .78rem "Manrope"; letter-spacing:.12em; text-align:center; transform:translateX(-50%); }
+    .reveal { opacity:0; transform:translateY(20px); transition:.7s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity:1; transform:none; }
+
+    @media (max-width:900px) {
+      .wrap { width:min(100% - 30px,720px); }
+      nav { height:64px; }
+      .page-progress { height:3px; }
+      .nav-links a:not(.contact-pill) { display:none; }
+      .hero { padding-top:44px; }
+      .hero-grid { grid-template-columns:1fr; gap:34px; }
+      h1 { font-size:clamp(3.3rem,14vw,5.7rem); }
+      .hero-copy { max-width:560px; }
+      .hero-note { right:10px; }
+      .selected { padding-bottom:76px; }
+      .project-grid { grid-template-columns:1fr; }
+      .thumb { height:auto; min-height:0; aspect-ratio:4/3; }
+      .archive-grid { grid-template-columns:1fr; }
+      .archive-card .thumb,.project-placeholder .thumb { aspect-ratio:4/3; }
+      .about { padding:76px 0; }
+      .about-grid { grid-template-columns:1fr; gap:34px; }
+      .profile-contact { align-self:auto; }
+      .profile-facts { grid-column:auto; grid-template-columns:1fr; margin-top:8px; }
+      .profile-card { min-height:190px; }
+      .ability { grid-column:auto; grid-template-columns:1fr; gap:22px; }
+      .ability-list { grid-template-columns:1fr; }
+      .contact { padding:78px 0 26px; }
+      .contact-row { align-items:flex-start; flex-direction:column; }
+      .contact-info { text-align:left; }
+      .documents { grid-template-columns:1fr; }
+      .download-btn { justify-content:space-between; }
+      #project-dialog { height:auto; overflow:auto; }
+      .project-detail-layout { height:auto; display:block; }
+      .project-overview { overflow:visible; border-right:0; }
+      .project-gallery-wrap { position:static; background:var(--milk); }
+      .project-gallery-pane { height:auto; overflow:visible; }
+      .close { position:sticky; float:right; right:16px; top:16px; margin:16px 16px -60px 0; }
+      .dialog-scroll-cue { position:fixed; bottom:28px; }
+      .modal-hero { width:100%; height:auto; aspect-ratio:2/3; margin:0; }
+      .modal-body { grid-template-columns:1fr; gap:24px; }
+    }
+    @media (max-width:560px) {
+      .card-label { inset:auto 10px 10px 10px; padding:13px 14px; }
+      .hero-frame { border-radius:22px; }
+      .loader-title { font-size:clamp(3.2rem,20vw,5.2rem); }
+      .modal-gallery { grid-template-columns:1fr; padding:0 18px 24px; }
+      .gallery-image:first-child { grid-column:auto; }
+      .modal-body { padding:28px 18px; }
+      .modal-hero { aspect-ratio:2/3; }
+      .lightbox-stage { padding:70px 12px 76px; }
+      .lightbox-nav { top:auto; bottom:18px; width:48px; height:48px; border-radius:50%; transform:none; }
+      .lightbox-prev { left:18px; }
+      .lightbox-next { right:18px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
+      .reveal { opacity:1; transform:none; }
+    }
+  </style>
+</head>
+<body class="">
+  <div class="loader is-done" id="loader" role="status" aria-live="polite"><div class="loader-inner"><div class="loader-kicker"><span>3D CHARACTER MODELING</span><span>PORTFOLIO 2026</span></div><p class="loader-title">Building<span>the character.</span></p><div class="loader-bottom"><div class="loader-track"><div class="loader-bar" id="loader-bar" style="width: 100%;"></div></div><span class="loader-count" id="loader-count">100</span></div></div></div>
+
+  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="https://hana-3d-portfolio.innysa.chatgpt.site/#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"></path></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="https://hana-3d-portfolio.innysa.chatgpt.site/#work">WORK</a><a href="https://hana-3d-portfolio.innysa.chatgpt.site/#about">PROFILE</a><a class="contact-pill" href="https://hana-3d-portfolio.innysa.chatgpt.site/#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar" style="transform: scaleX(0.999825);"></i></div></header>
+
+  <main id="top">
+    <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow">Junior 3D Character Modeler</p><h1>Shape the<em>character.</em></h1><p class="hero-copy">정교한 하드서페이스부터 귀여운 SD 캐릭터까지, 실루엣과 재질의 설득력을 고민하며 게임 캐릭터를 제작합니다.</p><div class="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-active" data-label="01 · STEAMPUNK"><img src="./3D Character Modeler Portfolio_files/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide is-portrait" data-label="02 · GUNSLINGER"><img src="./3D Character Modeler Portfolio_files/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="./3D Character Modeler Portfolio_files/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="./3D Character Modeler Portfolio_files/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · STEAMPUNK</span></div></div></section>
+
+    <section class="selected wrap reveal in" id="work">
+      <div class="section-head"><h2>Selected work</h2><span class="counter" id="project-counter">03 / 04 Projects</span></div>
+      <div class="project-grid">
+        <button class="project-card" data-project="gunslinger" aria-label="Gunslinger 프로젝트 상세 보기"><div class="thumb"><img src="./3D Character Modeler Portfolio_files/hero-gunslinger.webp" alt="Gunslinger 캐릭터 렌더"></div><span class="card-label"><span><strong>Gunslinger</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button class="project-card" data-project="steampunk" aria-label="Steampunk 프로젝트 상세 보기"><div class="thumb"><img src="./3D Character Modeler Portfolio_files/hero-steampunk.webp" alt="Steampunk 캐릭터 렌더"></div><span class="card-label"><span><strong>Steampunk</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button class="project-card" data-project="elf" aria-label="SD Elf 프로젝트 상세 보기"><div class="thumb"><img src="./3D Character Modeler Portfolio_files/hero-elf.webp" alt="SD Elf 캐릭터 렌더"></div><span class="card-label"><span><strong>SD Elf</strong><small>SD Character · Stylized</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+      </div>
+      <div class="archive" id="archive" hidden=""><div class="archive-top"><div><p class="eyebrow">Project archive</p><h3>More characters.</h3></div><span class="counter">MORE WORKS</span></div><div class="archive-grid"><button class="project-card archive-card" data-project="monster" aria-label="Monster 프로젝트 상세 보기"><div class="thumb"><img loading="lazy" src="./3D Character Modeler Portfolio_files/hero-monster.webp" alt="Monster 캐릭터 렌더"></div><span class="card-label"><span><strong>Monster</strong><small>Character · Diorama</small></span><span class="arrow" aria-hidden="true">↗</span></span></button><!-- 작품 추가 위치: 프로젝트가 완성되면 아래 project-placeholder 하나를 archive-card 버튼으로 교체하고 projects 데이터에 상세 정보를 추가하세요. --><article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article><article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article></div></div>
+      <div class="more-wrap"><button class="more-btn" id="more-works" type="button" aria-expanded="false"><span class="more-label">SHOW MORE PROJECTS</span><span class="more-icon" aria-hidden="true">＋</span></button></div>
+    </section>
+
+    <section class="about" id="about"><div class="wrap about-grid reveal in">
+      <div class="profile-identity"><p class="eyebrow">Profile</p><h2 data-profile="name">이름 입력</h2><span class="profile-name-en" data-profile="englishName">YOUR NAME</span></div>
+      <div class="profile-contact"><div><small>EMAIL</small><a data-profile-link="email" href="mailto:your-email@example.com" data-profile="email">your-email@example.com</a></div><div><small>PHONE</small><span data-profile="phone">010-0000-0000</span></div></div>
+      <div class="profile-facts">
+        <article class="profile-card"><small>Education</small><h3 data-profile="education">학교명 · 전공 입력</h3><p>첨부 포트폴리오에서 비워진 학력 정보를 입력하는 영역입니다.</p><span class="date" data-profile="educationPeriod">20XX. 03 - 20XX. 02</span></article>
+        <article class="profile-card"><small>Experience &amp; Training</small><h3 data-profile="experience">경력 및 교육 사항 입력</h3><p>인턴, 프로젝트, 교육기관과 담당 업무를 간단히 정리할 수 있습니다.</p><span class="date" data-profile="experiencePeriod">기간 입력</span></article>
+        <article class="profile-card"><small>Certificates</small><div class="cert-list"><span><b>2023</b> 게임그래픽전문가</span><span><b>2023</b> 컴퓨터그래픽스운용기능사</span><span><b>2022</b> GTQi 일러스트</span><span><b>2022</b> GTQ 포토샵</span></div><span class="date">4 CERTIFICATES</span></article>
+      </div>
+      <div class="ability"><h3>활용 능력</h3><div class="ability-list">
+        <div class="ability-item"><span class="ability-label"><b>3ds Max</b><span>Modeling</span></span><div class="ability-track"><i style="--level:75%"></i></div></div>
+        <div class="ability-item"><span class="ability-label"><b>ZBrush</b><span>Sculpting</span></span><div class="ability-track"><i style="--level:90%"></i></div></div>
+        <div class="ability-item"><span class="ability-label"><b>Substance 3D Painter</b><span>Texturing</span></span><div class="ability-track"><i style="--level:68%"></i></div></div>
+        <div class="ability-item"><span class="ability-label"><b>Marmoset Toolbag</b><span>Rendering</span></span><div class="ability-track"><i style="--level:64%"></i></div></div>
+        <div class="ability-item"><span class="ability-label"><b>Photoshop</b><span>2D Detail</span></span><div class="ability-track"><i style="--level:90%"></i></div></div>
+        <div class="ability-item"><span class="ability-label"><b>Unreal Engine</b><span>Engine</span></span><div class="ability-track"><i style="--level:42%"></i></div></div>
+      </div></div>
+    </div></section>
+
+    <section class="contact" id="contact"><div class="wrap reveal in"><div class="contact-row"><h2>Thank you for your time.<br><i>끝까지 읽어주셔서 진심으로 감사드립니다.</i></h2><div class="contact-info"><a data-profile-link="email" href="mailto:your-email@example.com"><span data-profile="email">your-email@example.com</span> ↗</a><span data-profile="phone">010-0000-0000</span></div></div><div class="documents"><div class="documents-copy"><b>Description</b><span>포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다.</span></div><!-- 문서 수정 위치: 개인정보를 채운 최종 포트폴리오 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">포트폴리오 PDF · 추후 연결</span><!-- 문서 수정 위치: 실제 이력서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">이력서 · 추후 연결</span><!-- 문서 수정 위치: 실제 자기소개서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">자기소개서 · 추후 연결</span></div></div></section>
+  </main>
+  <footer><div class="wrap"><span>© 2026 <span data-profile="name">이름 입력</span></span><span>3D Character Modeler Portfolio</span></div></footer>
+
+  <dialog id="project-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="닫기">×</button><div class="project-detail-layout"><section class="project-overview"><div class="modal-hero"><img id="dialog-image" src="https://hana-3d-portfolio.innysa.chatgpt.site/" alt=""></div><div class="modal-body"><div><h3 id="dialog-title"></h3><p id="dialog-copy"></p></div><div class="details"><div><span>SPECS</span><b>00000000 Tris</b></div><div><span>TOOLS</span><b id="dialog-tools"></b></div><div><span>TEXTURE</span><b id="dialog-texture"></b></div></div></div></section><div class="project-gallery-wrap"><div class="project-gallery-pane" id="project-gallery-pane"><div class="modal-gallery" id="dialog-gallery"></div></div><button class="dialog-scroll-cue" id="dialog-scroll-cue" type="button"><i aria-hidden="true"></i><span>SCROLL TO EXPLORE</span></button></div></div></dialog>
+  <dialog class="lightbox" id="image-lightbox" aria-label="작품 이미지 확대 보기"><button class="lightbox-close" type="button" aria-label="확대 보기 닫기">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="이전 이미지">‹</button><div class="lightbox-stage"><img id="lightbox-image" src="https://hana-3d-portfolio.innysa.chatgpt.site/" alt=""></div><button class="lightbox-nav lightbox-next" type="button" aria-label="다음 이미지">›</button><span class="lightbox-status" id="lightbox-status" aria-live="polite"></span></dialog>
+
+  <script>
+    /*
+     * ============================================================
+     * 개인정보 수정 위치
+     * 아래 profileConfig 값만 바꾸면 사이트 전체의 이름, 연락처,
+     * 이메일, 학력, 경력/교육 정보가 한 번에 변경됩니다.
+     * ============================================================
+     */
+    const profileConfig = {
+      name: '이름 입력',
+      englishName: 'YOUR NAME',
+      shortName: 'Y.N',
+      email: 'your-email@example.com',
+      phone: '010-0000-0000',
+      education: '학교명 · 전공 입력',
+      educationPeriod: '20XX. 03 - 20XX. 02',
+      experience: '경력 및 교육 사항 입력',
+      experiencePeriod: '기간 입력'
+    };
+    Object.entries(profileConfig).forEach(([key,value]) => document.querySelectorAll(`[data-profile="${key}"]`).forEach(element => { element.textContent=value; }));
+    document.querySelectorAll('[data-profile-link="email"]').forEach(link => { link.href=`mailto:${profileConfig.email}`; });
+    document.title=`${profileConfig.name} - 3D Character Modeler Portfolio`;
+
+    const projects = {
+      gunslinger:{ title:'Gunslinger', image:'assets/portfolio/hero-gunslinger.webp', alt:'Gunslinger 캐릭터 렌더', copy:'하드서페이스의 정밀한 모델링과 무늬의 디테일한 표현에 중점을 두어 작업했습니다.', tools:'3ds Max · ZBrush · Substance 3D Painter · Marmoset Toolbag', texture:'4K Texture × 3', gallery:['gunslinger-01','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08','gunslinger-09','gunslinger-10','gunslinger-11'] },
+      steampunk:{ title:'Steampunk', image:'assets/portfolio/hero-steampunk.webp', alt:'Steampunk 캐릭터 렌더', copy:'하드서페이스의 정밀한 모델링과 가죽 코트의 자연스러운 주름 및 질감 표현에 중점을 두어 작업했습니다.', tools:'3ds Max · ZBrush · Substance 3D Painter · Marmoset Toolbag', texture:'4K Texture × 4', gallery:['steampunk-new-01','steampunk-new-02','steampunk-new-03','steampunk-new-04','steampunk-new-05','steampunk-new-06','steampunk-new-07','steampunk-new-08','steampunk-new-09','steampunk-new-10','steampunk-new-11'] },
+      elf:{ title:'SD Elf', image:'assets/portfolio/hero-elf.webp', alt:'SD Elf 캐릭터 렌더', copy:'SD 특유의 귀여운 비율과 동글동글한 실루엣을 매력적으로 표현하는 데 집중했습니다.', tools:'3ds Max · ZBrush · Photoshop · Marmoset Toolbag', texture:'2K Texture × 3', gallery:['elf-16','elf-17','elf-18','elf-19','elf-20','elf-21'] },
+      monster:{ title:'Monster', image:'assets/portfolio/hero-monster.webp', alt:'Monster 캐릭터 렌더', copy:'캐릭터뿐만 아니라 배경 오브젝트도 캐릭터와 어울리게 제작해 장면의 완성도를 높이고, 포토샵으로 디테일을 추가해 세계관을 풍성하게 연출했습니다.', tools:'3ds Max · ZBrush · Photoshop · Cinema 4D · Marmoset Toolbag', texture:'2K Texture', gallery:['monster-23','monster-24','monster-25','monster-26','monster-27','monster-28'] }
+    };
+    const heroSlides=[...document.querySelectorAll('.hero-slide')];
+    const heroNote=document.querySelector('#hero-note');
+    let heroIndex=0;
+    let heroTimer;
+    function showHero(index){
+      heroIndex=(index+heroSlides.length)%heroSlides.length;
+      heroSlides.forEach((slide,i) => slide.classList.toggle('is-active',i===heroIndex));
+      heroNote.textContent=heroSlides[heroIndex].dataset.label;
+    }
+    function startHero(){
+      clearInterval(heroTimer);
+      if(!matchMedia('(prefers-reduced-motion: reduce)').matches) heroTimer=setInterval(() => showHero(heroIndex+1),4500);
+    }
+    startHero();
+    const dialog=document.querySelector('#project-dialog');
+    const projectGalleryPane=document.querySelector('#project-gallery-pane');
+    const dialogScrollCue=document.querySelector('#dialog-scroll-cue');
+    const mobileDetailQuery=matchMedia('(max-width:900px)');
+    const getDetailScroller=() => mobileDetailQuery.matches?dialog:projectGalleryPane;
+    function updateDetailScrollCue(){
+      const scroller=getDetailScroller();
+      dialogScrollCue.classList.toggle('is-hidden',scroller.scrollTop>48||scroller.scrollHeight<=scroller.clientHeight+8);
+    }
+    document.querySelectorAll('.project-card').forEach(card => card.addEventListener('click',() => {
+      const project=projects[card.dataset.project];
+      document.querySelector('#dialog-title').textContent=project.title;
+      document.querySelector('#dialog-copy').textContent=project.copy;
+      document.querySelector('#dialog-image').src=project.image;
+      document.querySelector('#dialog-image').alt=project.alt;
+      document.querySelector('#dialog-tools').textContent=project.tools;
+      document.querySelector('#dialog-texture').textContent=project.texture;
+      document.querySelector('#dialog-gallery').innerHTML=project.gallery.map((name,index) => `<button class="gallery-image" type="button" data-index="${index}" aria-label="${project.title} 작업 상세 이미지 ${index+1} 크게 보기"><img src="assets/portfolio/${name}.webp" alt="${project.title} 작업 상세 이미지 ${index+1}" loading="lazy"></button>`).join('');
+      document.querySelectorAll('#dialog-gallery img').forEach(image => image.addEventListener('load',updateDetailScrollCue,{once:true}));
+      dialog.showModal(); dialog.scrollTop=0; projectGalleryPane.scrollTop=0;
+      requestAnimationFrame(updateDetailScrollCue);
+    }));
+    document.querySelector('.close').addEventListener('click',() => dialog.close());
+    dialog.addEventListener('click',event => { if(event.target===dialog) dialog.close(); });
+    dialog.addEventListener('scroll',updateDetailScrollCue,{passive:true});
+    projectGalleryPane.addEventListener('scroll',updateDetailScrollCue,{passive:true});
+    mobileDetailQuery.addEventListener('change',updateDetailScrollCue);
+    dialogScrollCue.addEventListener('click',() => { const scroller=getDetailScroller(); scroller.scrollBy({top:Math.round(scroller.clientHeight*.72),behavior:'smooth'}); });
+    const lightbox=document.querySelector('#image-lightbox');
+    const lightboxImage=document.querySelector('#lightbox-image');
+    const lightboxStatus=document.querySelector('#lightbox-status');
+    let lightboxItems=[];
+    let lightboxIndex=0;
+    function showLightboxImage(index){
+      lightboxIndex=(index+lightboxItems.length)%lightboxItems.length;
+      const source=lightboxItems[lightboxIndex];
+      lightboxImage.src=source.src;
+      lightboxImage.alt=source.alt;
+      lightboxStatus.textContent=`${String(lightboxIndex+1).padStart(2,'0')} / ${String(lightboxItems.length).padStart(2,'0')}`;
+    }
+    document.querySelector('#dialog-gallery').addEventListener('click',event => {
+      const trigger=event.target.closest('.gallery-image');
+      if(!trigger) return;
+      lightboxItems=[...document.querySelectorAll('#dialog-gallery img')];
+      showLightboxImage(Number(trigger.dataset.index));
+      lightbox.showModal();
+    });
+    document.querySelector('.lightbox-close').addEventListener('click',() => lightbox.close());
+    document.querySelector('.lightbox-prev').addEventListener('click',() => showLightboxImage(lightboxIndex-1));
+    document.querySelector('.lightbox-next').addEventListener('click',() => showLightboxImage(lightboxIndex+1));
+    lightbox.addEventListener('click',event => { if(event.target===lightbox || event.target.classList.contains('lightbox-stage')) lightbox.close(); });
+    document.addEventListener('keydown',event => {
+      if(!lightbox.open) return;
+      if(event.key==='ArrowLeft') showLightboxImage(lightboxIndex-1);
+      if(event.key==='ArrowRight') showLightboxImage(lightboxIndex+1);
+    });
+    const moreWorksButton=document.querySelector('#more-works');
+    const archive=document.querySelector('#archive');
+    document.querySelector('#project-counter').textContent=`03 / ${String(document.querySelectorAll('.project-card').length).padStart(2,'0')} Projects`;
+    moreWorksButton.addEventListener('click',() => {
+      const willOpen=archive.hidden;
+      moreWorksButton.setAttribute('aria-expanded',String(willOpen));
+      moreWorksButton.querySelector('.more-label').textContent=willOpen?'SHOW FEWER PROJECTS':'SHOW MORE PROJECTS';
+      moreWorksButton.querySelector('.more-icon').textContent=willOpen?'−':'＋';
+      if(willOpen){
+        archive.hidden=false;
+        archive.classList.remove('is-closing');
+        requestAnimationFrame(() => archive.classList.add('is-opening'));
+      }else{
+        archive.classList.remove('is-opening');
+        archive.classList.add('is-closing');
+        setTimeout(() => { archive.hidden=true; archive.classList.remove('is-closing'); },350);
+      }
+    });
+    const observer=new IntersectionObserver(entries => entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); observer.unobserve(entry.target); } }),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+    const pageProgressBar=document.querySelector('#page-progress-bar');
+    let progressTicking=false;
+    function updatePageProgress(){
+      const scrollable=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+      const progress=Math.min(1,Math.max(0,window.scrollY/scrollable));
+      pageProgressBar.style.transform=`scaleX(${progress})`;
+      progressTicking=false;
+    }
+    window.addEventListener('scroll',() => { if(!progressTicking){ progressTicking=true; requestAnimationFrame(updatePageProgress); } },{passive:true});
+    window.addEventListener('resize',updatePageProgress);
+    updatePageProgress();
+    const loader=document.querySelector('#loader'),loaderBar=document.querySelector('#loader-bar'),loaderCount=document.querySelector('#loader-count');
+    let loadValue=0;
+    const loadTimer=setInterval(() => { loadValue=Math.min(92,loadValue+Math.ceil(Math.random()*7)); loaderBar.style.width=loadValue+'%'; loaderCount.textContent=String(loadValue).padStart(2,'0'); },80);
+    window.addEventListener('load',() => { setTimeout(() => { clearInterval(loadTimer); loaderBar.style.width='100%'; loaderCount.textContent='100'; setTimeout(() => { loader.classList.add('is-done'); document.body.classList.remove('loading'); },280); },matchMedia('(prefers-reduced-motion: reduce)').matches?0:650); });
+  </script>
+
+
+</body></html>
