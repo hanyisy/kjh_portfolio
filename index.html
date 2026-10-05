@@ -34,24 +34,26 @@
     img { display:block; max-width:100%; }
     .wrap { width:min(944px,calc(100% - 38.4px)); margin:0 auto; }
 
-    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:var(--pink); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s; }
-    .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
+    /* 흰 글자가 읽히려면 배경이 어두워야 해서, 단색 연핑크 대신
+       같은 핑크 계열 안에서 밝음 → 진함으로 흐르는 그라데이션을 깔았습니다. */
+    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:linear-gradient(158deg,#ef9bba 0%,#e0628f 46%,#bd4a7d 100%); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s; }
+    .loader::before { content:""; position:absolute; inset:0; opacity:.22; background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
     /* 로딩 화면: 2026(작게) → Portfolio(크게) → 3D CHARACTER MODELING(작게) 순으로 쌓습니다.
        세 줄이 0.1초 간격으로 차례로 올라와, 멈춰 있는 화면이 아니라 열리는 화면으로 보이게 했습니다. */
-    .loader-year { display:block; margin-bottom:6.4px; color:var(--pink-strong); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
-    .loader-title { margin:0; font:800 clamp(3rem,10vw,5.6rem)/.96 "Manrope"; letter-spacing:-.055em; }
-    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 .82rem "Manrope"; letter-spacing:.2em; }
+    .loader-year { display:block; margin-bottom:6.4px; color:rgba(255,255,255,.72); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
+    .loader-title { margin:0; color:#fff; font:800 clamp(3rem,10vw,5.6rem)/.96 "Manrope"; letter-spacing:-.055em; }
+    .loader-role { display:block; margin-top:13.6px; color:rgba(255,255,255,.66); font:600 .82rem "Manrope"; letter-spacing:.2em; }
     .loader-year,.loader-title,.loader-role { opacity:0; transform:translateY(14px); animation:loader-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
     .loader-title { animation-delay:.1s; }
     .loader-role { animation-delay:.2s; }
     @keyframes loader-rise { to { opacity:1; transform:none; } }
-    .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:36px; padding-top:14.4px; border-top:1px solid rgba(41,36,41,.22); }
-    .loader-stage { color:rgba(41,36,41,.6); font:600 .74rem "Manrope"; letter-spacing:.14em; }
-    .loader-track { margin-top:13.6px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
-    .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
-    .loader-count { min-width:33.6px; font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
+    .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:40px; }
+    .loader-stage { color:rgba(255,255,255,.78); font:600 .74rem "Manrope"; letter-spacing:.14em; }
+    .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(255,255,255,.28); }
+    .loader-bar { width:0; height:100%; background:#fff; transition:width .15s linear; }
+    .loader-count { min-width:33.6px; color:rgba(255,255,255,.88); font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
 
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
@@ -72,8 +74,10 @@
        화면 밖으로 삐져나간 부분은 가로 스크롤을 만들지 않습니다. */
     .hero { position:relative; padding:43.2px 0 56px; }
     .hero::before,.hero::after { content:""; position:absolute; z-index:0; aspect-ratio:1; border-radius:50%; pointer-events:none; }
-    .hero::before { width:clamp(340px,42vw,600px); left:-15%; top:-28%; background:radial-gradient(circle,rgba(247,191,208,.62),rgba(247,191,208,.2) 50%,rgba(247,191,208,0) 72%); }
-    .hero::after { width:clamp(200px,24vw,340px); left:24%; top:42%; background:radial-gradient(circle,rgba(233,111,153,.2),rgba(233,111,153,0) 68%); }
+    /* 글자는 왼쪽 칸, 이미지는 오른쪽 칸이므로 그라데이션은 오른쪽에 둡니다.
+       왼쪽에 두면 제목 뒤로 색이 깔려 글자가 묻힙니다. */
+    .hero::before { width:clamp(340px,44vw,640px); right:-16%; top:-30%; background:radial-gradient(circle,rgba(247,191,208,.66),rgba(247,191,208,.22) 50%,rgba(247,191,208,0) 72%); }
+    .hero::after { width:clamp(200px,24vw,340px); right:12%; top:52%; background:radial-gradient(circle,rgba(233,111,153,.22),rgba(233,111,153,0) 68%); }
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
@@ -330,6 +334,9 @@
       .page-progress { height:2.4px; }
       .nav-links a:not(.contact-pill) { display:none; }
       .hero { padding:35.2px 0 40px; }
+      /* 한 열로 쌓이면 글자가 전체 폭을 쓰므로, 원을 글자 아래(이미지 쪽)로 내립니다. */
+      .hero::before { width:88vw; right:-32%; top:34%; }
+      .hero::after { width:52vw; right:2%; top:62%; }
       .hero-grid { grid-template-columns:1fr; gap:27.2px; }
 
       .hero-copy { max-width:448px; }
@@ -352,7 +359,10 @@
       .ability-list { grid-template-columns:1fr; }
       .contact { padding:62.4px 0 20.8px; }
       .contact-row { align-items:flex-start; flex-direction:column; }
+      /* 모바일은 왼쪽 정렬이므로 링크 안쪽 정렬도 같이 왼쪽으로 돌려야 합니다.
+         (PC 의 justify-content:flex-end 가 남아 있으면 글자만 오른쪽에 붙습니다.) */
       .contact-info { text-align:left; }
+      .contact-info a { justify-content:flex-start; }
       .documents { grid-template-columns:1fr; }
       .download-btn { justify-content:space-between; }
       #project-dialog { width:min(896px,calc(100% - 27.2px)); height:auto; overflow:auto; }
