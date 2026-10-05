@@ -34,8 +34,11 @@
     img { display:block; max-width:100%; }
     .wrap { width:min(944px,calc(100% - 38.4px)); margin:0 auto; }
 
-    /* 배경색은 JS 가 진행률에 맞춰 바꿉니다(옅은 핑크 → 원래 핑크). 아래 값은 기본값. */
-    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:var(--pink); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s,background-color .3s linear; }
+    /* 배경색은 JS(setLoaderTint)가 진행률에 맞춰 옅은 핑크 → --pink 로 짙게 만듭니다.
+       여기 적는 값은 '첫 페인트' 색이라 반드시 시작색(=setLoaderTint(0) 결과,
+       흰색과 --pink 의 중간)과 같아야 합니다. var(--pink) 를 두면 진한 색이
+       한 번 번쩍 보였다가 연한 색으로 떨어집니다. */
+    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:rgb(251,223,232); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s,background-color .3s linear; }
     .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
