@@ -34,26 +34,26 @@
     img { display:block; max-width:100%; }
     .wrap { width:min(944px,calc(100% - 38.4px)); margin:0 auto; }
 
-    /* 흰 글자가 읽히려면 배경이 어두워야 해서, 단색 연핑크 대신
-       같은 핑크 계열 안에서 밝음 → 진함으로 흐르는 그라데이션을 깔았습니다. */
-    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:linear-gradient(158deg,#ef9bba 0%,#e0628f 46%,#bd4a7d 100%); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s; }
-    .loader::before { content:""; position:absolute; inset:0; opacity:.22; background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
+    .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:var(--pink); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s; }
+    .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
     /* 로딩 화면: 2026(작게) → Portfolio(크게) → 3D CHARACTER MODELING(작게) 순으로 쌓습니다.
        세 줄이 0.1초 간격으로 차례로 올라와, 멈춰 있는 화면이 아니라 열리는 화면으로 보이게 했습니다. */
-    .loader-year { display:block; margin-bottom:6.4px; color:rgba(255,255,255,.72); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
+    /* 배경은 기존 연핑크 그대로. Portfolio 만 흰색으로 띄우고
+       나머지 작은 글자는 어두운 회색이라 연핑크 위에서 잘 읽힙니다. */
+    .loader-year { display:block; margin-bottom:6.4px; color:rgba(41,36,41,.52); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
     .loader-title { margin:0; color:#fff; font:800 clamp(3rem,10vw,5.6rem)/.96 "Manrope"; letter-spacing:-.055em; }
-    .loader-role { display:block; margin-top:13.6px; color:rgba(255,255,255,.66); font:600 .82rem "Manrope"; letter-spacing:.2em; }
+    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 .82rem "Manrope"; letter-spacing:.2em; }
     .loader-year,.loader-title,.loader-role { opacity:0; transform:translateY(14px); animation:loader-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
     .loader-title { animation-delay:.1s; }
     .loader-role { animation-delay:.2s; }
     @keyframes loader-rise { to { opacity:1; transform:none; } }
     .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:40px; }
-    .loader-stage { color:rgba(255,255,255,.78); font:600 .74rem "Manrope"; letter-spacing:.14em; }
-    .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(255,255,255,.28); }
-    .loader-bar { width:0; height:100%; background:#fff; transition:width .15s linear; }
-    .loader-count { min-width:33.6px; color:rgba(255,255,255,.88); font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
+    .loader-stage { color:rgba(41,36,41,.6); font:600 .74rem "Manrope"; letter-spacing:.14em; }
+    .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
+    .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
+    .loader-count { min-width:33.6px; color:var(--ink); font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
 
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
@@ -74,10 +74,10 @@
        화면 밖으로 삐져나간 부분은 가로 스크롤을 만들지 않습니다. */
     .hero { position:relative; padding:43.2px 0 56px; }
     .hero::before,.hero::after { content:""; position:absolute; z-index:0; aspect-ratio:1; border-radius:50%; pointer-events:none; }
-    /* 글자는 왼쪽 칸, 이미지는 오른쪽 칸이므로 그라데이션은 오른쪽에 둡니다.
-       왼쪽에 두면 제목 뒤로 색이 깔려 글자가 묻힙니다. */
-    .hero::before { width:clamp(340px,44vw,640px); right:-16%; top:-30%; background:radial-gradient(circle,rgba(247,191,208,.66),rgba(247,191,208,.22) 50%,rgba(247,191,208,0) 72%); }
-    .hero::after { width:clamp(200px,24vw,340px); right:12%; top:52%; background:radial-gradient(circle,rgba(233,111,153,.22),rgba(233,111,153,0) 68%); }
+    /* 비스듬히 누운 타원이라 오른쪽 위에서 왼쪽 아래로 흐르는 대각선 느낌이 납니다.
+       제목을 덮지 않고 끝자락에만 옅게 걸치도록 중심을 글자 오른쪽 바깥에 뒀습니다. */
+    .hero::before { width:clamp(420px,58vw,800px); aspect-ratio:1.45; right:-4%; top:-38%; transform:rotate(-18deg); background:radial-gradient(ellipse at center,rgba(247,191,208,.72),rgba(247,191,208,.26) 44%,rgba(247,191,208,0) 72%); }
+    .hero::after { width:clamp(200px,24vw,340px); aspect-ratio:1; right:8%; top:50%; background:radial-gradient(circle,rgba(233,111,153,.2),rgba(233,111,153,0) 68%); }
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
@@ -108,8 +108,9 @@
     .card-label { position:absolute; inset:auto 14.4px 14.4px 14.4px; padding:13.6px 14.4px; display:flex; justify-content:space-between; align-items:center; gap:14.4px; border-radius:14.4px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(9.6px); }
     .card-label strong { display:block; font:700 var(--fs-h4)/1.25 "Manrope"; }
     .card-label small { color:rgba(255,255,255,.78); font-size:.76rem; }
-    .arrow { width:28.8px; height:28.8px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); font-size:1.15rem; transition:transform .25s; }
-    .project-card:hover .arrow { transform:rotate(-35deg); }
+    /* 화살표는 글자(↗) 대신 SVG 로 그립니다. 글립은 글꼴마다 길이도 위치도 달라
+       작품 카드와 AI·UI 카드의 모양이 서로 어긋나고, 원 안에서 위로 떠 보였습니다. */
+    .arrow { width:28.8px; height:28.8px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); }
     .project-placeholder { position:relative; min-width:0; opacity:.42; pointer-events:none; }
     .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgba(247,191,208,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(247,191,208,.08) 1px,transparent 1px); background-size:24px 24px; }
     .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 2rem/1 "Manrope"; }
@@ -122,7 +123,7 @@
        ────────────────────────────────────────────────────────────── */
     .lab { padding:88px 0 104px; border-top:1px solid var(--line); background:linear-gradient(180deg,rgba(247,191,208,.22),rgba(247,191,208,0) 68%); }
     .lab .eyebrow { color:var(--pink-strong); }
-    .lab-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:.9rem; }
+    .lab-lead,.section-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:.9rem; }
     .lab-grid { display:grid; gap:16px; }
     .lab-card { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); width:100%; padding:0; overflow:hidden; border:1px solid var(--line); border-radius:var(--radius); background:#fff; color:inherit; text-align:left; cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s ease,border-color .3s ease; }
     .lab-card:hover { transform:translateY(-3px); border-color:rgba(41,36,41,.26); box-shadow:0 18px 44px rgba(28,22,26,.13); }
@@ -137,8 +138,8 @@
     .lab-tags { display:flex; flex-wrap:wrap; gap:6.4px; }
     .lab-tags span { padding:5.6px 10.4px; border:1px solid var(--line); border-radius:799.2px; color:var(--muted); font:600 .71rem "Manrope"; }
     .lab-open { margin-top:auto; padding-top:6px; display:inline-flex; align-items:center; gap:9.6px; font:700 .74rem "Manrope"; letter-spacing:.1em; }
-    .lab-open i { display:grid; place-items:center; width:27.2px; height:27.2px; border-radius:50%; background:var(--pink); color:var(--ink); font-style:normal; font-size:1.1rem; transition:transform .25s; }
-    .lab-card:hover .lab-open i { transform:rotate(-35deg); }
+    .lab-open i { display:grid; place-items:center; width:27.2px; height:27.2px; border-radius:50%; background:var(--pink); color:var(--ink); font-style:normal; }
+    .arrow svg,.lab-open i svg { display:block; width:14.4px; height:14.4px; }
 
     .about { padding:100px 0; background:var(--ink); color:#fff; }
     .about-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:72px; }
@@ -153,8 +154,7 @@
        화살표를 붙이고 호버 반응을 줘서 눌리는 곳임이 보이도록 했습니다. */
     .profile-contact a { text-decoration:none; transition:color .2s ease; }
     .profile-contact a:hover,.profile-contact a:focus-visible { color:var(--pink); }
-    .contact-link i { display:inline-block; margin-left:.28em; font-style:normal; transition:transform .25s ease; }
-    .profile-contact a:hover .contact-link i,.contact-link:hover i { transform:translate(2px,-2px); }
+    .contact-link i { display:inline-block; margin-left:.28em; font-style:normal; }
     .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:9.6px; margin-top:24px; }
     /* 하단 개수 표기(1 ENTRY 등)를 뺐으므로 최소 높이를 낮춰 빈 공간이 남지 않게 했습니다.
        세 장의 높이는 그리드가 알아서 가장 긴 카드에 맞춰 줍니다. */
@@ -190,8 +190,7 @@
     .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgba(41,36,41,.62); font-size:.86rem; font-weight:600; text-decoration:none; transition:color .2s ease; }
     .contact-info a:hover,.contact-info a:focus-visible { color:var(--ink); }
     .contact-info a span { color:inherit; font-size:inherit; }
-    .contact-info a i { font-style:normal; transition:transform .25s ease; }
-    .contact-info a:hover i { transform:translate(2px,-2px); }
+    .contact-info a i { font-style:normal; }
     .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(2,auto); gap:9.6px; align-items:center; }
     .documents-copy b { display:block; font:700 1rem "Manrope"; }
     .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
@@ -334,9 +333,10 @@
       .page-progress { height:2.4px; }
       .nav-links a:not(.contact-pill) { display:none; }
       .hero { padding:35.2px 0 40px; }
-      /* 한 열로 쌓이면 글자가 전체 폭을 쓰므로, 원을 글자 아래(이미지 쪽)로 내립니다. */
-      .hero::before { width:88vw; right:-32%; top:34%; }
-      .hero::after { width:52vw; right:2%; top:62%; }
+      /* 모바일은 한 열이라 제목이 전체 폭을 씁니다.
+         중심을 화면 오른쪽 바깥에 둬 제목 끝부분에만 색이 걸치게 했습니다. */
+      .hero::before { width:132vw; right:-58%; top:-14%; }
+      .hero::after { width:58vw; right:-8%; top:34%; }
       .hero-grid { grid-template-columns:1fr; gap:27.2px; }
 
       .hero-copy { max-width:448px; }
@@ -421,12 +421,13 @@
     <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow">3D Character Modeler</p><h1>3D 캐릭터 모델러<em>000입니다.</em></h1><p class="hero-copy">반실사 캐릭터부터 캐주얼한 캐릭터까지, 다양한 스타일을 유연하게 제작합니다.</p><div class="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-portrait is-active" data-label="01 · GUNSLINGER"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide" data-label="02 · STEAMPUNK"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="assets/portfolio/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · GUNSLINGER</span></div></div></section>
 
     <section class="selected wrap reveal" id="work">
-      <div class="section-head"><h2>Selected work</h2><span class="counter" id="project-counter">04 PROJECTS</span></div>
+      <div class="section-head"><div><p class="eyebrow">Selected work</p><h2>Modeling</h2></div><span class="counter" id="project-counter">04 PROJECTS</span></div>
+      <p class="section-lead">반실사부터 스타일라이즈까지, 원화의 의도를 읽고 실루엣과 재질을 다시 설계한 3D 캐릭터 작업입니다.</p>
       <div class="project-grid">
-        <button class="project-card" data-project="gunslinger" aria-label="Gunslinger 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 캐릭터 렌더"></div><span class="card-label"><span><strong>Gunslinger</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
-        <button class="project-card" data-project="steampunk" aria-label="Steampunk 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 캐릭터 렌더"></div><span class="card-label"><span><strong>Steampunk</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
-        <button class="project-card" data-project="elf" aria-label="SD Elf 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 캐릭터 렌더"></div><span class="card-label"><span><strong>SD Elf</strong><small>SD Character · Stylized</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
-        <button class="project-card" data-project="monster" aria-label="Monster 프로젝트 상세 보기"><div class="thumb"><img loading="lazy" src="assets/portfolio/hero-monster.webp" alt="Monster 캐릭터 렌더"></div><span class="card-label"><span><strong>Monster</strong><small>Character · Diorama</small></span><span class="arrow" aria-hidden="true">↗</span></span></button>
+        <button class="project-card" data-project="gunslinger" aria-label="Gunslinger 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 캐릭터 렌더"></div><span class="card-label"><span><strong>Gunslinger</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+        <button class="project-card" data-project="steampunk" aria-label="Steampunk 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 캐릭터 렌더"></div><span class="card-label"><span><strong>Steampunk</strong><small>Character · Hard Surface</small></span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+        <button class="project-card" data-project="elf" aria-label="SD Elf 프로젝트 상세 보기"><div class="thumb"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 캐릭터 렌더"></div><span class="card-label"><span><strong>SD Elf</strong><small>SD Character · Stylized</small></span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
+        <button class="project-card" data-project="monster" aria-label="Monster 프로젝트 상세 보기"><div class="thumb"><img loading="lazy" src="assets/portfolio/hero-monster.webp" alt="Monster 캐릭터 렌더"></div><span class="card-label"><span><strong>Monster</strong><small>Character · Diorama</small></span><span class="arrow" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>
         <!-- 작품 추가 위치: 아래 project-placeholder 를 project-card 버튼으로 교체하고 projects 데이터에 상세 정보를 추가하세요. 마지막 6번째 칸은 비워둔 자리입니다. -->
         <article class="project-placeholder" aria-label="추가 예정 프로젝트"><div class="thumb"><span class="placeholder-mark" aria-hidden="true">＋</span></div><span class="card-label"><span><strong>Coming soon</strong><small>Next character project</small></span></span></article>
       </div>
@@ -436,8 +437,8 @@
       <div class="section-head"><div><p class="eyebrow">Beyond modeling</p><h2>AI &amp; Design</h2></div><span class="counter">02 PROJECTS</span></div>
       <p class="lab-lead">3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다.</p>
       <div class="lab-grid">
-        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
-        <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true">↗</i></span></div></button>
+        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
+        <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
       </div>
     </div></section>
 
