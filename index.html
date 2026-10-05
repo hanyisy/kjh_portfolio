@@ -38,12 +38,17 @@
     .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
-    /* 로딩 화면: PORTFOLIO / 2026 을 큰 덩어리로 쌓고,
-       그 아래 구분선 한 줄에 직군과 퍼센트를 좌우로 벌린 뒤 진행 바를 깝니다. */
-    .loader-title { margin:0; font:800 clamp(2.8rem,9vw,5rem)/.92 "Manrope"; letter-spacing:-.08em; }
-    .loader-title span { display:block; color:#fff; }
-    .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:32px; padding-top:14.4px; border-top:1px solid rgba(41,36,41,.22); }
-    .loader-role { font:700 .76rem "Manrope"; letter-spacing:.15em; }
+    /* 로딩 화면: 2026(작게) → Portfolio(크게) → 3D CHARACTER MODELING(작게) 순으로 쌓습니다.
+       세 줄이 0.1초 간격으로 차례로 올라와, 멈춰 있는 화면이 아니라 열리는 화면으로 보이게 했습니다. */
+    .loader-year { display:block; margin-bottom:6.4px; color:var(--pink-strong); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
+    .loader-title { margin:0; font:800 clamp(3rem,10vw,5.6rem)/.96 "Manrope"; letter-spacing:-.055em; }
+    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 .82rem "Manrope"; letter-spacing:.2em; }
+    .loader-year,.loader-title,.loader-role { opacity:0; transform:translateY(14px); animation:loader-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+    .loader-title { animation-delay:.1s; }
+    .loader-role { animation-delay:.2s; }
+    @keyframes loader-rise { to { opacity:1; transform:none; } }
+    .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:36px; padding-top:14.4px; border-top:1px solid rgba(41,36,41,.22); }
+    .loader-stage { color:rgba(41,36,41,.6); font:600 .74rem "Manrope"; letter-spacing:.14em; }
     .loader-track { margin-top:13.6px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
     .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
     .loader-count { min-width:33.6px; font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
@@ -62,8 +67,14 @@
     .contact-pill { padding:8px 12.8px; border-radius:799.2px; background:var(--ink); color:#fff; }
     main { overflow:hidden; }
 
-    .hero { padding:43.2px 0 56px; }
-    .hero-grid { display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
+    /* 히어로 배경: 단색 핑크 면 대신 연핑크 원형 그라데이션을 겹쳐 상단에 깊이를 줍니다.
+       글자 뒤쪽에 큰 원 하나, 그 아래 조금 진한 원 하나. main 이 overflow:hidden 이라
+       화면 밖으로 삐져나간 부분은 가로 스크롤을 만들지 않습니다. */
+    .hero { position:relative; padding:43.2px 0 56px; }
+    .hero::before,.hero::after { content:""; position:absolute; z-index:0; aspect-ratio:1; border-radius:50%; pointer-events:none; }
+    .hero::before { width:clamp(340px,42vw,600px); left:-15%; top:-28%; background:radial-gradient(circle,rgba(247,191,208,.62),rgba(247,191,208,.2) 50%,rgba(247,191,208,0) 72%); }
+    .hero::after { width:clamp(200px,24vw,340px); left:24%; top:42%; background:radial-gradient(circle,rgba(233,111,153,.2),rgba(233,111,153,0) 68%); }
+    .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
     /* 한글 두 줄이라 영문 기준(.98)으로는 행간이 붙어 보여 넉넉하게 띄웠습니다. */
@@ -170,11 +181,14 @@
     .contact h2 { max-width:608px; font-size:var(--fs-h1); }
     .contact h2 i { display:inline-block; margin-top:10px; color:#fff; font-size:.52em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
-    .contact-info a { font-weight:700; }
-    .contact-info span { color:rgba(41,36,41,.56); font-size:.86rem; }
-    .contact-sub { color:rgba(41,36,41,.62); font-size:.86rem; text-decoration:none; transition:color .2s ease; }
-    .contact-sub:hover,.contact-sub:focus-visible { color:var(--ink); }
-    .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(3,auto); gap:9.6px; align-items:center; }
+    /* 세 줄(메일 · 카카오 · 아트스테이션)을 완전히 같은 색·크기로 맞춥니다.
+       전에는 메일만 화살표가 본문색 굵은 글씨라 혼자 진하게 떠 보였습니다. */
+    .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgba(41,36,41,.62); font-size:.86rem; font-weight:600; text-decoration:none; transition:color .2s ease; }
+    .contact-info a:hover,.contact-info a:focus-visible { color:var(--ink); }
+    .contact-info a span { color:inherit; font-size:inherit; }
+    .contact-info a i { font-style:normal; transition:transform .25s ease; }
+    .contact-info a:hover i { transform:translate(2px,-2px); }
+    .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(2,auto); gap:9.6px; align-items:center; }
     .documents-copy b { display:block; font:700 1rem "Manrope"; }
     .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
     .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
@@ -311,7 +325,7 @@
       .bd-row { gap:8.8px; }
     }
     @media (max-width:720px) {
-      .wrap { width:min(100% - 24px,576px); }
+      .wrap { width:min(100% - 30px,576px); } /* 양옆 15px */
       nav { height:51.2px; }
       .page-progress { height:2.4px; }
       .nav-links a:not(.contact-pill) { display:none; }
@@ -383,11 +397,13 @@
     @media (prefers-reduced-motion:reduce) {
       *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
       .reveal { opacity:1; transform:none; }
+      /* 애니메이션이 꺼지면 시작 상태(opacity:0)로 멈춰 글자가 안 보이므로 되돌려 줍니다. */
+      .loader-year,.loader-title,.loader-role { opacity:1; transform:none; }
     }
   </style>
 </head>
 <body class="loading">
-  <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><p class="loader-title">PORTFOLIO<span>2026</span></p><div class="loader-bottom"><span class="loader-role">3D Character Modeler</span><span class="loader-count" id="loader-count">00</span></div><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div></div></div>
+  <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><span class="loader-year">2026</span><p class="loader-title">Portfolio</p><span class="loader-role">3D CHARACTER MODELING</span><div class="loader-bottom"><span class="loader-stage" id="loader-stage">MODELING</span><span class="loader-count" id="loader-count">00</span></div><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div></div></div>
 
   <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work">WORK</a><a href="#lab">AI &amp; DESIGN</a><a href="#about">PROFILE</a><a class="contact-pill" href="#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
 
@@ -433,7 +449,8 @@
       </div></div>
     </div></section>
 
-    <section class="contact" id="contact"><div class="wrap reveal"><div class="contact-row"><h2>Thank you for your time.<br><i>끝까지 읽어주셔서 진심으로 감사드립니다.</i></h2><div class="contact-info"><a data-profile-link="email" href="mailto:your-email@example.com"><span data-profile="email">your-email@example.com</span> ↗</a><a class="contact-sub" data-profile-link="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener">카카오톡 오픈채팅 ↗</a><a class="contact-sub" data-profile-link="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener">ArtStation ↗</a></div></div><div class="documents"><div class="documents-copy"><b>Description</b><span>포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다.</span></div><!-- 문서 수정 위치: 개인정보를 채운 최종 포트폴리오 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">포트폴리오 PDF · 추후 연결</span><!-- 문서 수정 위치: 실제 이력서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">이력서 · 추후 연결</span><!-- 문서 수정 위치: 실제 자기소개서 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">자기소개서 · 추후 연결</span></div></div></section>
+    <section class="contact" id="contact"><div class="wrap reveal"><div class="contact-row"><h2>Thank you for your time.<br><i>끝까지 읽어주셔서 진심으로 감사드립니다.</i></h2><div class="contact-info"><a data-profile-link="email" href="mailto:your-email@example.com"><span data-profile="email">your-email@example.com</span><i aria-hidden="true">↗</i></a><a data-profile-link="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener"><span>카카오톡 오픈채팅</span><i aria-hidden="true">↗</i></a><a data-profile-link="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener"><span>ArtStation</span><i aria-hidden="true">↗</i></a></div></div><div class="documents"><div class="documents-copy"><b>Description</b><span>포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다.</span></div><!-- 문서 수정 위치: 개인정보를 채운 최종 포트폴리오 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">포트폴리오 PDF · 추후 연결</span><!-- 문서 수정 위치: 이력서와 자기소개서가 한 파일이라 버튼도 하나로 묶었습니다.
+     실제 PDF를 assets 폴더에 넣은 뒤 이 요소를 <a href="assets/파일명.pdf" download>로 교체하세요. --><span class="download-btn is-pending" aria-disabled="true">이력서 및 자기소개서 · 추후 연결</span></div></div></section>
   </main>
   <footer><div class="wrap"><span>© 2026 <span data-profile="name">YOUR NAME</span></span><span>3D Character Modeler Portfolio</span></div></footer>
 
@@ -891,10 +908,15 @@
     window.addEventListener('scroll',() => { if(!progressTicking){ progressTicking=true; requestAnimationFrame(updatePageProgress); } },{passive:true});
     window.addEventListener('resize',updatePageProgress);
     updatePageProgress();
-    const loader=document.querySelector('#loader'),loaderBar=document.querySelector('#loader-bar'),loaderCount=document.querySelector('#loader-count');
+    const loader=document.querySelector('#loader'),loaderBar=document.querySelector('#loader-bar'),loaderCount=document.querySelector('#loader-count'),loaderStage=document.querySelector('#loader-stage');
+    /* 퍼센트가 오르면 3D 작업 단계 이름도 같이 바뀝니다.
+       숫자만 올라가던 단조로움을 덜고, 무슨 포트폴리오인지도 로딩 중에 읽히게 했습니다.
+       단계 문구 수정 위치: 아래 배열의 [시작 퍼센트, 문구] 를 바꾸세요. */
+    const loaderStages=[[0,'MODELING'],[32,'TEXTURING'],[62,'RENDERING'],[100,'COMPLETE']];
+    const setLoaderStage=value => { const stage=loaderStages.filter(([at]) => value>=at).pop(); if(stage&&loaderStage.textContent!==stage[1]) loaderStage.textContent=stage[1]; };
     let loadValue=0;
-    const loadTimer=setInterval(() => { loadValue=Math.min(92,loadValue+Math.ceil(Math.random()*7)); loaderBar.style.width=loadValue+'%'; loaderCount.textContent=String(loadValue).padStart(2,'0'); },80);
-    window.addEventListener('load',() => { setTimeout(() => { clearInterval(loadTimer); loaderBar.style.width='100%'; loaderCount.textContent='100'; setTimeout(() => { loader.classList.add('is-done'); document.body.classList.remove('loading'); },280); },matchMedia('(prefers-reduced-motion: reduce)').matches?0:650); });
+    const loadTimer=setInterval(() => { loadValue=Math.min(92,loadValue+Math.ceil(Math.random()*7)); loaderBar.style.width=loadValue+'%'; loaderCount.textContent=String(loadValue).padStart(2,'0'); setLoaderStage(loadValue); },80);
+    window.addEventListener('load',() => { setTimeout(() => { clearInterval(loadTimer); loaderBar.style.width='100%'; loaderCount.textContent='100'; setLoaderStage(100); setTimeout(() => { loader.classList.add('is-done'); document.body.classList.remove('loading'); },280); },matchMedia('(prefers-reduced-motion: reduce)').matches?0:650); });
   </script>
 </body>
 </html>
