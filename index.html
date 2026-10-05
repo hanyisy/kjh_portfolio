@@ -74,9 +74,12 @@
        글자 뒤쪽에 큰 원 하나, 그 아래 조금 진한 원 하나. main 이 overflow:hidden 이라
        화면 밖으로 삐져나간 부분은 가로 스크롤을 만들지 않습니다. */
     .hero { position:relative; padding:43.2px 0 56px; }
-    /* 그라데이션은 작은 원 하나만. 중심을 왼쪽 여백에 두고 번지는 끝자락만
-       제목 첫머리에 옅게 걸치게 합니다. 글자 위에 깔리는 색이라 농도는 낮게. */
-    .hero::after { content:""; position:absolute; z-index:0; width:clamp(260px,32vw,440px); aspect-ratio:1; left:-20%; top:-30%; border-radius:50%; pointer-events:none; background:radial-gradient(circle,rgba(247,191,208,.52),rgba(247,191,208,.2) 42%,rgba(247,191,208,0) 70%); }
+    .hero::before,.hero::after { content:""; position:absolute; z-index:0; aspect-ratio:1; border-radius:50%; pointer-events:none; }
+    /* 왼쪽 위에서 대각선으로 흘러 들어옵니다. 중심을 왼쪽 여백에 둬서
+       번지는 끝자락만 제목 첫머리에 옅게 걸칩니다.
+       글자 위에 깔리는 색이므로 농도는 아주 옅게 유지해야 읽힙니다. */
+    .hero::before { width:clamp(420px,58vw,800px); aspect-ratio:1.45; left:-58%; top:-40%; transform:rotate(-16deg); background:radial-gradient(ellipse at center,rgba(247,191,208,.4),rgba(247,191,208,.15) 38%,rgba(247,191,208,0) 66%); }
+    .hero::after { width:clamp(200px,24vw,340px); aspect-ratio:1; left:-14%; top:48%; background:radial-gradient(circle,rgba(233,111,153,.11),rgba(233,111,153,0) 68%); }
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
@@ -329,7 +332,8 @@
       .g-aside .g-row.cols-1 { grid-template-columns:52%; justify-content:center; }
       /* 태블릿은 좌우 여백이 좁아 PC 처럼 왼쪽으로 밀면 그라데이션이 화면 밖으로 나갑니다.
          여백이 아니라 화면 가장자리를 기준으로 조금만 당겨 둡니다. */
-      .hero::after { left:-8%; top:-26%; }
+      .hero::before { left:-34%; }
+      .hero::after { left:2%; }
       .g-row.cols-3:not(.bd-row) { grid-template-columns:1fr; gap:14.4px; }
       .g-fig .gallery-image img { height:auto; max-height:none; object-fit:fill; }
       .bd-row { gap:8.8px; }
@@ -342,7 +346,8 @@
       .hero { padding:35.2px 0 40px; }
       /* 모바일은 한 열이라 제목이 전체 폭을 씁니다.
          중심을 화면 오른쪽 위 바깥에 둬 제목 윗부분에만 색이 스치게 했습니다. */
-      .hero::after { width:76vw; left:auto; right:-18%; top:-16%; }
+      .hero::before { width:132vw; left:auto; right:-58%; top:-44%; }
+      .hero::after { width:58vw; left:auto; right:-8%; top:4%; }
       .hero-grid { grid-template-columns:1fr; gap:27.2px; }
 
       .hero-copy { max-width:448px; }
