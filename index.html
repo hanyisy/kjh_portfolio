@@ -268,7 +268,9 @@
        한 화면에 여러 블록이 몰려 보이지 않게 했습니다. */
     .modal-gallery { padding:24px 22.4px 78.4px; display:grid; gap:52px; }
     .g-head { display:block; margin-bottom:15.2px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
-    .g-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
+    /* 최종 렌더는 한 줄에 2장. 3장이면 한 장이 작아져 렌더 디테일이 안 보입니다.
+       첫 장만 전체폭으로 깔아 대표 컷 역할을 합니다. */
+    .g-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11.2px; }
     .g-row { display:grid; gap:9.6px; align-items:start; }
     .g-row.cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .g-row.cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
@@ -340,7 +342,6 @@
        단 참고 3컷(.bd-row)은 태블릿에서도 3열을 유지합니다 — 한 장씩 세로로 쌓으면
        화질이 낮은 참고 이미지가 확대되어 화면을 꽉 채워 버리기 때문입니다. */
     @media (max-width:1099px) {
-      .g-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
       .g-step.is-side,.g-step.is-split { grid-template-columns:1fr; }
       /* 한 열로 접히면 aside 이미지가 전체폭을 먹어 너무 길어지므로 절반 폭으로 가운데 정렬 */
       .g-aside .g-row.cols-1 { grid-template-columns:52%; justify-content:center; }
