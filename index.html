@@ -266,7 +266,14 @@
        breakdown(3컷 참고 이미지) → steps(제작 과정) → gallery(최종 렌더) 순으로 자동 생성됩니다. */
     /* 블록 사이 간격(Focus 3컷 ↔ 제작 과정 ↔ Final render)을 넉넉히 둬
        한 화면에 여러 블록이 몰려 보이지 않게 했습니다. */
-    .modal-gallery { padding:24px 22.4px 78.4px; display:grid; gap:52px; }
+    /* 블록 간격은 gap 대신 margin 으로 둡니다.
+       gap 은 모든 틈에 똑같이 들어가서 구분 라벨만 다음 블록에 붙이려면
+       음수 마진을 써야 하는데, 음수 마진은 그리드 행 높이와 꼬여
+       라벨 박스가 글자보다 훨씬 커지는 문제가 있었습니다. */
+    .modal-gallery { padding:24px 22.4px 78.4px; display:grid; gap:0; }
+    .modal-gallery > * { margin:0; } /* p 기본 마진 제거. 간격은 아래 두 줄로만 정합니다 */
+    .modal-gallery > * + * { margin-top:52px; }
+    .modal-gallery > .g-group + * { margin-top:15.2px; } /* 구분 라벨 바로 아래 블록은 라벨에 붙임 */
     .g-head { display:block; margin-bottom:15.2px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
     /* 최종 렌더는 한 줄에 2장. 3장이면 한 장이 작아져 렌더 디테일이 안 보입니다.
        첫 장만 전체폭으로 깔아 대표 컷 역할을 합니다. */
@@ -300,7 +307,7 @@
     .g-aside { display:grid; gap:12.8px; align-content:start; }
     /* 구분 라벨(UI · 상세페이지)은 FINAL RENDER 같은 섹션 라벨과 같은 모양으로 맞춥니다.
        .modal-gallery 의 52px 간격을 음수 마진으로 당겨 라벨이 바로 아래 블록에 붙게 합니다. */
-    .g-group { margin:0 0 -37px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    .g-group { color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
     .g-say { display:grid; gap:4.8px; }
     .g-say span { color:var(--pink); font:700 .74rem "Manrope"; letter-spacing:.16em; }
     /* 제목과 설명이 붙어 있으면 문단 시작점이 안 잡혀 잘 안 읽힙니다.
@@ -323,12 +330,14 @@
        행 높이가 auto 면 이미지 높이만큼 늘어나 버려서 100% 가 '이미지 자기 높이'가 되고,
        결국 세로로 긴 이미지가 화면 밖으로 잘려 나갑니다. */
     .lightbox-stage { width:100%; height:100%; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr); place-items:center; padding:51.2px 70.4px 62.4px; overflow:auto; overscroll-behavior:contain; }
-    .lightbox-stage img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; user-select:none; cursor:zoom-in; }
-    /* 확대 모드: 가로를 화면 폭에 맞추고 세로 제한을 풀어 스크롤로 아래까지 봅니다.
-       상세페이지처럼 세로로 아주 긴 이미지를 읽을 때 씁니다. */
-    .lightbox.is-zoomed .lightbox-stage { place-items:start center; }
-    .lightbox.is-zoomed .lightbox-stage img { width:min(100%,920px); max-width:min(100%,920px); max-height:none; cursor:zoom-out; }
-    .lightbox-hint { position:fixed; left:50%; bottom:52px; z-index:2; padding:5.6px 11.2px; border-radius:799.2px; background:rgba(20,16,19,.72); color:rgba(255,255,255,.78); font:700 .68rem "Manrope"; letter-spacing:.1em; white-space:nowrap; transform:translateX(-50%); pointer-events:none; }
+    .lightbox-stage img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; user-select:none; }
+    /* 크롬 이미지 뷰어와 같은 방식.
+       원본이 화면보다 클 때만 돋보기 커서가 생기고, 누르면 원본 크기 그대로 보여 줍니다.
+       넘치는 부분은 스크롤로 봅니다. safe center 라 이미지가 화면보다 크면
+       가운데 정렬 대신 가장자리부터 시작해 왼쪽/위쪽이 잘려 못 보는 일이 없습니다. */
+    .lightbox.can-zoom .lightbox-stage img { cursor:zoom-in; }
+    .lightbox.is-zoomed .lightbox-stage { place-items:safe center; }
+    .lightbox.is-zoomed .lightbox-stage img { max-width:none; max-height:none; cursor:zoom-out; }
     .lightbox-close,.lightbox-nav { position:fixed; z-index:2; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); color:#fff; background:rgba(20,16,19,.72); backdrop-filter:blur(8px); cursor:pointer; }
     .lightbox-close { top:14.4px; right:16px; width:38.4px; height:38.4px; border-radius:50%; font-size:1.5rem; }
     .lightbox-nav { top:50%; width:41.6px; height:60.8px; border-radius:12.8px; font-size:1.8rem; transform:translateY(-50%); }
@@ -495,7 +504,7 @@
   <footer><div class="wrap"><span>© 2026 <span data-profile="name">YOUR NAME</span></span><span>3D Character Modeler Portfolio</span></div></footer>
 
   <dialog id="project-dialog" aria-labelledby="dialog-title"><button class="close" aria-label="닫기">×</button><div class="project-detail-layout"><section class="project-overview"><div class="modal-hero" id="modal-hero"><img id="dialog-image" src="" alt=""><video id="dialog-video" preload="none" playsinline loop></video><button class="hero-play" id="dialog-play" type="button" aria-label="작품 영상 재생" hidden></button><span class="hero-drag-hint" id="dialog-drag-hint" aria-hidden="true">◀ DRAG TO ROTATE ▶</span></div><div class="modal-body"><div><h3 id="dialog-title"></h3><p class="modal-sub" id="dialog-sub"></p></div><div class="focus-block" id="dialog-focus"></div><div class="details" id="dialog-meta"></div></div></section><div class="project-gallery-wrap"><div class="project-gallery-pane" id="project-gallery-pane"><div class="modal-gallery" id="dialog-gallery"></div></div><button class="dialog-scroll-cue" id="dialog-scroll-cue" type="button"><i aria-hidden="true"></i><span>SCROLL TO EXPLORE</span></button></div></div></dialog>
-  <dialog class="lightbox" id="image-lightbox" aria-label="작품 이미지 확대 보기"><button class="lightbox-close" type="button" aria-label="확대 보기 닫기">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="이전 이미지">‹</button><div class="lightbox-stage"><img id="lightbox-image" src="" alt=""></div><button class="lightbox-nav lightbox-next" type="button" aria-label="다음 이미지">›</button><span class="lightbox-hint" id="lightbox-hint" hidden>클릭하면 확대 · 스크롤로 아래까지</span><span class="lightbox-status" id="lightbox-status" aria-live="polite"></span></dialog>
+  <dialog class="lightbox" id="image-lightbox" aria-label="작품 이미지 확대 보기"><button class="lightbox-close" type="button" aria-label="확대 보기 닫기">×</button><button class="lightbox-nav lightbox-prev" type="button" aria-label="이전 이미지">‹</button><div class="lightbox-stage"><img id="lightbox-image" src="" alt=""></div><button class="lightbox-nav lightbox-next" type="button" aria-label="다음 이미지">›</button><span class="lightbox-status" id="lightbox-status" aria-live="polite"></span></dialog>
 
   <script>
     /*
@@ -912,32 +921,33 @@
     let lightboxItems=[];
     let lightboxIndex=0;
     const lightboxStage=document.querySelector('.lightbox-stage');
-    const lightboxHint=document.querySelector('#lightbox-hint');
-    /* 화면에 맞춘 상태에서 작게 보이는 세로로 긴 이미지(상세페이지 등)는
-       클릭하면 가로를 화면 폭에 맞춰 키우고 세로는 스크롤로 봅니다. */
-    function setLightboxZoom(on){
-      lightbox.classList.toggle('is-zoomed',on);
-      lightboxStage.scrollTop=0;
-      updateLightboxHint();
+    const resetLightboxScroll=() => { lightboxStage.scrollTop=0; lightboxStage.scrollLeft=0; };
+    /* 원본이 화면보다 커서 축소된 경우에만 확대할 수 있습니다(크롬 이미지 뷰어와 동일).
+       원본이 화면보다 작으면 돋보기 커서도 생기지 않고 눌러도 반응하지 않습니다. */
+    function updateLightboxZoomAbility(){
+      if(lightbox.classList.contains('is-zoomed')) return;
+      const bigger=lightboxImage.naturalWidth>lightboxImage.clientWidth+1||lightboxImage.naturalHeight>lightboxImage.clientHeight+1;
+      lightbox.classList.toggle('can-zoom',bigger);
     }
-    function updateLightboxHint(){
-      // 원본이 화면보다 세로로 길어 축소된 경우에만 안내를 띄웁니다.
-      const shrunk=lightboxImage.naturalHeight>lightboxImage.clientHeight+4;
-      lightboxHint.hidden=!shrunk&&!lightbox.classList.contains('is-zoomed');
-      lightboxHint.textContent=lightbox.classList.contains('is-zoomed')?'스크롤로 아래까지 · 클릭하면 원래대로':'클릭하면 확대 · 스크롤로 아래까지';
+    function setLightboxZoom(on){
+      if(on&&!lightbox.classList.contains('can-zoom')) return;
+      lightbox.classList.toggle('is-zoomed',on);
+      resetLightboxScroll();
+      if(!on) requestAnimationFrame(updateLightboxZoomAbility);
     }
     function showLightboxImage(index){
       lightboxIndex=(index+lightboxItems.length)%lightboxItems.length;
       const source=lightboxItems[lightboxIndex];
-      lightbox.classList.remove('is-zoomed'); // 이미지가 바뀌면 확대 상태는 초기화
-      lightboxStage.scrollTop=0;
+      lightbox.classList.remove('is-zoomed','can-zoom'); // 이미지가 바뀌면 확대 상태는 초기화
+      resetLightboxScroll();
       lightboxImage.src=source.src;
       lightboxImage.alt=source.alt;
       lightboxStatus.textContent=`${String(lightboxIndex+1).padStart(2,'0')} / ${String(lightboxItems.length).padStart(2,'0')}`;
-      if(lightboxImage.complete) updateLightboxHint();
+      if(lightboxImage.complete) requestAnimationFrame(updateLightboxZoomAbility);
     }
-    lightboxImage.addEventListener('load',updateLightboxHint);
+    lightboxImage.addEventListener('load',() => requestAnimationFrame(updateLightboxZoomAbility));
     lightboxImage.addEventListener('click',event => { event.stopPropagation(); setLightboxZoom(!lightbox.classList.contains('is-zoomed')); });
+    window.addEventListener('resize',() => { if(lightbox.open) updateLightboxZoomAbility(); });
     document.querySelector('#dialog-gallery').addEventListener('click',event => {
       const trigger=event.target.closest('.gallery-image');
       if(!trigger) return;
@@ -949,7 +959,7 @@
     document.querySelector('.lightbox-prev').addEventListener('click',() => showLightboxImage(lightboxIndex-1));
     document.querySelector('.lightbox-next').addEventListener('click',() => showLightboxImage(lightboxIndex+1));
     lightbox.addEventListener('click',event => { if(event.target===lightbox || event.target.classList.contains('lightbox-stage')) lightbox.close(); });
-    lightbox.addEventListener('close',() => { lightbox.classList.remove('is-zoomed'); lightboxStage.scrollTop=0; });
+    lightbox.addEventListener('close',() => { lightbox.classList.remove('is-zoomed','can-zoom'); resetLightboxScroll(); });
     document.addEventListener('keydown',event => {
       if(!lightbox.open) return;
       if(event.key==='ArrowLeft') showLightboxImage(lightboxIndex-1);
