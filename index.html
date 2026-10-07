@@ -315,6 +315,9 @@
     .g-say b { margin-bottom:11.2px; color:#fff; font:700 var(--fs-h4) "Manrope"; }
     .g-say p { margin:0; color:rgba(255,255,255,.74); font-size:.93rem; line-height:1.6; }
     .g-say p b { font:inherit; font-weight:700; color:rgba(255,255,255,.96); }
+    /* 제작 과정 자리에 들어가는 영상. 이미지 타일과 같은 모서리·배경을 씁니다. */
+    .g-video { position:relative; display:block; width:100%; overflow:hidden; border-radius:12.8px; background:rgba(255,255,255,.06); }
+    .g-video video { display:block; width:100%; height:auto; }
     .gallery-image { position:relative; display:block; width:100%; padding:0; overflow:hidden; border:0; border-radius:12.8px; background:#eee; cursor:zoom-in; }
     .g-grid .gallery-image:first-child { grid-column:1/-1; }
     .g-grid.is-even { grid-template-columns:repeat(var(--cols,2),minmax(0,1fr)); }
@@ -475,7 +478,7 @@
       <div class="section-head"><div><p class="eyebrow">Beyond modeling</p><h2>AI &amp; Design</h2></div><span class="counter">02 PROJECTS</span></div>
       <p class="lab-lead">3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다.</p>
       <div class="lab-grid">
-        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-turn-1.webp" alt="Ai SD Hunter 캐릭터 3면 턴어라운드"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
+        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-01.webp" alt="Ai SD Hunter 캐릭터 최종 렌더"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
         <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
       </div>
     </div></section>
@@ -577,9 +580,9 @@
         breakdown:[
           /* r = 이미지 원본 가로÷세로. 세 장의 폭이 이 비율대로 나뉘고 높이는 서로 같아집니다.
              이미지를 교체하면 새 파일의 비율로 r 값도 같이 바꿔주세요. */
-          { img:'bd-gunslinger-1', cap:'실루엣 수정', r:1.308 },
-          { img:'bd-gunslinger-2', cap:'팔 디테일 추가', r:1.308 },
-          { img:'bd-gunslinger-3', cap:'무릎 장식 수정', r:1.315 }
+          { img:'bd-gunslinger-1', cap:'실루엣 수정', r:1.306 },
+          { img:'bd-gunslinger-2', cap:'팔 디테일 추가', r:1.306 },
+          { img:'bd-gunslinger-3', cap:'무릎 장식 수정', r:1.306 }
         ],
         video:'assets/portfolio/video/gunslinger.webm',
         gallery:['gunslinger-01','gunslinger-02','gunslinger-03','gunslinger-04','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08']
@@ -595,9 +598,9 @@
         ],
         meta:{ PERIOD:'2026.05 ~ 2026.09 (약 7주)', SCOPE:SCOPE_3D, SPECS:'116,600 Tris / 4K Texture × 4', TOOLS:TOOLS_3D, CONCEPT:'Artstation - Kang jihun' },
         breakdown:[
-          { img:'bd-steampunk-1', cap:'스티치 추가', r:1.031 },
-          { img:'bd-steampunk-2', cap:'가죽 텍스처 적용', r:0.870 },
-          { img:'bd-steampunk-3', cap:'무기 제작', r:1.049 }
+          { img:'bd-steampunk-1', cap:'스티치 추가', r:1.030 },
+          { img:'bd-steampunk-2', cap:'가죽 텍스처 적용', r:1.030 },
+          { img:'bd-steampunk-3', cap:'무기 제작', r:1.030 }
         ],
         video:'assets/portfolio/video/steampunk.webm',
         gallery:['steampunk-01','steampunk-02','steampunk-03','steampunk-04','steampunk-05','steampunk-06','steampunk-07','steampunk-08','steampunk-09','steampunk-10','steampunk-11']
@@ -614,9 +617,9 @@
         ],
         meta:{ PERIOD:'2025.06 ~ 2026.09 (약 3주)', SCOPE:SCOPE_3D, SPECS:'26,900 Tris / 2K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Pinterest - Q Dreamy AI Studio' },
         breakdown:[
-          { img:'bd-elf-1', cap:'헤어 수정 전', r:1.825 },
-          { img:'bd-elf-2', cap:'헤어 수정 후', r:1.825 },
-          { img:'bd-elf-3', cap:'텍스처 및 본', r:0.930 }
+          { img:'bd-elf-1', cap:'헤어 수정 전', r:1.821 },
+          { img:'bd-elf-2', cap:'헤어 수정 후', r:1.821 },
+          { img:'bd-elf-3', cap:'텍스처 및 본', r:1.000 }
         ],
         video:'assets/portfolio/video/elf.webm',
         gallery:['elf-01','elf-02','elf-03','elf-04','elf-05','elf-06']
@@ -632,9 +635,9 @@
         ],
         meta:{ PERIOD:'2025.05 ~ 2026.06 (약 1주)', SCOPE:SCOPE_3D, SPECS:'11,000 Tris / 2K Texture × 1', TOOLS:'3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag', CONCEPT:'Instagram - dereklaufman, hanska3d' },
         breakdown:[
-          { img:'bd-monster-1', cap:'윤곽선 추가', r:1.308 },
-          { img:'bd-monster-2', cap:'텍스처 깊이감 추가', r:1.308 },
-          { img:'bd-monster-3', cap:'배경 제작', r:1.315 }
+          { img:'bd-monster-1', cap:'윤곽선 추가', r:1.306 },
+          { img:'bd-monster-2', cap:'텍스처 깊이감 추가', r:1.306 },
+          { img:'bd-monster-3', cap:'배경 제작', r:1.306 }
         ],
         video:'assets/portfolio/video/monster.webm',
         gallery:['monster-01','monster-02','monster-03','monster-04','monster-05','monster-06']
@@ -652,12 +655,12 @@
         steps:[
           { title:'원화 / 콘셉트 기획', layout:'side', images:[{ img:'ai-concept', cap:'캐릭터 원화' }],
             body:"'장마 도시로 파견된 조사원'을 콘셉트로 설정하고, AI를 활용해 캐릭터 원화를 제작했습니다. 의상 및 소품 디테일이 설정에 가장 잘 어울리는 시안을 선별해 이후 2D 모션과 3D 제작의 기준 원화로 잡았습니다." },
-          { title:'2D 캐릭터 애니메이션', layout:'split', cols:1, images:[{ img:'ai-sprite', cap:'스프라이트 시트 (대기 · 걷기 · 뛰기)' },{ img:'ai-motion', cap:'플립북 세팅' }],
+          { title:'2D 캐릭터 애니메이션', layout:'split', cols:1, images:[{ img:'ai-sprite', cap:'스프라이트 시트 (대기 · 걷기 · 뛰기)' },{ vid:'ai-motion', cap:'플립북 세팅' }],
             body:'원화를 바탕으로 AI를 통해 스프라이트 시트를 추출했습니다. 이를 언리얼 엔진을 활용해 자동 분할하고 플립북으로 세팅하여, 기본 동작인 대기, 걷기, 뛰기 3종 애니메이션을 구현했습니다.' },
           { title:'2D 배경 및 씬 구성', layout:'split',
             rows:[
               { cols:2, items:[{ img:'ai-bg', cap:'배경 원화' },{ img:'ai-parts', cap:'파츠 분리' }] },
-              { cols:1, items:[{ img:'ai-scene', cap:'언리얼 엔진 세팅' }] }
+              { cols:1, items:[{ vid:'ai-scene', cap:'언리얼 엔진 세팅' }] }
             ],
             body:'AI로 생성한 배경 원화를 포토샵으로 가져와 원경 배경, 건물, 다리 및 주요 오브젝트를 보정했습니다. 언리얼 엔진 상에서 깊이감 있게 평면 레이어를 배치하고, 맨 앞에 나이아가라 시스템으로 비 효과를 적용해 입체적인 느낌이 들도록 구성했습니다.' },
           { title:'3D 모델링 및 렌더링', layout:'split', cols:2,
@@ -665,13 +668,13 @@
             aside:[{ img:'ai-rig', cap:'리깅' }],
             body:'AI로 도출한 3D 모델의 폴리곤 구조를 정리하고 텍스처를 리터칭했습니다. 기본적인 포즈가 가능하도록 리깅 작업을 진행한 뒤, 마모셋으로 가져가 렌더링했습니다.' }
         ],
-        video:null, /* 영상 추가 위치: assets/portfolio/video/aihunter.webm 을 넣은 뒤 경로로 교체 */
+        video:'assets/portfolio/video/ai.webm',
         galleryHead:'Final render', galleryCols:2,
-        gallery:['ai-turn-1','ai-turn-2']
+        gallery:['ai-01','ai-02']
       },
       uidesign:{
         kind:'story', title:'UI & Content Design', sub:'UI · 상세페이지 디자인',
-        image:'assets/portfolio/ui-detail.webp', alt:'블랙프라이데이 프로모션 상세페이지', fit:'contain',
+        image:'assets/portfolio/hero-ui.webp', alt:'UI 및 상세페이지 디자인 대표 이미지',
         focus:[
           'UI — 웹 템플릿을 당사 서비스에 맞춰 리뉴얼하는 과정에서, 템플릿에 없는 세부 화면을 채우고 최종 웹사이트의 완성도를 높이는 데 집중했습니다.',
           '상세페이지 — 기획을 바탕으로, 신규 회원이 이벤트 참여 방법을 쉽게 이해하고 원활하게 행동할 수 있도록 정보 배치와 가독성에 집중하여 디자인했습니다.'
@@ -831,13 +834,32 @@
         button.append(image);
         return button;
       };
+      /* 데이터에 img 대신 vid 를 적으면 그 자리에 소리 없이 반복 재생되는 영상이 들어갑니다.
+         (assets/portfolio/video/<이름>.webm)
+         라이트박스는 이미지 전용이라 영상은 확대 대상에 넣지 않습니다 — 그래서 index 도 올리지 않아
+         확대 보기 순번이 어긋나지 않습니다. */
+      const videoTile=(name,label) => {
+        const frame=el('div','g-video');
+        const video=document.createElement('video');
+        video.src=`assets/portfolio/video/${name}.webm`;
+        video.muted=true; video.loop=true; video.autoplay=true; video.playsInline=true;
+        // muted · playsinline 은 '속성'으로도 달아야 자동재생 정책에 막히지 않습니다(특히 iOS 사파리).
+        ['muted','playsinline','autoplay','loop'].forEach(a => video.setAttribute(a,''));
+        video.preload='auto';
+        video.setAttribute('aria-label',label);
+        // 자동재생이 거부되는 환경을 대비해 로드 완료 시 한 번 더 재생을 시도합니다.
+        video.addEventListener('loadeddata',() => { updateDetailScrollCue(); video.play().catch(() => {}); },{once:true});
+        frame.append(video);
+        return frame;
+      };
       const figureRow=(items,cols,extraClass) => {
         const row=el('div',`g-row cols-${cols||Math.min(items.length,2)}${extraClass?' '+extraClass:''}`);
         row.append(...items.map(item => {
           const figure=el('figure','g-fig');
           // r : 이미지 원본 가로세로비. 폭을 비율대로 나누고 높이를 서로 맞추는 데 씁니다.
           if(item.r) figure.style.setProperty('--r',item.r);
-          figure.append(tile(item.img,`${project.title} ${item.cap||''}`.trim()));
+          const label=`${project.title} ${item.cap||''}`.trim();
+          figure.append(item.vid?videoTile(item.vid,label):tile(item.img,label));
           if(item.cap) figure.append(el('figcaption',null,item.cap));
           return figure;
         }));
