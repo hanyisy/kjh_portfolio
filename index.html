@@ -206,10 +206,15 @@
     footer { background:var(--mist); padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
     footer .wrap { display:flex; justify-content:space-between; gap:16px; }
 
-    dialog { width:min(896px,calc(100% - 27.2px)); max-height:calc(100vh - 27.2px); border:0; border-radius:22.4px; padding:0; overflow:auto; background:var(--milk); color:var(--ink); box-shadow:0 24px 80px rgba(24,18,22,.28); }
+    /* 높이는 svh(작은 뷰포트) 기준으로 잡습니다.
+       100vh 는 모바일 브라우저에서 '주소창이 숨은 상태'의 큰 높이라, 주소창이 보이면
+       모달이 실제 보이는 영역보다 커져서 위아래가 잘립니다(좌우는 width 기준이라 멀쩡).
+       svh 는 항상 가장 작은 높이라 주소창이 떠 있어도 잘리지 않고, 스크롤 중에
+       주소창이 접혔다 펴져도 모달 크기가 흔들리지 않습니다. 앞 줄은 구형 브라우저 대비. */
+    dialog { width:min(896px,calc(100% - 27.2px)); max-height:calc(100vh - 27.2px); max-height:calc(100svh - 27.2px); border:0; border-radius:22.4px; padding:0; overflow:auto; background:var(--milk); color:var(--ink); box-shadow:0 24px 80px rgba(24,18,22,.28); }
     dialog::backdrop { background:rgba(35,28,33,.72); backdrop-filter:blur(4.8px); }
     /* 오른쪽 이미지 패널이 3열을 넉넉히 담도록 상세 모달을 넓게 씁니다. */
-    #project-dialog { width:min(1280px,calc(100% - 32px)); height:min(812px,calc(100vh - 32px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+    #project-dialog { width:min(1280px,calc(100% - 32px)); height:min(812px,calc(100vh - 32px)); height:min(812px,calc(100svh - 32px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
     #project-dialog::-webkit-scrollbar { display:none; width:0; height:0; }
     .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:1.2rem; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
     /* 왼쪽(썸네일+설명)은 기존 폭을 유지하고, 늘어난 폭은 전부 오른쪽 이미지 패널이 가져갑니다. */
@@ -556,7 +561,7 @@
      * kind:'story'     → AI / 디자인 작업 (Focus + 메타 표 + 제작 과정)
      * video 에 경로를 넣으면 상세 모달 메인 썸네일 위에 재생 버튼이 생기고,
      * 클릭 시 썸네일(image)을 포스터로 한 채 영상이 재생됩니다. null 이면 썸네일만 표시.
-     * 영상 파일은 assets/portfolio/video/ 에 webm 으로 넣으세요.
+     * 영상 파일은 assets/portfolio/video/ 에 mp4(H.264)로 넣으세요.
      * ============================================================
      */
     const SCOPE_3D = '모델링 · 리토폴로지 · UV · 텍스처링 · 렌더';
@@ -584,7 +589,7 @@
           { img:'bd-gunslinger-2', cap:'팔 디테일 추가', r:1.306 },
           { img:'bd-gunslinger-3', cap:'무릎 장식 수정', r:1.945 }
         ],
-        video:'assets/portfolio/video/gunslinger.webm',
+        video:'assets/portfolio/video/gunslinger.mp4',
         gallery:['gunslinger-01','gunslinger-02','gunslinger-03','gunslinger-04','gunslinger-05','gunslinger-06','gunslinger-07','gunslinger-08']
       },
       steampunk:{
@@ -602,7 +607,7 @@
           { img:'bd-steampunk-2', cap:'가죽 텍스처 적용', r:1.030 },
           { img:'bd-steampunk-3', cap:'무기 제작', r:1.030 }
         ],
-        video:'assets/portfolio/video/steampunk.webm',
+        video:'assets/portfolio/video/steampunk.mp4',
         gallery:['steampunk-01','steampunk-02','steampunk-03','steampunk-04','steampunk-05','steampunk-06','steampunk-07','steampunk-08','steampunk-09','steampunk-10','steampunk-11']
       },
       elf:{
@@ -621,7 +626,7 @@
           { img:'bd-elf-2', cap:'헤어 수정 후', r:1.821 },
           { img:'bd-elf-3', cap:'텍스처 및 본', r:1.000 }
         ],
-        video:'assets/portfolio/video/elf.webm',
+        video:'assets/portfolio/video/elf.mp4',
         gallery:['elf-01','elf-02','elf-03','elf-04','elf-05','elf-06']
       },
       monster:{
@@ -639,7 +644,7 @@
           { img:'bd-monster-2', cap:'텍스처 깊이감 추가', r:1.306 },
           { img:'bd-monster-3', cap:'배경 제작', r:1.306 }
         ],
-        video:'assets/portfolio/video/monster.webm',
+        video:'assets/portfolio/video/monster.mp4',
         gallery:['monster-01','monster-02','monster-03','monster-04','monster-05','monster-06']
       },
       aihunter:{
@@ -668,7 +673,7 @@
             aside:[{ img:'ai-rig', cap:'리깅' }],
             body:'AI로 도출한 3D 모델의 폴리곤 구조를 정리하고 텍스처를 리터칭했습니다. 기본적인 포즈가 가능하도록 리깅 작업을 진행한 뒤, 마모셋으로 가져가 렌더링했습니다.' }
         ],
-        video:'assets/portfolio/video/ai.webm',
+        video:'assets/portfolio/video/ai.mp4',
         galleryHead:'Final render', galleryCols:2,
         gallery:['ai-01','ai-02']
       },
@@ -733,7 +738,11 @@
     let seekBusy=false, seekPending=null, seekWatchdog=0;
     function applySeek(t){
       seekBusy=true;
-      dialogVideo.currentTime=t;
+      /* fastSeek 은 정확한 프레임 대신 가장 가까운 키프레임으로 이동해 훨씬 가볍습니다.
+         턴테이블 회전은 프레임 단위 정확도가 필요 없고, 영상도 키프레임을 촘촘히(5프레임마다)
+         넣어 뒀으므로 눈에 보이는 차이 없이 빨라집니다. 지원하지 않는 브라우저는 currentTime 으로 내려갑니다. */
+      if(typeof dialogVideo.fastSeek==='function') dialogVideo.fastSeek(t);
+      else dialogVideo.currentTime=t;
       clearTimeout(seekWatchdog);
       seekWatchdog=setTimeout(() => { seekBusy=false; if(seekPending!==null){ const n=seekPending; seekPending=null; applySeek(n); } },300); // seeked 가 안 오는 경우 대비
     }
@@ -806,6 +815,25 @@
     dialog.addEventListener('close',resetHeroVideo);
     /* 상세 모달 본문은 projects 데이터로 자동 생성됩니다. 요소를 직접 건드릴 필요 없이 데이터만 수정하세요. */
     const el=(tag,cls,text) => { const node=document.createElement(tag); if(cls) node.className=cls; if(text!=null) node.textContent=text; return node; };
+    /* 제작 과정 영상은 화면에 보일 때만 재생합니다. 모달 갤러리는 길어서 영상이 금방
+       화면 밖으로 나가는데, 그때도 계속 디코딩하면 스크롤이 버벅입니다.
+       IntersectionObserver 는 모달이 <dialog> top-layer 안의 중첩 스크롤러에 있을 때
+       콜백이 오지 않아, 스크롤 때 위치를 직접 재는 방식으로 처리합니다. */
+    let stepVideos=[];
+    let stepVideoTicking=false;
+    function syncStepVideos(){
+      stepVideoTicking=false;
+      stepVideos.forEach(video => {
+        const box=video.getBoundingClientRect();
+        const visible=box.bottom>0&&box.top<window.innerHeight&&box.width>0;
+        if(visible){ if(video.paused) video.play().catch(() => {}); }
+        else if(!video.paused) video.pause();
+      });
+    }
+    function queueStepVideoSync(){
+      if(stepVideoTicking||!stepVideos.length) return;
+      stepVideoTicking=true; requestAnimationFrame(syncStepVideos);
+    }
     function renderOverview(project){
       document.querySelector('#dialog-title').textContent=project.title;
       document.querySelector('#dialog-sub').textContent=project.sub||'';
@@ -823,6 +851,7 @@
        확대 보기(라이트박스) 순번은 만들어진 이미지 순서대로 자동 부여됩니다. */
     function renderGallery(project){
       let index=0;
+      const collected=[];
       const tile=(name,alt) => {
         const button=el('button','gallery-image');
         button.type='button'; button.dataset.index=index++;
@@ -835,20 +864,21 @@
         return button;
       };
       /* 데이터에 img 대신 vid 를 적으면 그 자리에 소리 없이 반복 재생되는 영상이 들어갑니다.
-         (assets/portfolio/video/<이름>.webm)
+         (assets/portfolio/video/<이름>.mp4)
          라이트박스는 이미지 전용이라 영상은 확대 대상에 넣지 않습니다 — 그래서 index 도 올리지 않아
          확대 보기 순번이 어긋나지 않습니다. */
       const videoTile=(name,label) => {
         const frame=el('div','g-video');
         const video=document.createElement('video');
-        video.src=`assets/portfolio/video/${name}.webm`;
+        video.src=`assets/portfolio/video/${name}.mp4`;
         video.muted=true; video.loop=true; video.autoplay=true; video.playsInline=true;
         // muted · playsinline 은 '속성'으로도 달아야 자동재생 정책에 막히지 않습니다(특히 iOS 사파리).
         ['muted','playsinline','autoplay','loop'].forEach(a => video.setAttribute(a,''));
         video.preload='auto';
         video.setAttribute('aria-label',label);
         // 자동재생이 거부되는 환경을 대비해 로드 완료 시 한 번 더 재생을 시도합니다.
-        video.addEventListener('loadeddata',() => { updateDetailScrollCue(); video.play().catch(() => {}); },{once:true});
+        video.addEventListener('loadeddata',() => { updateDetailScrollCue(); syncStepVideos(); },{once:true});
+        collected.push(video);
         frame.append(video);
         return frame;
       };
@@ -917,6 +947,11 @@
       }
 
       document.querySelector('#dialog-gallery').replaceChildren(...blocks);
+      /* IntersectionObserver 는 아직 DOM 에 없는 요소를 observe 하면 콜백이 오지 않습니다.
+         그래서 블록을 모두 삽입한 뒤에 등록합니다.
+         disconnect 로 이전 작품의 영상 관찰도 함께 정리합니다. */
+      stepVideos=collected; // 이전 작품의 영상 목록은 여기서 교체됩니다
+      if(stepVideos.length) requestAnimationFrame(syncStepVideos);
     }
     function openProject(key){
       const project=projects[key];
@@ -937,6 +972,12 @@
     projectGalleryPane.addEventListener('scroll',updateDetailScrollCue,{passive:true});
     mobileDetailQuery.addEventListener('change',updateDetailScrollCue);
     dialogScrollCue.addEventListener('click',() => { const scroller=getDetailScroller(); scroller.scrollBy({top:Math.round(scroller.clientHeight*.72),behavior:'smooth'}); });
+    /* 모달 안의 스크롤러는 화면 폭에 따라 달라지므로(PC=갤러리 패널, 모바일=모달 자체)
+       두 곳 모두에 걸어 둡니다. 모달을 닫으면 목록을 비워 더 이상 계산하지 않습니다. */
+    dialog.addEventListener('scroll',queueStepVideoSync,{passive:true});
+    document.querySelector('#project-gallery-pane').addEventListener('scroll',queueStepVideoSync,{passive:true});
+    window.addEventListener('resize',queueStepVideoSync);
+    dialog.addEventListener('close',() => { stepVideos.forEach(v => v.pause()); stepVideos=[]; });
     const lightbox=document.querySelector('#image-lightbox');
     const lightboxImage=document.querySelector('#lightbox-image');
     const lightboxStatus=document.querySelector('#lightbox-status');
