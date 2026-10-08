@@ -324,8 +324,8 @@
     .g-row.cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .g-fig { margin:0; display:grid; gap:6.4px; align-content:start; }
     .g-fig figcaption { color:rgba(255,255,255,.68); font-size:.82rem; letter-spacing:.01em; }
-    /* 세로로 긴 참고 이미지가 패널을 다 차지하지 않도록 높이를 제한하고 가운데 정렬 */
-    .g-fig .gallery-image { background:rgba(255,255,255,.06); }
+    /* 세로로 긴 참고 이미지가 패널을 다 차지하지 않도록 높이를 제한하고 가운데 정렬.
+       남는 자리에 드러나는 배경색은 아래 .gallery-image 기본값을 그대로 씁니다. */
     .g-fig .gallery-image img { max-height:460px; object-fit:contain; }
     /* 한 줄에 한 장만 깔리는 경우엔 높이 제한 없이 원래 비율 그대로 */
     .g-row.cols-1 .gallery-image img { max-height:none; object-fit:fill; }
@@ -359,7 +359,12 @@
     /* 제작 과정 자리에 들어가는 영상. 이미지 타일과 같은 모서리·배경을 씁니다. */
     .g-video { position:relative; display:block; width:100%; overflow:hidden; border-radius:12.8px; background:rgba(255,255,255,.06); }
     .g-video video { display:block; width:100%; height:auto; }
-    .gallery-image { position:relative; display:block; width:100%; padding:0; overflow:hidden; border:0; border-radius:12.8px; background:#eee; cursor:zoom-in; }
+    /* 배경은 반드시 '패널과 비슷한 색'이어야 합니다. 둥근 모서리에서는 배경과 이미지가
+       각각 안티앨리어싱되며 두 번 섞이는데, 이 색이 밝으면 그 섞인 몇 픽셀이
+       곡선을 따라 흰 띠처럼 드러납니다. (예전 값 #eee 로는 거의 검은 렌더 이미지의
+       모서리에 휘도 75짜리 선이 생겼습니다 - 패널 26, 이미지 19 사이에서.)
+       반투명 흰색이라 패널이 어두운 PC 에서도, 밝아지는 모바일에서도 같이 맞습니다. */
+    .gallery-image { position:relative; display:block; width:100%; padding:0; overflow:hidden; border:0; border-radius:12.8px; background:rgba(255,255,255,.06); cursor:zoom-in; }
     .g-grid .gallery-image:first-child { grid-column:1/-1; }
     .g-grid.is-even { grid-template-columns:repeat(var(--cols,2),minmax(0,1fr)); }
     .g-grid.is-even .gallery-image:first-child { grid-column:auto; }
