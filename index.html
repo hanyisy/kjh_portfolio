@@ -20,16 +20,20 @@
     :root {
       --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --mist:#eddee3; /* Contact·footer 배경 */ --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
       /* 글자 계층 - 위에서부터 한 단계씩 약 1.3배씩 줄어듭니다. 크기는 여기서만 바꾸세요.
-         1400px 기준: 48 / 42 / 34 / 21 / 15.5 / 13.8 / 12.4 / 10.7 px */
-      --fs-display:clamp(2.3rem,3.7vw,3.49rem);  /* 히어로 대제목 */
-      --fs-h1:clamp(2.2rem,3.2vw,3.05rem);       /* 이름 · 맺음말 */
-      --fs-h2:clamp(1.85rem,2.6vw,2.48rem);      /* 섹션 제목 */
-      --fs-h3:clamp(1.25rem,1.7vw,1.53rem);      /* 카드 · 모달 제목 */
-      --fs-h4:1.13rem;                           /* 소제목 */
-      --fs-body:1rem; --fs-sm:.9rem; --fs-xs:.78rem;
+         1400px 기준: 48 / 42 / 34 / 21 / 17 / 15 / 13 / 12 px
+         단위가 rem 이 아니라 px 인 이유: 예전엔 html 의 font-size 를 86% 로 줄여 놔서
+         1rem = 13.76px 이었고, .82rem 같은 값이 11.2832px 처럼 소수점으로 떨어졌습니다.
+         글자 크기는 전부 px 로 적어 적은 값이 그대로 나오게 했습니다. */
+      --fs-display:clamp(32px,3.7vw,48px);  /* 히어로 대제목 */
+      --fs-h1:clamp(30px,3.2vw,42px);       /* 이름 · 맺음말 */
+      --fs-h2:clamp(25px,2.6vw,34px);      /* 섹션 제목 */
+      --fs-h3:clamp(17px,1.7vw,21px);      /* 카드 · 모달 제목 */
+      --fs-h4:17px;                           /* 소제목 */
+      --fs-body:15px; --fs-sm:13px; --fs-xs:12px;
     }
     * { box-sizing:border-box; }
-    html { scroll-behavior:smooth; font-size:86%; }
+    /* 글자 크기는 모두 px 이므로 루트 크기를 줄이지 않습니다(예전 font-size:86% 제거). */
+    html { scroll-behavior:smooth; }
     /* 한글은 DM Sans · Manrope 에 글립이 없어 다음 글꼴로 떨어집니다.
        그 자리를 Pretendard 가 받습니다(위 <head> 에서 불러옵니다). 그래서 보는 사람
        컴퓨터에 Pretendard 가 깔려 있든 없든, 윈도우·맥·안드로이드에서 같은 한글이 나옵니다.
@@ -55,27 +59,27 @@
        세 줄이 0.1초 간격으로 차례로 올라와, 멈춰 있는 화면이 아니라 열리는 화면으로 보이게 했습니다. */
     /* 배경은 기존 연핑크 그대로. Portfolio 만 흰색으로 띄우고
        나머지 작은 글자는 어두운 회색이라 연핑크 위에서 잘 읽힙니다. */
-    .loader-year { display:block; margin-bottom:6.4px; color:rgba(41,36,41,.52); font:800 1.08rem "Manrope"; letter-spacing:.01em; }
-    .loader-title { margin:0; color:#fff; font:800 clamp(3rem,10vw,5.6rem)/.96 "Manrope"; letter-spacing:-.055em; }
-    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 .82rem "Manrope"; letter-spacing:.2em; }
+    .loader-year { display:block; margin-bottom:6.4px; color:rgba(41,36,41,.52); font:800 16px "Manrope"; letter-spacing:.01em; }
+    .loader-title { margin:0; color:#fff; font:800 clamp(41px,10vw,77px)/.96 "Manrope"; letter-spacing:-.055em; }
+    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 12px "Manrope"; letter-spacing:.2em; }
     .loader-year,.loader-title,.loader-role { opacity:0; transform:translateY(14px); animation:loader-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
     .loader-title { animation-delay:.1s; }
     .loader-role { animation-delay:.2s; }
     @keyframes loader-rise { to { opacity:1; transform:none; } }
     .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:40px; }
-    .loader-stage { color:rgba(41,36,41,.6); font:600 .74rem "Manrope"; letter-spacing:.14em; }
+    .loader-stage { color:rgba(41,36,41,.6); font:600 11px "Manrope"; letter-spacing:.14em; }
     .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
     .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
-    .loader-count { min-width:33.6px; color:var(--ink); font:700 .82rem "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
+    .loader-count { min-width:33.6px; color:var(--ink); font:700 12px "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
 
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
     .page-progress { height:3.2px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
     .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,#f7bfd0 0%,#ed82a8 54%,#d94f84 100%); box-shadow:0 0 11.2px rgba(217,79,132,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
-    .brand { font:800 1rem/1 "Manrope"; letter-spacing:-.03em; display:flex; align-items:center; gap:8px; }
+    .brand { font:800 15px/1 "Manrope"; letter-spacing:-.03em; display:flex; align-items:center; gap:8px; }
     .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
     .brand-mark svg { width:15.2px; }
-    .nav-links { display:flex; align-items:center; gap:22.4px; font-size:.9rem; font-weight:600; }
+    .nav-links { display:flex; align-items:center; gap:22.4px; font-size:13px; font-weight:600; }
     .nav-links a { position:relative; }
     .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-4.8px; height:2px; background:var(--pink-strong); transition:.25s ease; }
     .nav-links a:hover::after,.nav-links a:focus-visible::after { right:0; }
@@ -93,14 +97,14 @@
     .hero::before { width:clamp(420px,58vw,800px); aspect-ratio:1.45; left:-58%; top:-40%; transform:rotate(-16deg); background:radial-gradient(ellipse at center,rgba(247,191,208,.4),rgba(247,191,208,.15) 38%,rgba(247,191,208,0) 66%); }
     .hero::after { width:clamp(200px,24vw,340px); aspect-ratio:1; left:-14%; top:48%; background:radial-gradient(circle,rgba(233,111,153,.11),rgba(233,111,153,0) 68%); }
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
-    .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:.78rem; letter-spacing:.15em; text-transform:uppercase; }
+    .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
     /* 한글 두 줄이라 영문 기준(.98)으로는 행간이 붙어 보여 넉넉하게 띄웠습니다. */
     h1 { margin:0; font:800 var(--fs-display)/1.2 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
     h1 em { display:block; margin-top:.06em; font-style:normal; color:var(--pink-strong); }
-    .hero-copy { margin:20px 0 0; color:var(--muted); max-width:328px; font-size:1.03rem; }
+    .hero-copy { margin:20px 0 0; color:var(--muted); max-width:328px; font-size:15px; }
     .hero-meta { display:flex; flex-wrap:wrap; gap:6.4px; margin-top:20px; }
-    .tag { padding:5.6px 8.8px; border:1px solid var(--line); border-radius:799.2px; font-size:.78rem; font-weight:600; background:rgba(255,255,255,.55); }
+    .tag { padding:5.6px 8.8px; border:1px solid var(--line); border-radius:799.2px; font-size:12px; font-weight:600; background:rgba(255,255,255,.55); }
     .hero-visual { position:relative; isolation:isolate; overflow:visible; }
     /* 배경색은 '페이지 색'이어야 합니다. 둥근 모서리로 잘릴 때 그 곡선은 안티앨리어싱이라
        바깥 몇 픽셀이 '이미지 + 뒤 배경색'으로 섞여 칠해집니다. 여기가 어두운 색이면
@@ -112,14 +116,14 @@
     .hero-slide.is-active { opacity:1; z-index:1; }
     .hero-slide img,.hero-slide video { width:100%; height:100%; object-fit:cover; }
     .hero-slide.is-portrait img { object-position:center 18%; }
-    .hero-note { position:absolute; z-index:5; right:-14.4px; bottom:-14.4px; padding:10.4px 12.8px; border-radius:11.2px; background:var(--pink); font:700 .76rem "Manrope"; letter-spacing:.08em; transform:rotate(-3deg); }
+    .hero-note { position:absolute; z-index:5; right:-14.4px; bottom:-14.4px; padding:10.4px 12.8px; border-radius:11.2px; background:var(--pink); font:700 11px "Manrope"; letter-spacing:.08em; transform:rotate(-3deg); }
 
     .selected { padding:72px 0 104px; }
     .section-head { display:flex; align-items:end; justify-content:space-between; gap:19.2px; margin-bottom:32px; }
     .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.12 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
     /* 섹션 제목 옆 '04 PROJECTS' 는 곁들이는 정보라 눈에 덜 띄게 색만 죽였습니다.
        크기는 그대로 둡니다(요청이 색이었습니다). */
-    .counter { color:rgba(41,36,41,.42); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .counter { color:rgba(41,36,41,.42); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
     .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
     .project-card:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:4px; border-radius:var(--radius); }
@@ -132,13 +136,13 @@
     .project-card:hover .thumb img { transform:scale(1.035); }
     .card-label { position:absolute; inset:auto 14.4px 14.4px 14.4px; padding:13.6px 14.4px; display:flex; justify-content:space-between; align-items:center; gap:14.4px; border-radius:14.4px; color:#fff; background:rgba(31,25,29,.82); backdrop-filter:blur(9.6px); }
     .card-label strong { display:block; font:700 var(--fs-h4)/1.25 "Manrope"; }
-    .card-label small { color:rgba(255,255,255,.78); font-size:.76rem; }
+    .card-label small { color:rgba(255,255,255,.78); font-size:11px; }
     /* 화살표는 글자(↗) 대신 SVG 로 그립니다. 글립은 글꼴마다 길이도 위치도 달라
        작품 카드와 AI·UI 카드의 모양이 서로 어긋나고, 원 안에서 위로 떠 보였습니다. */
     .arrow { width:28.8px; height:28.8px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); }
     .project-placeholder { position:relative; min-width:0; opacity:.42; pointer-events:none; }
     .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgba(247,191,208,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(247,191,208,.08) 1px,transparent 1px); background-size:24px 24px; }
-    .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 2rem/1 "Manrope"; }
+    .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 28px/1 "Manrope"; }
 
     /* ──────────────────────────────────────────────────────────────
        AI & Design 파트 (AI / UI·상세페이지)
@@ -150,7 +154,7 @@
        전에는 선 + 그라데이션이 꼭대기부터 .22 로 시작해 윗 섹션과 딱 끊겨 보였습니다. */
     .lab { padding:88px 0 104px; background:linear-gradient(180deg,rgba(247,191,208,0),rgba(247,191,208,.15) 30%,rgba(247,191,208,0) 82%); }
     .hero .eyebrow,.selected .eyebrow,.lab .eyebrow { color:var(--pink-strong); }
-    .lab-lead,.section-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:.9rem; }
+    .lab-lead,.section-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:13px; }
     .lab-grid { display:grid; gap:16px; }
     .lab-card { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); width:100%; padding:0; overflow:hidden; border:1px solid rgba(233,111,153,.26); border-radius:var(--radius); background:#fff; color:inherit; text-align:left; cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s ease; }
     /* 호버 시 회색 그림자를 쓰지 않습니다. 배경이 연핑크라 회색 그림자·회색 테두리가
@@ -161,12 +165,12 @@
     .lab-shot img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
     .lab-card:hover .lab-shot img { transform:scale(1.04); }
     .lab-body { padding:25.6px 25.6px 22.4px; display:flex; flex-direction:column; gap:11.2px; }
-    .lab-kind { color:var(--pink-strong); font:700 .68rem "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
+    .lab-kind { color:var(--pink-strong); font:700 10px "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
     .lab-body h3 { margin:0; font:800 var(--fs-h3)/1.1 "Manrope"; letter-spacing:-.05em; }
-    .lab-body p { margin:0; color:var(--muted); font-size:.85rem; line-height:1.55; }
+    .lab-body p { margin:0; color:var(--muted); font-size:13px; line-height:1.55; }
     .lab-tags { display:flex; flex-wrap:wrap; gap:6.4px; }
-    .lab-tags span { padding:5.6px 10.4px; border:1px solid var(--line); border-radius:799.2px; color:var(--muted); font:600 .71rem "Manrope"; }
-    .lab-open { margin-top:auto; padding-top:6px; display:inline-flex; align-items:center; gap:9.6px; font:700 .74rem "Manrope"; letter-spacing:.1em; }
+    .lab-tags span { padding:5.6px 10.4px; border:1px solid var(--line); border-radius:799.2px; color:var(--muted); font:600 11px "Manrope"; }
+    .lab-open { margin-top:auto; padding-top:6px; display:inline-flex; align-items:center; gap:9.6px; font:700 11px "Manrope"; letter-spacing:.1em; }
     .lab-open i { display:grid; place-items:center; width:27.2px; height:27.2px; border-radius:50%; background:var(--pink); color:var(--ink); font-style:normal; }
     .arrow svg,.lab-open i svg { display:block; width:14.4px; height:14.4px; }
 
@@ -174,11 +178,11 @@
     .about-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:72px; }
     .about .eyebrow { color:var(--pink); }
     .profile-identity h2 { font-size:var(--fs-h1); word-break:keep-all; }
-    .profile-name-en { display:block; margin-top:11.2px; color:var(--pink); font:700 .84rem "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
+    .profile-name-en { display:block; margin-top:11.2px; color:var(--pink); font:700 13px "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
     .profile-contact { align-self:end; display:grid; gap:10.4px; padding-bottom:4px; }
     .profile-contact div { display:grid; grid-template-columns:92px 1fr; gap:14.4px; align-items:baseline; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,.14); }
-    .profile-contact small { color:var(--pink); font:700 .7rem "Manrope"; letter-spacing:.12em; }
-    .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(1rem,1.8vw,1.35rem) "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; overflow-wrap:anywhere; }
+    .profile-contact small { color:var(--pink); font:700 11px "Manrope"; letter-spacing:.12em; }
+    .profile-contact a,.profile-contact span { color:rgba(255,255,255,.86); font:600 clamp(15px,1.8vw,19px) "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; overflow-wrap:anywhere; }
     /* 카카오톡·아트스테이션은 '읽는 정보'가 아니라 '누르는 링크'라, 전화번호와 달리
        화살표를 붙이고 호버 반응을 줘서 눌리는 곳임이 보이도록 했습니다. */
     .profile-contact a { text-decoration:none; transition:color .2s ease; }
@@ -188,10 +192,10 @@
     /* 하단 개수 표기(1 ENTRY 등)를 뺐으므로 최소 높이를 낮춰 빈 공간이 남지 않게 했습니다.
        세 장의 높이는 그리드가 알아서 가장 긴 카드에 맞춰 줍니다. */
     .profile-card { min-height:136px; padding:19.2px 19.2px 22.4px; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.14); border-radius:16px; background:rgba(255,255,255,.035); }
-    .profile-card small { color:var(--pink); font:700 .72rem "Manrope"; letter-spacing:.12em; text-transform:uppercase; }
+    .profile-card small { color:var(--pink); font:700 11px "Manrope"; letter-spacing:.12em; text-transform:uppercase; }
     .profile-card h3 { margin:23.2px 0 6.4px; font:700 var(--fs-h4)/1.4 "Manrope"; letter-spacing:-.025em; }
-    .profile-card p { margin:0; color:rgba(255,255,255,.66); font-size:.86rem; }
-    .cert-list { display:grid; gap:4.8px; margin-top:16px; color:rgba(255,255,255,.82); font-size:.83rem; }
+    .profile-card p { margin:0; color:rgba(255,255,255,.66); font-size:13px; }
+    .cert-list { display:grid; gap:4.8px; margin-top:16px; color:rgba(255,255,255,.82); font-size:12px; }
     .cert-list span { display:flex; gap:9.6px; }
     .cert-list b { flex:0 0 auto; min-width:2.6em; color:var(--pink); white-space:nowrap; }
     .cert-list.is-range b { min-width:6.3em; } /* "2000~2000" 형식 */
@@ -226,17 +230,17 @@
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
     /* 세 줄(메일 · 카카오 · 아트스테이션)을 완전히 같은 색·크기로 맞춥니다.
        전에는 메일만 화살표가 본문색 굵은 글씨라 혼자 진하게 떠 보였습니다. */
-    .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgba(41,36,41,.62); font-size:.86rem; font-weight:600; text-decoration:none; transition:color .2s ease; }
+    .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgba(41,36,41,.62); font-size:13px; font-weight:600; text-decoration:none; transition:color .2s ease; }
     .contact-info a:hover,.contact-info a:focus-visible { color:var(--ink); }
     .contact-info a span { color:inherit; font-size:inherit; }
     .contact-info a i { font-style:normal; }
     .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(2,auto); gap:9.6px; align-items:center; }
-    .documents-copy b { display:block; font:700 1rem "Manrope"; }
-    .documents-copy span { color:rgba(41,36,41,.6); font-size:.86rem; }
-    .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
+    .documents-copy b { display:block; font:700 15px "Manrope"; }
+    .documents-copy span { color:rgba(41,36,41,.6); font-size:13px; }
+    .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 12px "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
     .download-btn:hover,.download-btn:focus-visible { background:#fff; transform:translateY(-2px); }
     .download-btn.is-pending { opacity:.48; cursor:not-allowed; }
-    footer { padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
+    footer { padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:12px; }
     footer .wrap { display:flex; justify-content:space-between; gap:16px; }
 
     /* 높이는 svh(작은 뷰포트) 기준으로 잡습니다.
@@ -253,14 +257,14 @@
        .93rem 처럼 적으면 12.7968px 같은 소수점이 나옵니다. px 로 두면 값이 그대로 나옵니다.
        아래 모바일 블록에서 이 7개만 덮어써서 PC 와 모바일 크기를 따로 둡니다. */
     #project-dialog {
-      --md-title:24px;   /* 작품명 */
-      --md-sub:14px;     /* 작품명 아래 한 줄 설명 */
-      --md-label:13px;   /* FOCUS · FINAL RENDER 같은 대문자 라벨 */
-      --md-body:16px;    /* 본문 문장 */
-      --md-meta:15px;    /* PERIOD · SCOPE 표 */
-      --md-cap:14px;     /* 이미지 아래 캡션 */
-      --md-step:19px;    /* 제작 과정 단계 제목 */
-      --md-chip:12px;    /* 영상 위에 떠 있는 안내 칩 2개 */
+      --md-title:23px;   /* 작품명 */
+      --md-sub:13px;     /* 작품명 아래 한 줄 설명 */
+      --md-label:12px;   /* FOCUS · FINAL RENDER 같은 대문자 라벨 */
+      --md-body:15px;    /* 본문 문장 */
+      --md-meta:14px;    /* PERIOD · SCOPE 표 */
+      --md-cap:13px;     /* 이미지 아래 캡션 */
+      --md-step:18px;    /* 제작 과정 단계 제목 */
+      --md-chip:11px;    /* 영상 위에 떠 있는 안내 칩 2개 */
     }
     #project-dialog::-webkit-scrollbar { display:none; width:0; height:0; }
     .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:18px; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
@@ -385,7 +389,7 @@
     .g-grid.is-even { grid-template-columns:repeat(var(--cols,2),minmax(0,1fr)); }
     .g-grid.is-even .gallery-image:first-child { grid-column:auto; }
     .gallery-image img { width:100%; transition:transform .35s ease; }
-    .gallery-image::after { content:"확대 보기 +"; position:absolute; right:9.6px; bottom:9.6px; padding:5.6px 8px; border-radius:799.2px; color:#fff; background:rgba(25,20,23,.76); backdrop-filter:blur(6.4px); font:700 .72rem "Manrope"; letter-spacing:.04em; opacity:0; transform:translateY(4px); transition:.25s ease; }
+    .gallery-image::after { content:"확대 보기 +"; position:absolute; right:9.6px; bottom:9.6px; padding:5.6px 8px; border-radius:799.2px; color:#fff; background:rgba(25,20,23,.76); backdrop-filter:blur(6.4px); font:700 11px "Manrope"; letter-spacing:.04em; opacity:0; transform:translateY(4px); transition:.25s ease; }
     .gallery-image:hover img { transform:scale(1.018); }
     .gallery-image:hover::after,.gallery-image:focus-visible::after { opacity:1; transform:none; }
     .gallery-image:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:2.4px; }
@@ -404,11 +408,11 @@
     .lightbox.is-zoomed .lightbox-stage { place-items:safe center; }
     .lightbox.is-zoomed .lightbox-stage img { max-width:none; max-height:none; cursor:zoom-out; }
     .lightbox-close,.lightbox-nav { position:fixed; z-index:2; display:grid; place-items:center; border:1px solid rgba(255,255,255,.2); color:#fff; background:rgba(20,16,19,.72); backdrop-filter:blur(8px); cursor:pointer; }
-    .lightbox-close { top:14.4px; right:16px; width:38.4px; height:38.4px; border-radius:50%; font-size:1.5rem; }
-    .lightbox-nav { top:50%; width:41.6px; height:60.8px; border-radius:12.8px; font-size:1.8rem; transform:translateY(-50%); }
+    .lightbox-close { top:14.4px; right:16px; width:38.4px; height:38.4px; border-radius:50%; font-size:21px; }
+    .lightbox-nav { top:50%; width:41.6px; height:60.8px; border-radius:12.8px; font-size:25px; transform:translateY(-50%); }
     .lightbox-prev { left:16px; }
     .lightbox-next { right:16px; }
-    .lightbox-status { position:fixed; left:50%; bottom:17.6px; z-index:2; min-width:73.6px; padding:6.4px 11.2px; border-radius:799.2px; background:rgba(20,16,19,.72); color:rgba(255,255,255,.82); font:700 .78rem "Manrope"; letter-spacing:.12em; text-align:center; transform:translateX(-50%); }
+    .lightbox-status { position:fixed; left:50%; bottom:17.6px; z-index:2; min-width:73.6px; padding:6.4px 11.2px; border-radius:799.2px; background:rgba(20,16,19,.72); color:rgba(255,255,255,.82); font:700 12px "Manrope"; letter-spacing:.12em; text-align:center; transform:translateX(-50%); }
     /* 커서를 따라다니는 핑크 빛.
        z-index:-1 이라 '페이지 배경 위 · 본문 아래'에 깔립니다. 이 한 줄이 핵심인데,
        그래서 배경이 불투명한 섹션(About)에서는 저절로 가려지고
@@ -511,7 +515,7 @@
     @media (max-width:448px) {
       .card-label { inset:auto 8px 8px 8px; padding:10.4px 11.2px; }
       .hero-frame { border-radius:17.6px; }
-      .loader-title { font-size:clamp(2.4rem,15vw,4rem); }
+      .loader-title { font-size:clamp(33px,15vw,55px); }
       .modal-gallery { padding:0 14.4px 19.2px; }
       /* 전/후 비교나 2장 묶음은 모바일에서도 PC처럼 2열로 둬야 비교도 되고 길이도 짧습니다.
          전체 렌더 그리드만 1열로 내립니다. */
