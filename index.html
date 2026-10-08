@@ -9,6 +9,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- 한글 본문용 Pretendard. 공식 저장소(orioncactus)의 'dynamic subset' 판입니다.
+       @font-face 를 직접 9개 쓰면 굵기마다 한글 전체가 담긴 1MB 가까운 파일을 받지만,
+       이 CSS 는 글꼴을 유니코드 구간 100여 개로 쪼개 두어 페이지에 실제로 쓰인 글자가
+       든 조각만 내려옵니다. 굵기 100~900 은 그대로 다 쓸 수 있습니다. -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f7bfd0'/%3E%3Cpath d='M17 18h30v28H17z' fill='%23fff8f8' stroke='%232c2529' stroke-width='4'/%3E%3Cpath d='M24 18v28M40 18v28M17 29h30M17 38h30' stroke='%232c2529' stroke-width='3'/%3E%3Ccircle cx='46' cy='17' r='7' fill='%23ed6d98'/%3E%3C/svg%3E">
   <style>
     :root {
@@ -24,8 +30,11 @@
     }
     * { box-sizing:border-box; }
     html { scroll-behavior:smooth; font-size:86%; }
-    /* 한글은 DM Sans · Manrope 에 글립이 없어 OS 기본 글꼴로 떨어집니다.
-       한글 전용 대체 글꼴을 명시해 윈도우/맥에서 같은 인상이 나오도록 맞췄습니다. */
+    /* 한글은 DM Sans · Manrope 에 글립이 없어 다음 글꼴로 떨어집니다.
+       그 자리를 Pretendard 가 받습니다(위 <head> 에서 불러옵니다). 그래서 보는 사람
+       컴퓨터에 Pretendard 가 깔려 있든 없든, 윈도우·맥·안드로이드에서 같은 한글이 나옵니다.
+       뒤의 Apple SD Gothic Neo · 맑은 고딕은 Pretendard 를 못 받았을 때의 보험입니다.
+       영문·숫자는 앞에 있는 DM Sans(본문) · Manrope(제목)가 그대로 맡습니다. */
     body { margin:0; color:var(--ink); background:var(--milk); font-family:"DM Sans",Pretendard,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif; font-size:var(--fs-body); line-height:1.6; }
     body.loading { overflow:hidden; }
     button,a { -webkit-tap-highlight-color:transparent; }
