@@ -267,6 +267,8 @@
     .details div { display:grid; grid-template-columns:5.2em minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
     .details span { color:var(--muted); font-weight:700; letter-spacing:.04em; }
     .details b { font-weight:600; overflow-wrap:anywhere; }
+    .details .meta-link { color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-decoration-color:rgba(41,36,41,.32); text-underline-offset:2.5px; transition:text-decoration-color .2s ease,color .2s ease; }
+    .details .meta-link:hover,.details .meta-link:focus-visible { color:var(--pink-strong); text-decoration-color:var(--pink-strong); }
     /* 갤러리 패널: 이미지 아래에 설명이 붙는 블록 단위로 쌓입니다.
        breakdown(3컷 참고 이미지) → steps(제작 과정) → gallery(최종 렌더) 순으로 자동 생성됩니다. */
     /* 블록 사이 간격(Focus 3컷 ↔ 제작 과정 ↔ Final render)을 넉넉히 둬
@@ -483,7 +485,7 @@
       <div class="section-head"><div><p class="eyebrow">Beyond modeling</p><h2>AI &amp; Design</h2></div><span class="counter">02 PROJECTS</span></div>
       <p class="lab-lead">3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다.</p>
       <div class="lab-grid">
-        <button class="lab-card" data-project="aihunter" aria-label="Ai SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-01.webp" alt="Ai SD Hunter 캐릭터 최종 렌더"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>Ai SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
+        <button class="lab-card" data-project="aihunter" aria-label="AI SD Hunter 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/ai-01.webp" alt="AI SD Hunter 캐릭터 최종 렌더"></div><div class="lab-body"><span class="lab-kind">AI Pipeline · 2D &amp; 3D</span><h3>AI SD Hunter</h3><p>AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.</p><div class="lab-tags"><span>Unreal Engine</span><span>Aether AI</span><span>Tripo AI</span><span>3ds Max</span><span>Marmoset Toolbag</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
         <button class="lab-card" data-project="uidesign" aria-label="UI &amp; Content Design 프로젝트 상세 보기"><div class="lab-shot"><img loading="lazy" src="assets/portfolio/lab-ui.webp" alt="자사몰 UI 및 블랙프라이데이 상세페이지 디자인"></div><div class="lab-body"><span class="lab-kind">UI · Content Design</span><h3>UI &amp; Content Design</h3><p>자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.</p><div class="lab-tags"><span>Figma</span><span>Photoshop</span><span>Illustrator</span></div><span class="lab-open">VIEW PROJECT <i aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.2 10.8 10.8 5.2M10.8 5.2H6.4M10.8 5.2v4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></i></span></div></button>
       </div>
     </div></section>
@@ -574,14 +576,14 @@
      */
     const projects = {
       gunslinger:{
-        kind:'character', title:'Gunslinger', sub:'반실사 여성 건슬리어 스타일 캐릭터',
+        kind:'character', title:'Gunslinger', sub:'반실사 여성 건슬링어 스타일 캐릭터',
         image:'assets/portfolio/hero-gunslinger.webp', alt:'Gunslinger 캐릭터 렌더',
         focus:[
           '원화의 퍼 코트는 캐릭터의 실루엣이 가려지지 않도록 폭이 좁고 긴 일자형 망토와 어깨 장식으로 대체하여 제작했습니다.',
           '가벼워진 상체의 디테일을 보완하고자 레이스와 시스루 옷을 추가했습니다.',
           '무릎은 반복되는 총알 형태나 부피감이 부족했던 장식 대신, 입체감을 살린 경량 갑주 형태로 제작하여 원화의 밀도감을 유지하면서도 조화로운 실루엣이 되도록 제작했습니다.'
         ],
-        meta:{ PERIOD:'2025.10 ~ 2026.06 (약 6주)', SCOPE:SCOPE_3D, SPECS:'139,600 Tris / 4K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Artstation - DS K' },
+        meta:{ PERIOD:'2025.10 ~ 2026.06 (약 6주)', SCOPE:SCOPE_3D, SPECS:'139,600 Tris / 4K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:{ source:'ArtStation', name:'DS K', href:'https://www.artstation.com/artwork/v2kn5O' } },
         breakdown:[
           /* r = 이미지 원본 가로÷세로. 세 장의 폭이 이 비율대로 나뉘고 높이는 서로 같아집니다.
              이미지를 교체하면 새 파일의 비율로 r 값도 같이 바꿔주세요. */
@@ -601,7 +603,7 @@
           '또한 실루엣 및 시각적 밀도를 높이기 위해, AI 원화를 참고하여 컨셉에 맞는 무기를 추가 제작했습니다.',
           '렌더링 단계에서는 굴절 효과를 적용한 액체 표현과 파티클 연출, 바닥 에셋을 사용하여 완성도를 높였습니다.'
         ],
-        meta:{ PERIOD:'2026.05 ~ 2026.09 (약 7주)', SCOPE:SCOPE_3D, SPECS:'116,600 Tris / 4K Texture × 4', TOOLS:TOOLS_3D, CONCEPT:'Artstation - Kang jihun' },
+        meta:{ PERIOD:'2026.05 ~ 2026.09 (약 7주)', SCOPE:SCOPE_3D, SPECS:'116,600 Tris / 4K Texture × 4', TOOLS:TOOLS_3D, CONCEPT:{ source:'ArtStation', name:'Kang jihun', href:'https://www.artstation.com/artwork/wJwE56' } },
         breakdown:[
           { img:'bd-steampunk-1', cap:'스티치 추가', r:1.030 },
           { img:'bd-steampunk-2', cap:'가죽 텍스처 적용', r:1.030 },
@@ -620,7 +622,7 @@
           '또한 디테일한 표정 연출을 위해 얼굴에도 리깅 작업을 진행했습니다.',
           '원화의 투명한 분위기는 그라데이션으로 표현했으며, 지브러쉬에서 추출한 노멀 맵을 더해 손맵만으로 부족했던 입체감도 보완했습니다.'
         ],
-        meta:{ PERIOD:'2025.06 ~ 2026.09 (약 3주)', SCOPE:SCOPE_3D, SPECS:'26,900 Tris / 2K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:'Pinterest - Q Dreamy AI Studio' },
+        meta:{ PERIOD:'2025.06 ~ 2026.09 (약 3주)', SCOPE:SCOPE_3D, SPECS:'26,900 Tris / 2K Texture × 3', TOOLS:TOOLS_3D, CONCEPT:{ source:'Pinterest', name:'Q Dreamy AI Studio', href:'https://kr.pinterest.com/pin/391461392629691331/' } },
         breakdown:[
           { img:'bd-elf-1', cap:'헤어 수정 전', r:1.821 },
           { img:'bd-elf-2', cap:'헤어 수정 후', r:1.821 },
@@ -638,7 +640,7 @@
           '최종 렌더링은 원화처럼 일러스트 느낌을 목표로 언덕 및 표지판, 깃발 에셋을 제작했습니다.',
           '안정적인 삼각형 구도로 오브젝트들을 배치하여 시선이 중심 캐릭터에 집중되도록 구성했습니다.'
         ],
-        meta:{ PERIOD:'2025.05 ~ 2026.06 (약 1주)', SCOPE:SCOPE_3D, SPECS:'11,000 Tris / 2K Texture × 1', TOOLS:'3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag', CONCEPT:'Instagram - dereklaufman, hanska3d' },
+        meta:{ PERIOD:'2025.05 ~ 2026.06 (약 1주)', SCOPE:SCOPE_3D, SPECS:'11,000 Tris / 2K Texture × 1', TOOLS:'3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag', CONCEPT:{ source:'ArtStation', name:'hanska3d', href:'https://www.artstation.com/artwork/xDQaxm' } },
         breakdown:[
           { img:'bd-monster-1', cap:'윤곽선 추가', r:1.306 },
           { img:'bd-monster-2', cap:'텍스처 깊이감 추가', r:1.306 },
@@ -648,15 +650,15 @@
         gallery:['monster-01','monster-02','monster-03','monster-04','monster-05','monster-06']
       },
       aihunter:{
-        kind:'story', title:'Ai SD Hunter', sub:'스타일라이즈 판타지 스타일 캐릭터 · AI 파이프라인',
-        image:'assets/portfolio/hero-ai.webp', alt:'Ai SD Hunter 캐릭터 렌더',
+        kind:'story', title:'AI SD Hunter', sub:'스타일라이즈 판타지 스타일 캐릭터 · AI 파이프라인',
+        image:'assets/portfolio/hero-ai.webp', alt:'AI SD Hunter 캐릭터 렌더',
         focus:[
           "AI를 활용해 '장마 도시 조사원' 컨셉의 캐릭터 원화와 2D 배경, 3D 모델 리소스를 제작했습니다.",
           '스프라이트 시트를 언리얼 엔진에서 세팅하여 대기·걷기·뛰기 3종의 2D 스프라이트 모션을 완성했습니다.',
           '2D 배경을 포토샵으로 레이어 분할 및 보정 후 언리얼에 원근별로 배치하고, 나이아가라로 비 효과를 더해 씬을 구성했습니다.',
           '생성된 3D 모델의 폴리곤과 텍스처를 정리하고 리깅을 적용한 뒤, 마모셋에서 렌더링했습니다.'
         ],
-        meta:{ PERIOD:'2026.05 ~ 2026.08 (약 1주)', SCOPE:'3D 모델링(리토폴로지·UV·텍스처링) · 2D 스프라이트 애니메이션 · 언리얼 씬 구성 · 렌더', SPECS:'12,600 Tris / 2K Texture × 1, 1K Texture × 1', TOOLS:'3ds Max, Photoshop, Cinema 4D, Marmoset Toolbag, Unreal Engine, Aether AI, Tripo AI, ChatGPT, Gemini', CONCEPT:'AI로 자체 원화 제작' },
+        meta:{ PERIOD:'2026.05 ~ 2026.08 (약 1주)', SCOPE:'3D 모델 최적화(리토폴로지·UV·텍스처링) · 2D 스프라이트 애니메이션 · 언리얼 씬 구성 · 렌더', SPECS:'12,600 Tris / 2K Texture × 1, 1K Texture × 1', TOOLS:'3ds Max, Photoshop, Cinema 4D, Marmoset Toolbag, Unreal Engine, Aether AI, Tripo AI, ChatGPT, Gemini', CONCEPT:'AI로 자체 원화 제작' },
         steps:[
           { title:'원화 / 콘셉트 기획', layout:'side', images:[{ img:'ai-concept', cap:'캐릭터 원화' }],
             body:"'장마 도시로 파견된 조사원'을 콘셉트로 설정하고, AI를 활용해 캐릭터 원화를 제작했습니다. 의상 및 소품 디테일이 설정에 가장 잘 어울리는 시안을 선별해 이후 2D 모션과 3D 제작의 기준 원화로 잡았습니다." },
@@ -668,7 +670,7 @@
               { cols:1, items:[{ vid:'ai-scene', cap:'언리얼 엔진 세팅' }] }
             ],
             body:'AI로 생성한 배경 원화를 포토샵으로 가져와 원경 배경, 건물, 다리 및 주요 오브젝트를 보정했습니다. 언리얼 엔진 상에서 깊이감 있게 평면 레이어를 배치하고, 맨 앞에 나이아가라 시스템으로 비 효과를 적용해 입체적인 느낌이 들도록 구성했습니다.' },
-          { title:'3D 모델링 및 렌더링', layout:'split', cols:2,
+          { title:'3D 모델 최적화 및 렌더링', layout:'split', cols:2,
             images:[{ img:'ai-model-a', cap:'모델링 수정 전' },{ img:'ai-model-b', cap:'모델링 수정 후' },{ img:'ai-tex-a', cap:'텍스처 수정 전' },{ img:'ai-tex-b', cap:'텍스처 수정 후' },{ img:'ai-uv-a', cap:'UV 수정 전' },{ img:'ai-uv-b', cap:'UV 수정 후' }],
             aside:[{ img:'ai-rig', cap:'리깅' }],
             body:'AI로 도출한 3D 모델의 폴리곤 구조를 정리하고 텍스처를 리터칭했습니다. 기본적인 포즈가 가능하도록 리깅 작업을 진행한 뒤, 마모셋으로 가져가 렌더링했습니다.' }
@@ -843,7 +845,16 @@
 
       document.querySelector('#dialog-meta').replaceChildren(...Object.entries(project.meta||{}).map(([label,value]) => {
         const row=document.createElement('div');
-        row.append(el('span',null,label),el('b',null,value));
+        const cell=el('b');
+        /* 값이 { source, name, href } 면 '출처 - 이름' 으로 쓰고 이름만 링크로 만듭니다.
+           색은 본문색을 그대로 쓰고(파란 링크 색 X) 옅은 밑줄로만 눌릴 수 있음을 알립니다. */
+        if(value&&typeof value==='object'&&value.href){
+          cell.append(`${value.source} - `);
+          const link=el('a','meta-link',value.name);
+          link.href=value.href; link.target='_blank'; link.rel='noopener noreferrer';
+          cell.append(link);
+        } else cell.textContent=value;
+        row.append(el('span',null,label),cell);
         return row;
       }));
     }
