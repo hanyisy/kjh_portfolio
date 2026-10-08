@@ -312,12 +312,13 @@
     .modal-hero.is-started.show-hint .hero-drag-hint { opacity:1; }
     /* gap 이 '제목 블록 ↔ FOCUS 설명 ↔ PERIOD 표' 사이 간격을 모두 맡습니다.
        14px 일 때 설명문이 아래 표에 붙어 읽기 어려웠으므로 넉넉히 띄웠습니다. */
-    .modal-body { padding:14px 20px 26px; display:grid; gap:28px; }
+    .modal-body { padding:28px 20px 26px; display:grid; gap:28px; }
     .modal-body h3 { margin:0; font:800 var(--md-title)/1.05 "Manrope"; letter-spacing:-.05em; }
     .modal-sub { margin:5px 0 0; color:var(--pink-strong); font:700 var(--md-sub) "Manrope"; letter-spacing:.02em; }
     /* 본문 블록(Focus / 브레이크다운 / 제작 과정) 공통 소제목 */
     .block-title { display:block; margin-bottom:6px; color:var(--ink); font:700 var(--md-label) "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
-    .focus-block p { margin:0 0 3px; color:var(--muted); font-size:var(--md-body); line-height:1.55; }
+    /* 문단 사이 3px 는 줄 간격과 거의 같아 두 주제가 한 덩어리로 읽혔습니다. */
+    .focus-block p { margin:0 0 10px; color:var(--muted); font-size:var(--md-body); line-height:1.55; }
     .focus-block p:last-child { margin-bottom:0; }
     .details { display:grid; align-content:start; gap:4px; font-size:var(--md-meta); }
     .details div { display:grid; grid-template-columns:5.2em minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
