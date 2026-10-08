@@ -219,7 +219,10 @@
     .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:1.2rem; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
     /* 왼쪽(썸네일+설명)은 기존 폭을 유지하고, 늘어난 폭은 전부 오른쪽 이미지 패널이 가져갑니다. */
     .project-detail-layout { height:100%; display:grid; grid-template-columns:minmax(280px,.6fr) minmax(0,1.4fr); }
-    .project-overview { min-width:0; overflow-y:auto; scrollbar-width:none; border-right:1px solid var(--line); background:var(--milk); }
+    /* 오른쪽 테두리를 쓰지 않습니다. --line 은 반투명 어두운 색인데 이 패널 배경이
+       거의 흰색(--milk)이라 합성 결과가 밝은 회색이 되고, 옆의 어두운 갤러리 패널과
+       맞닿으면 흰 줄처럼 보입니다. 왼쪽은 밝고 오른쪽은 어두워 색만으로 이미 구분됩니다. */
+    .project-overview { min-width:0; overflow-y:auto; scrollbar-width:none; background:var(--milk); }
     .project-overview::-webkit-scrollbar { display:none; width:0; height:0; }
     .project-gallery-wrap { position:relative; min-width:0; min-height:0; background:#1c181b; }
     .project-gallery-pane { height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; }
