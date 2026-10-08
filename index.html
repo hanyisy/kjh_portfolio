@@ -193,7 +193,16 @@
     .ability-track { height:4px; border-radius:79.2px; background:rgba(255,255,255,.12); overflow:hidden; }
     .ability-track i { display:block; width:var(--level); height:100%; border-radius:inherit; background:var(--pink); }
 
-    .contact { padding:100px 0 32px; background:var(--mist); }
+    /* 커서 빛을 Contact·footer 에서도 보이게 하는 부분.
+       이 두 섹션은 불투명한 --mist 배경이라 z-index:-1 로 깔린 .cursor-glow 를 덮어 버립니다.
+       그래서 똑같은 핑크 빛을 '섹션 자신의 배경 이미지'로 한 번 더 그립니다.
+       background-attachment:fixed 덕분에 그라데이션의 기준 상자가 뷰포트가 되어,
+       JS 가 심어 준 커서 좌표(--cgx/--cgy = clientX/clientY)를 그대로 쓸 수 있고
+       스크롤해도 빛이 커서에 붙어 있습니다. 배경이라 섹션 밖으로 삐져나오지도 않고,
+       두 섹션이 같은 좌표계를 쓰니 경계에서 빛이 끊기지 않고 이어집니다.
+       반지름 368px·정지점 44%/72% 는 위 .cursor-glow(520px 원)와 같은 모양입니다. */
+    .contact,footer { background-color:var(--mist); background-image:radial-gradient(circle 368px at var(--cgx,50vw) var(--cgy,50vh),rgba(247,191,208,calc(.46*var(--cga,0))),rgba(247,191,208,calc(.18*var(--cga,0))) 44%,rgba(247,191,208,0) 72%); background-repeat:no-repeat; background-attachment:fixed; }
+    .contact { padding:100px 0 32px; }
     .contact-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
     .contact h2 { max-width:608px; font-size:var(--fs-h1); }
     /* 맺음말은 제목에 딸린 보조 문장이라 굵기를 낮추고(800 → 600) 색도 어둡게 둡니다. */
@@ -211,7 +220,7 @@
     .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 .8rem "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
     .download-btn:hover,.download-btn:focus-visible { background:#fff; transform:translateY(-2px); }
     .download-btn.is-pending { opacity:.48; cursor:not-allowed; }
-    footer { background:var(--mist); padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
+    footer { padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:.8rem; }
     footer .wrap { display:flex; justify-content:space-between; gap:16px; }
 
     /* 높이는 svh(작은 뷰포트) 기준으로 잡습니다.
@@ -367,14 +376,21 @@
     .lightbox-status { position:fixed; left:50%; bottom:17.6px; z-index:2; min-width:73.6px; padding:6.4px 11.2px; border-radius:799.2px; background:rgba(20,16,19,.72); color:rgba(255,255,255,.82); font:700 .78rem "Manrope"; letter-spacing:.12em; text-align:center; transform:translateX(-50%); }
     /* 커서를 따라다니는 핑크 빛.
        z-index:-1 이라 '페이지 배경 위 · 본문 아래'에 깔립니다. 이 한 줄이 핵심인데,
-       그래서 배경이 불투명한 섹션(About·Contact·footer)에서는 저절로 가려지고
+       그래서 배경이 불투명한 섹션(About)에서는 저절로 가려지고
        밝은 섹션(히어로·Modeling·AI & Design)에서만 보입니다. 따로 분기할 필요가 없습니다.
        작품 카드(.thumb)도 불투명하므로 빛이 카드에 가려지고, 카드 둘레를 따라
-       번지는 모양이 됩니다. 크기·농도는 아래 width/height 와 rgba 로 조절하세요. */
+       번지는 모양이 됩니다. 크기·농도는 아래 width/height 와 rgba 로 조절하세요.
+       Contact·footer 는 불투명한 --mist 배경이라 이 방식으로는 가려지므로,
+       같은 빛을 그쪽 '배경 이미지'로 한 번 더 그립니다(아래 .contact 참고).
+       커서 좌표(--cgx/--cgy)는 JS 가 body 에 심고 두 곳이 같이 상속받습니다. */
+    body { --cga:0; }         /* 빛의 세기. 마우스가 움직이기 전엔 0(=안 보임) */
+    body.glow-active { --cga:1; }
     .cursor-glow { position:fixed; z-index:-1; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(circle,rgba(247,191,208,.46),rgba(247,191,208,.18) 44%,rgba(247,191,208,0) 72%); transform:translate3d(var(--cgx,50vw),var(--cgy,50vh),0); will-change:transform; }
     body.glow-active .cursor-glow { opacity:1; }
     /* 손가락으로 쓰는 기기엔 커서가 없으니 아예 만들지 않습니다. */
-    @media (hover:none),(pointer:coarse) { .cursor-glow { display:none; } }
+    /* 손가락 기기에선 빛 자체를 그리지 않습니다. background-attachment:fixed 는
+       모바일에서 스크롤 성능을 깎기도 해서 배경 그라데이션도 같이 내립니다. */
+    @media (hover:none),(pointer:coarse) { .cursor-glow { display:none; } .contact,footer { background-image:none; } }
     .reveal { opacity:0; transform:translateY(16px); transition:.7s cubic-bezier(.2,.7,.2,1); }
     .reveal.in { opacity:1; transform:none; }
 
@@ -479,6 +495,7 @@
       /* 애니메이션이 꺼지면 시작 상태(opacity:0)로 멈춰 글자가 안 보이므로 되돌려 줍니다. */
       .loader-year,.loader-title,.loader-role { opacity:1; transform:none; }
       .cursor-glow { display:none; }
+      .contact,footer { background-image:none; }
     }
   </style>
 </head>
@@ -1086,10 +1103,12 @@
       let targetX=window.innerWidth/2,targetY=window.innerHeight/2,glowRunning=false;
       // 커서 좌표를 그대로 반영해 바짝 따라옵니다. 한 프레임에 한 번만 칠해
       // pointermove 가 몰려 들어와도 작업이 쌓이지 않습니다.
+      // 좌표는 body 에 심습니다. 그래야 .cursor-glow 와 Contact·footer 의
+      // 배경 그라데이션이 같은 값을 상속받아 한 덩어리처럼 움직입니다.
       const stepGlow=() => {
         glowRunning=false;
-        cursorGlow.style.setProperty('--cgx',targetX+'px');
-        cursorGlow.style.setProperty('--cgy',targetY+'px');
+        document.body.style.setProperty('--cgx',targetX+'px');
+        document.body.style.setProperty('--cgy',targetY+'px');
       };
       window.addEventListener('pointermove',event => {
         if(event.pointerType!=='mouse') return;
