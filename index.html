@@ -130,7 +130,9 @@
        작품 추가 위치: .lab-grid 안에 .lab-card 를 하나 더 넣고
        projects 데이터에 같은 data-project 키로 상세 정보를 추가하세요.
        ────────────────────────────────────────────────────────────── */
-    .lab { padding:88px 0 104px; border-top:1px solid var(--line); background:linear-gradient(180deg,rgba(247,191,208,.22),rgba(247,191,208,0) 68%); }
+    /* 경계선(border-top)을 없애고, 배경도 맨 위에서 투명하게 시작해 서서히 올라오게 합니다.
+       전에는 선 + 그라데이션이 꼭대기부터 .22 로 시작해 윗 섹션과 딱 끊겨 보였습니다. */
+    .lab { padding:88px 0 104px; background:linear-gradient(180deg,rgba(247,191,208,0),rgba(247,191,208,.15) 30%,rgba(247,191,208,0) 82%); }
     .hero .eyebrow,.selected .eyebrow,.lab .eyebrow { color:var(--pink-strong); }
     .lab-lead,.section-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:.9rem; }
     .lab-grid { display:grid; gap:16px; }
@@ -367,7 +369,7 @@
        밝은 섹션(히어로·Modeling·AI & Design)에서만 보입니다. 따로 분기할 필요가 없습니다.
        작품 카드(.thumb)도 불투명하므로 빛이 카드에 가려지고, 카드 둘레를 따라
        번지는 모양이 됩니다. 크기·농도는 아래 width/height 와 rgba 로 조절하세요. */
-    .cursor-glow { position:fixed; z-index:-1; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(circle,rgba(233,111,153,.4),rgba(247,191,208,.17) 42%,rgba(247,191,208,0) 70%); transform:translate3d(var(--cgx,50vw),var(--cgy,50vh),0); will-change:transform; }
+    .cursor-glow { position:fixed; z-index:-1; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(circle,rgba(247,191,208,.46),rgba(247,191,208,.18) 44%,rgba(247,191,208,0) 72%); transform:translate3d(var(--cgx,50vw),var(--cgy,50vh),0); will-change:transform; }
     body.glow-active .cursor-glow { opacity:1; }
     /* 손가락으로 쓰는 기기엔 커서가 없으니 아예 만들지 않습니다. */
     @media (hover:none),(pointer:coarse) { .cursor-glow { display:none; } }
@@ -1079,14 +1081,13 @@
        마우스가 있는 기기에서만, 그리고 '모션 최소화'가 아닐 때만 동작합니다. */
     const cursorGlow=document.querySelector('#cursor-glow');
     if(cursorGlow&&matchMedia('(hover: hover) and (pointer: fine)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
-      let targetX=window.innerWidth/2,targetY=window.innerHeight/2;
-      let glowX=targetX,glowY=targetY,glowRunning=false;
+      let targetX=window.innerWidth/2,targetY=window.innerHeight/2,glowRunning=false;
+      // 커서 좌표를 그대로 반영해 바짝 따라옵니다. 한 프레임에 한 번만 칠해
+      // pointermove 가 몰려 들어와도 작업이 쌓이지 않습니다.
       const stepGlow=() => {
-        glowX+=(targetX-glowX)*.14; glowY+=(targetY-glowY)*.14;
-        cursorGlow.style.setProperty('--cgx',glowX.toFixed(1)+'px');
-        cursorGlow.style.setProperty('--cgy',glowY.toFixed(1)+'px');
-        if(Math.abs(targetX-glowX)>.5||Math.abs(targetY-glowY)>.5) requestAnimationFrame(stepGlow);
-        else glowRunning=false;
+        glowRunning=false;
+        cursorGlow.style.setProperty('--cgx',targetX+'px');
+        cursorGlow.style.setProperty('--cgy',targetY+'px');
       };
       window.addEventListener('pointermove',event => {
         if(event.pointerType!=='mouse') return;
