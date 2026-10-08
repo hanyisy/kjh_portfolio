@@ -102,7 +102,12 @@
     .hero-meta { display:flex; flex-wrap:wrap; gap:6.4px; margin-top:20px; }
     .tag { padding:5.6px 8.8px; border:1px solid var(--line); border-radius:799.2px; font-size:.78rem; font-weight:600; background:rgba(255,255,255,.55); }
     .hero-visual { position:relative; isolation:isolate; overflow:visible; }
-    .hero-frame { position:relative; z-index:1; overflow:hidden; aspect-ratio:16/10; border-radius:25.6px; background:#171316; box-shadow:0 22.4px 64px rgba(64,31,44,.15); pointer-events:none; user-select:none; }
+    /* 배경색은 '페이지 색'이어야 합니다. 둥근 모서리로 잘릴 때 그 곡선은 안티앨리어싱이라
+       바깥 몇 픽셀이 '이미지 + 뒤 배경색'으로 섞여 칠해집니다. 여기가 어두운 색이면
+       그 섞인 띠가 검은 테두리처럼 보입니다. 페이지 색으로 두면 섞여도 티가 나지 않습니다.
+       슬라이드가 교차 전환될 때도(두 장이 반투명으로 겹치는 순간) 뒤 색이 살짝 비치는데,
+       이것도 어두운 색이면 화면이 울컥 어두워집니다. */
+    .hero-frame { position:relative; z-index:1; overflow:hidden; aspect-ratio:16/10; border-radius:25.6px; background:var(--milk); box-shadow:0 22.4px 64px rgba(64,31,44,.15); pointer-events:none; user-select:none; }
     .hero-slide { position:absolute; inset:0; opacity:0; transition:opacity 1.15s ease; }
     .hero-slide.is-active { opacity:1; z-index:1; }
     .hero-slide img,.hero-slide video { width:100%; height:100%; object-fit:cover; }
