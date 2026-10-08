@@ -117,7 +117,9 @@
     .selected { padding:72px 0 104px; }
     .section-head { display:flex; align-items:end; justify-content:space-between; gap:19.2px; margin-bottom:32px; }
     .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.12 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
-    .counter { color:var(--muted); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    /* 섹션 제목 옆 '04 PROJECTS' 는 곁들이는 정보라 눈에 덜 띄게 색만 죽였습니다.
+       크기는 그대로 둡니다(요청이 색이었습니다). */
+    .counter { color:rgba(41,36,41,.42); font-size:.82rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
     .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
     .project-card:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:4px; border-radius:var(--radius); }
@@ -246,8 +248,22 @@
     dialog::backdrop { background:rgba(35,28,33,.72); backdrop-filter:blur(4.8px); }
     /* 오른쪽 이미지 패널이 3열을 넉넉히 담도록 상세 모달을 넓게 씁니다. */
     #project-dialog { width:min(1280px,calc(100% - 32px)); height:min(812px,calc(100vh - 32px)); height:min(812px,calc(100svh - 32px)); overflow:hidden; scrollbar-width:none; -ms-overflow-style:none; }
+    /* 상세 모달의 글자 크기는 여기 7개 값에서만 정합니다.
+       rem 이 아니라 px 인 이유: html 의 font-size 가 86% 라 1rem = 13.76px 이고,
+       .93rem 처럼 적으면 12.7968px 같은 소수점이 나옵니다. px 로 두면 값이 그대로 나옵니다.
+       아래 모바일 블록에서 이 7개만 덮어써서 PC 와 모바일 크기를 따로 둡니다. */
+    #project-dialog {
+      --md-title:24px;   /* 작품명 */
+      --md-sub:14px;     /* 작품명 아래 한 줄 설명 */
+      --md-label:13px;   /* FOCUS · FINAL RENDER 같은 대문자 라벨 */
+      --md-body:16px;    /* 본문 문장 */
+      --md-meta:15px;    /* PERIOD · SCOPE 표 */
+      --md-cap:14px;     /* 이미지 아래 캡션 */
+      --md-step:19px;    /* 제작 과정 단계 제목 */
+      --md-chip:12px;    /* 영상 위에 떠 있는 안내 칩 2개 */
+    }
     #project-dialog::-webkit-scrollbar { display:none; width:0; height:0; }
-    .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:1.2rem; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
+    .close { position:absolute; right:12.8px; top:12.8px; z-index:8; width:35.2px; height:35.2px; border:0; border-radius:50%; background:rgba(255,255,255,.9); color:var(--ink); font-size:18px; cursor:pointer; box-shadow:0 6.4px 19.2px rgba(20,15,18,.14); }
     /* 왼쪽(썸네일+설명)은 기존 폭을 유지하고, 늘어난 폭은 전부 오른쪽 이미지 패널이 가져갑니다. */
     .project-detail-layout { height:100%; display:grid; grid-template-columns:minmax(280px,.6fr) minmax(0,1.4fr); }
     /* 오른쪽 테두리를 쓰지 않습니다. --line 은 반투명 어두운 색인데 이 패널 배경이
@@ -258,7 +274,7 @@
     .project-gallery-wrap { position:relative; min-width:0; min-height:0; background:#1c181b; }
     .project-gallery-pane { height:100%; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:none; -ms-overflow-style:none; }
     .project-gallery-pane::-webkit-scrollbar { display:none; width:0; height:0; }
-    .dialog-scroll-cue { position:absolute; z-index:5; left:50%; bottom:16px; display:flex; align-items:center; gap:8px; min-height:35.2px; padding:0 12.8px; border:1px solid rgba(255,255,255,.28); border-radius:799.2px; color:#fff; background:rgba(28,22,26,.82); backdrop-filter:blur(9.6px); box-shadow:0 8px 25.6px rgba(20,15,18,.22); font:700 .7rem "Manrope"; letter-spacing:.12em; cursor:pointer; transform:translateX(-50%); transition:opacity .3s ease,visibility .3s ease,transform .3s ease; }
+    .dialog-scroll-cue { position:absolute; z-index:5; left:50%; bottom:16px; display:flex; align-items:center; gap:8px; min-height:35.2px; padding:0 12.8px; border:1px solid rgba(255,255,255,.28); border-radius:799.2px; color:#fff; background:rgba(28,22,26,.82); backdrop-filter:blur(9.6px); box-shadow:0 8px 25.6px rgba(20,15,18,.22); font:700 var(--md-chip) "Manrope"; letter-spacing:.12em; cursor:pointer; transform:translateX(-50%); transition:opacity .3s ease,visibility .3s ease,transform .3s ease; }
     .dialog-scroll-cue i { position:relative; width:14.4px; height:19.2px; border:1px solid rgba(255,255,255,.58); border-radius:8px; }
     .dialog-scroll-cue i::after { content:""; position:absolute; left:50%; top:4px; width:2.4px; height:4.8px; border-radius:79.2px; background:var(--pink); transform:translateX(-50%); animation:scroll-cue 1.5s ease-in-out infinite; }
     .dialog-scroll-cue.is-hidden { opacity:0; visibility:hidden; transform:translate(-50%,6.4px); pointer-events:none; }
@@ -288,16 +304,16 @@
     .modal-hero.has-video:not(.is-started):hover .hero-play,.modal-hero.has-video:not(.is-started):focus-within .hero-play,.modal-hero.has-video.is-started:not(.is-playing):not(.is-scrubbing) .hero-play { opacity:1; transform:translate(-50%,-50%) scale(1); }
     .modal-hero.is-playing .hero-play,.modal-hero.is-scrubbing .hero-play { pointer-events:none; }
     @media (hover:none) { .modal-hero.has-video:not(.is-started) .hero-play { opacity:1; transform:translate(-50%,-50%) scale(1); } }
-    .hero-drag-hint { position:absolute; z-index:3; left:50%; bottom:18px; padding:6px 11px; border-radius:999px; color:rgba(255,255,255,.9); background:rgba(28,22,26,.6); backdrop-filter:blur(8px); font:700 .62rem "Manrope"; letter-spacing:.1em; white-space:nowrap; pointer-events:none; opacity:0; transform:translateX(-50%); transition:opacity .3s ease; }
+    .hero-drag-hint { position:absolute; z-index:3; left:50%; bottom:18px; padding:6px 11px; border-radius:999px; color:rgba(255,255,255,.9); background:rgba(28,22,26,.6); backdrop-filter:blur(8px); font:700 var(--md-chip) "Manrope"; letter-spacing:.1em; white-space:nowrap; pointer-events:none; opacity:0; transform:translateX(-50%); transition:opacity .3s ease; }
     .modal-hero.is-started.show-hint .hero-drag-hint { opacity:1; }
     .modal-body { padding:14px 20px 26px; display:grid; gap:14px; }
-    .modal-body h3 { margin:0; font:800 var(--fs-h3)/1.05 "Manrope"; letter-spacing:-.05em; }
-    .modal-sub { margin:5px 0 0; color:var(--pink-strong); font:700 .87rem "Manrope"; letter-spacing:.02em; }
+    .modal-body h3 { margin:0; font:800 var(--md-title)/1.05 "Manrope"; letter-spacing:-.05em; }
+    .modal-sub { margin:5px 0 0; color:var(--pink-strong); font:700 var(--md-sub) "Manrope"; letter-spacing:.02em; }
     /* 본문 블록(Focus / 브레이크다운 / 제작 과정) 공통 소제목 */
-    .block-title { display:block; margin-bottom:6px; color:var(--ink); font:700 .78rem "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
-    .focus-block p { margin:0 0 3px; color:var(--muted); font-size:.94rem; line-height:1.55; }
+    .block-title { display:block; margin-bottom:6px; color:var(--ink); font:700 var(--md-label) "Manrope"; letter-spacing:.16em; text-transform:uppercase; }
+    .focus-block p { margin:0 0 3px; color:var(--muted); font-size:var(--md-body); line-height:1.55; }
     .focus-block p:last-child { margin-bottom:0; }
-    .details { display:grid; align-content:start; gap:4px; font-size:.89rem; }
+    .details { display:grid; align-content:start; gap:4px; font-size:var(--md-meta); }
     .details div { display:grid; grid-template-columns:5.2em minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
     .details span { color:var(--muted); font-weight:700; letter-spacing:.04em; }
     .details b { font-weight:600; overflow-wrap:anywhere; }
@@ -315,7 +331,7 @@
     .modal-gallery > * { margin:0; } /* p 기본 마진 제거. 간격은 아래 두 줄로만 정합니다 */
     .modal-gallery > * + * { margin-top:52px; }
     .modal-gallery > .g-group + * { margin-top:15.2px; } /* 구분 라벨 바로 아래 블록은 라벨에 붙임 */
-    .g-head { display:block; margin-bottom:15.2px; color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    .g-head { display:block; margin-bottom:15.2px; color:rgba(255,255,255,.62); font:700 var(--md-label) "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
     /* 최종 렌더는 한 줄에 2장. 3장이면 한 장이 작아져 렌더 디테일이 안 보입니다.
        첫 장만 전체폭으로 깔아 대표 컷 역할을 합니다. */
     .g-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11.2px; }
@@ -323,7 +339,7 @@
     .g-row.cols-2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .g-row.cols-3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
     .g-fig { margin:0; display:grid; gap:6.4px; align-content:start; }
-    .g-fig figcaption { color:rgba(255,255,255,.68); font-size:.82rem; letter-spacing:.01em; }
+    .g-fig figcaption { color:rgba(255,255,255,.68); font-size:var(--md-cap); letter-spacing:.01em; }
     /* 세로로 긴 참고 이미지가 패널을 다 차지하지 않도록 높이를 제한하고 가운데 정렬.
        남는 자리에 드러나는 배경색은 아래 .gallery-image 기본값을 그대로 씁니다. */
     .g-fig .gallery-image img { max-height:460px; object-fit:contain; }
@@ -348,13 +364,13 @@
     .g-aside { display:grid; gap:12.8px; align-content:start; }
     /* 구분 라벨(UI · 상세페이지)은 FINAL RENDER 같은 섹션 라벨과 같은 모양으로 맞춥니다.
        .modal-gallery 의 52px 간격을 음수 마진으로 당겨 라벨이 바로 아래 블록에 붙게 합니다. */
-    .g-group { color:rgba(255,255,255,.62); font:700 .74rem "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
+    .g-group { color:rgba(255,255,255,.62); font:700 var(--md-label) "Manrope"; letter-spacing:.2em; text-transform:uppercase; }
     .g-say { display:grid; gap:4.8px; }
-    .g-say span { color:var(--pink); font:700 .74rem "Manrope"; letter-spacing:.16em; }
+    .g-say span { color:var(--pink); font:700 var(--md-label) "Manrope"; letter-spacing:.16em; }
     /* 제목과 설명이 붙어 있으면 문단 시작점이 안 잡혀 잘 안 읽힙니다.
        기본 간격(4.8px)에 더해 한 줄 정도를 띄웁니다. */
-    .g-say b { margin-bottom:11.2px; color:#fff; font:700 var(--fs-h4) "Manrope"; }
-    .g-say p { margin:0; color:rgba(255,255,255,.74); font-size:.93rem; line-height:1.6; }
+    .g-say b { margin-bottom:11.2px; color:#fff; font:700 var(--md-step) "Manrope"; }
+    .g-say p { margin:0; color:rgba(255,255,255,.74); font-size:var(--md-body); line-height:1.6; }
     .g-say p b { font:inherit; font-weight:700; color:rgba(255,255,255,.96); }
     /* 제작 과정 자리에 들어가는 영상. 이미지 타일과 같은 모서리·배경을 씁니다. */
     .g-video { position:relative; display:block; width:100%; overflow:hidden; border-radius:12.8px; background:rgba(255,255,255,.06); }
@@ -473,9 +489,9 @@
       .project-detail-layout { height:auto; display:block; }
       .project-overview { overflow:visible; border-right:0; }
       .modal-body { padding:22px 14.4px; gap:18px; }
-      .modal-body h3 { font-size:1.45rem; }
-      .modal-body p { font-size:.95rem; }
-      .details { font-size:.92rem; gap:7px; }
+      /* 모바일은 지금 크기가 딱 맞아서 그대로 두고, 소수점만 정수로 정리했습니다. */
+      #project-dialog { --md-title:20px; --md-sub:13px; --md-label:11px; --md-body:13px; --md-meta:12px; --md-cap:12px; --md-step:16px; --md-chip:10px; }
+      .details { gap:7px; }
       .project-gallery-wrap { position:static; background:var(--milk); }
       /* 모바일에선 갤러리 패널이 밝은 배경으로 바뀌므로 글자색도 함께 뒤집어 줍니다. */
       .g-head,.g-group,.g-fig figcaption,.g-say p { color:var(--muted); }
