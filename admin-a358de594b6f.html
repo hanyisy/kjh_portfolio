@@ -1,0 +1,863 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 검색엔진에 올라가지 않게 막습니다. 주소를 난수로 둔 것과 함께 쓰는 최소한의 가림막입니다.
+       진짜 잠금은 나중에 Supabase 로그인을 붙일 때 생깁니다. -->
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>포트폴리오 관리자</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23292429'/%3E%3Cpath d='M20 24h24M20 32h24M20 40h16' stroke='%23f7bfd0' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    /* 본 사이트와 같은 색·글꼴을 씁니다. 글자 크기는 전부 px 로 적어 소수점이 생기지 않습니다. */
+    :root {
+      --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --mist:#eddee3;
+      --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --soft:rgba(41,36,41,.06);
+      --radius:16px; --radius-sm:10px;
+      --ok:#2f8f5b; --warn:#b26a00;
+    }
+    * { box-sizing:border-box; }
+    html { font-size:100%; }
+    body {
+      margin:0; min-height:100vh; color:var(--ink); background:var(--mist);
+      font-family:"DM Sans",Pretendard,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+      font-size:15px; line-height:1.6;
+    }
+    button,input,textarea,select { font:inherit; color:inherit; }
+    a { color:var(--pink-strong); }
+
+    /* ── 상단 바 ────────────────────────────────────────────── */
+    .topbar {
+      position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:16px;
+      padding:14px 24px; background:var(--ink); color:#fff;
+    }
+    .topbar h1 { margin:0; font:800 18px "Manrope",Pretendard,sans-serif; letter-spacing:-.02em; }
+    .topbar .dot { width:8px; height:8px; border-radius:50%; background:var(--pink); }
+    .topbar .spacer { flex:1; }
+    .badge {
+      padding:5px 11px; border-radius:999px; font:700 12px "Manrope",Pretendard,sans-serif;
+      letter-spacing:.06em; background:rgba(247,191,208,.18); color:var(--pink);
+    }
+    .badge.is-dirty { background:rgba(247,191,208,.92); color:#5a2238; }
+    .btn {
+      display:inline-flex; align-items:center; gap:7px; padding:9px 16px; border:1px solid transparent;
+      border-radius:999px; background:var(--pink-strong); color:#fff; font-weight:700; font-size:14px;
+      cursor:pointer; transition:background .2s ease,border-color .2s ease,opacity .2s ease;
+    }
+    .btn:hover { background:#d85c88; }
+    .btn.ghost { background:transparent; border-color:rgba(255,255,255,.3); color:#fff; }
+    .btn.ghost:hover { border-color:#fff; background:rgba(255,255,255,.08); }
+    .btn.quiet { background:var(--soft); color:var(--ink); }
+    .btn.quiet:hover { background:rgba(41,36,41,.12); }
+    .btn[disabled] { opacity:.45; cursor:not-allowed; }
+    .btn[disabled]:hover { background:var(--pink-strong); }
+    .btn.ghost[disabled]:hover { background:transparent; }
+
+    /* ── 뼈대 ──────────────────────────────────────────────── */
+    .shell { display:grid; grid-template-columns:216px minmax(0,1fr); gap:22px; padding:22px; align-items:start; }
+    .side { position:sticky; top:78px; display:grid; gap:4px; }
+    .side button {
+      display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%;
+      padding:11px 14px; border:0; border-radius:var(--radius-sm); background:transparent;
+      color:var(--muted); font-weight:600; text-align:left; cursor:pointer; transition:.18s ease;
+    }
+    .side button:hover { background:rgba(255,255,255,.6); color:var(--ink); }
+    .side button.is-on { background:var(--ink); color:#fff; }
+    .side button i { font-style:normal; font-size:12px; opacity:.7; }
+    .side-note {
+      margin-top:14px; padding:12px 13px; border-radius:var(--radius-sm);
+      background:rgba(247,191,208,.4); color:#6b3b4d; font-size:12px; line-height:1.55;
+    }
+
+    /* grid 항목은 기본값이 min-width:auto 라 내용보다 좁아지지 못합니다.
+       그대로 두면 JSON 한 줄이 길 때 페이지 전체가 가로로 밀립니다. */
+    .panel { min-width:0; display:grid; grid-template-columns:minmax(0,1fr); gap:18px; }
+    .card { min-width:0; padding:22px 24px; border-radius:var(--radius); background:var(--milk); border:1px solid var(--line); }
+    .card > h2 {
+      margin:0 0 4px; font:800 20px "Manrope",Pretendard,sans-serif; letter-spacing:-.02em;
+    }
+    .card > .desc { margin:0 0 20px; color:var(--muted); font-size:13px; }
+    .card + .card { margin-top:0; }
+
+    /* ── 폼 ────────────────────────────────────────────────── */
+    .grid2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .grid3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+    .field { display:grid; gap:6px; min-width:0; }
+    .field > label { font-size:12px; font-weight:700; letter-spacing:.04em; color:var(--muted); }
+    .field .hint { font-size:11px; color:var(--muted); line-height:1.5; }
+    .field input[type=text], .field input[type=email], .field input[type=url], .field input[type=number], .field textarea, .field select {
+      width:100%; padding:9px 12px; border:1px solid var(--line); border-radius:var(--radius-sm);
+      background:#fff; font-size:14px; transition:border-color .18s ease,box-shadow .18s ease;
+    }
+    .field textarea { resize:vertical; min-height:72px; line-height:1.6; }
+    .field input:focus, .field textarea:focus, .field select:focus {
+      outline:0; border-color:var(--pink-strong); box-shadow:0 0 0 3px rgba(233,111,153,.16);
+    }
+    .field.is-wide { grid-column:1/-1; }
+    .checkline { display:flex; align-items:center; gap:8px; font-size:14px; }
+    .checkline input { width:16px; height:16px; accent-color:var(--pink-strong); }
+
+    /* ── 반복 목록(학력·경력·태그 등) ──────────────────────── */
+    .rows { display:grid; gap:8px; }
+    .row {
+      display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:start;
+      padding:10px 10px 10px 12px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff;
+    }
+    .row.is-block { grid-template-columns:minmax(0,1fr); }
+    .row-tools { display:flex; gap:4px; align-items:center; }
+    .icon-btn {
+      width:28px; height:28px; display:grid; place-items:center; padding:0;
+      border:1px solid var(--line); border-radius:8px; background:#fff; color:var(--muted);
+      font-size:13px; line-height:1; cursor:pointer; transition:.16s ease;
+    }
+    .icon-btn:hover { border-color:var(--pink-strong); color:var(--pink-strong); }
+    .icon-btn.danger:hover { border-color:#c64a4a; color:#c64a4a; }
+    .icon-btn[disabled] { opacity:.3; cursor:not-allowed; }
+    .icon-btn[disabled]:hover { border-color:var(--line); color:var(--muted); }
+    .add-btn {
+      justify-self:start; margin-top:4px; padding:8px 14px; border:1px dashed rgba(233,111,153,.5);
+      border-radius:999px; background:rgba(247,191,208,.18); color:var(--pink-strong);
+      font-size:13px; font-weight:700; cursor:pointer; transition:.18s ease;
+    }
+    .add-btn:hover { background:rgba(247,191,208,.4); border-style:solid; }
+    .empty { padding:18px; border:1px dashed var(--line); border-radius:var(--radius-sm);
+      color:var(--muted); font-size:13px; text-align:center; }
+
+    /* ── 활용 능력 슬라이더 ────────────────────────────────── */
+    /* 이름 / 막대 / 퍼센트 세 칸입니다. 칸 수를 자식 수와 맞춰야 빈 칸이 생기지 않습니다. */
+    .ability-row { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) 52px; gap:12px; align-items:center; }
+    .ability-row > * { min-width:0; }
+    .ability-row input[type=range] { width:100%; accent-color:var(--pink-strong); }
+    .ability-row .pct { font-weight:700; font-size:13px; text-align:right; }
+
+    /* ── 작품 목록 ─────────────────────────────────────────── */
+    .picker { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
+    .chip {
+      display:flex; align-items:center; gap:8px; padding:6px 12px 6px 6px; border:1px solid var(--line);
+      border-radius:999px; background:#fff; cursor:pointer; font-size:13px; font-weight:600; transition:.18s ease;
+    }
+    .chip img { width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--soft); }
+    .chip .no-img { width:26px; height:26px; border-radius:50%; background:var(--soft); display:grid; place-items:center; font-size:11px; color:var(--muted); }
+    .chip:hover { border-color:var(--pink-strong); }
+    .chip.is-on { background:var(--ink); border-color:var(--ink); color:#fff; }
+    .chip.is-on .no-img { background:rgba(255,255,255,.18); color:#fff; }
+
+    .thumb-preview {
+      display:grid; grid-template-columns:96px minmax(0,1fr); gap:14px; align-items:start;
+      padding:12px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff;
+    }
+    .thumb-preview .box {
+      aspect-ratio:2/3; border-radius:8px; overflow:hidden; background:var(--soft);
+      display:grid; place-items:center; color:var(--muted); font-size:11px; text-align:center; padding:6px;
+    }
+    .thumb-preview .box img { width:100%; height:100%; object-fit:cover; }
+
+    /* ── 단계(steps) 편집 ──────────────────────────────────── */
+    .step {
+      padding:16px; border:1px solid var(--line); border-radius:var(--radius-sm);
+      background:#fff; display:grid; gap:12px;
+    }
+    .step-head { display:flex; align-items:center; gap:10px; }
+    .step-head .n {
+      width:24px; height:24px; display:grid; place-items:center; border-radius:50%;
+      background:var(--ink); color:#fff; font:700 12px "Manrope",Pretendard,sans-serif;
+    }
+    .step-head .t { flex:1; font-weight:700; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .sub-rows { display:grid; gap:8px; padding-left:12px; border-left:2px solid var(--soft); }
+
+    /* ── 문서(PDF) ─────────────────────────────────────────── */
+    .doc-row {
+      display:grid; grid-template-columns:40px minmax(0,1fr) auto; gap:14px; align-items:center;
+      padding:14px 16px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff;
+    }
+    .doc-row .ic { width:40px; height:40px; display:grid; place-items:center; border-radius:10px;
+      background:rgba(247,191,208,.35); color:var(--pink-strong); font:700 11px "Manrope",Pretendard,sans-serif; }
+    .doc-row .meta b { display:block; font-size:14px; }
+    .doc-row .meta span { font-size:12px; color:var(--muted); }
+    .state { font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
+    .state.off { background:var(--soft); color:var(--muted); }
+    .state.on { background:rgba(47,143,91,.12); color:var(--ok); }
+
+    /* ── JSON 미리보기 ─────────────────────────────────────── */
+    pre.json {
+      margin:0; max-height:420px; overflow:auto; padding:16px; border-radius:var(--radius-sm);
+      background:#221d21; color:#e9e2e6; font:12px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      white-space:pre; -webkit-overflow-scrolling:touch;
+    }
+
+    /* ── 알림 / 상태 ───────────────────────────────────────── */
+    .notice {
+      display:flex; gap:10px; align-items:flex-start; padding:13px 15px; border-radius:var(--radius-sm);
+      font-size:13px; line-height:1.6;
+    }
+    .notice.warn { background:rgba(247,191,208,.38); color:#6b3b4d; }
+    .notice.info { background:var(--soft); color:var(--muted); }
+    .notice b { display:block; margin-bottom:2px; color:inherit; }
+    .loading-state { padding:60px 20px; text-align:center; color:var(--muted); }
+    .toast {
+      position:fixed; left:50%; bottom:26px; z-index:50; padding:11px 20px; border-radius:999px;
+      background:var(--ink); color:#fff; font-size:13px; font-weight:600;
+      transform:translate(-50%,14px); opacity:0; pointer-events:none; transition:.25s ease;
+    }
+    .toast.is-on { transform:translate(-50%,0); opacity:1; }
+
+    @media (max-width:860px) {
+      .shell { grid-template-columns:1fr; padding:14px; gap:14px; }
+      .side { position:static; grid-auto-flow:column; grid-auto-columns:max-content; overflow-x:auto; padding-bottom:4px; }
+      .side button { white-space:nowrap; }
+      .side button i { display:none; }
+      .side-note { display:none; }
+      .card { padding:18px 16px; }
+      .grid2,.grid3 { grid-template-columns:1fr; }
+      /* 좁은 화면에선 윗줄에 이름·퍼센트, 아랫줄에 막대를 통째로 깝니다.
+         자리를 명시하지 않으면 막대가 중간에 끼어 퍼센트가 셋째 줄로 밀립니다. */
+      .ability-row { grid-template-columns:minmax(0,1fr) 52px; row-gap:8px; }
+      .ability-row > input[type=text] { grid-area:1/1; }
+      .ability-row > .pct { grid-area:1/2; }
+      .ability-row > input[type=range] { grid-area:2/1/3/3; }
+      .topbar { padding:12px 14px; gap:10px; }
+      .topbar h1 { font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="dot" aria-hidden="true"></span>
+    <h1>포트폴리오 관리자</h1>
+    <span class="badge" id="dirty-badge">변경 없음</span>
+    <span class="spacer"></span>
+    <button class="btn ghost" type="button" id="btn-reload">되돌리기</button>
+    <button class="btn" type="button" id="btn-save" disabled title="저장 연동은 다음 단계에서 붙입니다">저장 · 추후 연동</button>
+  </header>
+
+  <div class="shell">
+    <nav class="side" id="tabs" aria-label="관리 항목">
+      <button type="button" data-tab="profile" class="is-on">개인정보 <i>01</i></button>
+      <button type="button" data-tab="works">작품 <i id="count-works">0</i></button>
+      <button type="button" data-tab="labs">AI &amp; Design <i id="count-labs">0</i></button>
+      <button type="button" data-tab="docs">문서 PDF <i>02</i></button>
+      <button type="button" data-tab="texts">사이트 문구 <i>05</i></button>
+      <button type="button" data-tab="json">데이터 보기 <i>{ }</i></button>
+      <div class="side-note">
+        지금은 <b>화면만</b> 동작합니다.<br>저장을 눌러도 사이트에는 반영되지 않습니다.
+      </div>
+    </nav>
+
+    <main class="panel" id="panel">
+      <div class="loading-state">데이터를 불러오는 중…</div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ===========================================================================
+ * 포트폴리오 관리자 - 1단계: 화면만
+ *
+ * 지금 하는 일 : data/site.json 을 읽어 폼에 채우고, 화면에서 자유롭게 고칩니다.
+ * 아직 안 하는 일: 저장(=사이트 반영), 이미지·PDF 업로드, 로그인.
+ *                  다음 단계에서 Supabase(DB + 스토리지 + 로그인)를 붙입니다.
+ *
+ * 고친 내용은 브라우저 메모리에만 있습니다. 새로고침하면 사라집니다.
+ * 'JSON 내려받기'로 지금 상태를 파일로 받아 둘 수는 있습니다.
+ * =========================================================================== */
+
+const DATA_URL = 'data/site.json';
+const ASSET_BASE = 'assets/portfolio/';
+
+const state = { data:null, origin:null, tab:'profile', workIndex:0, labIndex:0, dirty:false };
+
+/* ── 아주 작은 DOM 도우미 ─────────────────────────────────── */
+function h(tag, attrs, ...kids) {
+  const el = document.createElement(tag);
+  if (attrs) for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else if (k === 'value') el.value = v;
+    else if (v === true) el.setAttribute(k, '');
+    else el.setAttribute(k, v);
+  }
+  kids.flat().forEach(kid => { if (kid !== null && kid !== undefined && kid !== false) el.append(kid); });
+  return el;
+}
+const $ = sel => document.querySelector(sel);
+
+let toastTimer;
+function toast(message) {
+  const box = $('#toast');
+  box.textContent = message;
+  box.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => box.classList.remove('is-on'), 2200);
+}
+
+function markDirty() {
+  state.dirty = true;
+  const badge = $('#dirty-badge');
+  badge.textContent = '수정됨 · 저장 안 됨';
+  badge.classList.add('is-dirty');
+}
+function clearDirty() {
+  state.dirty = false;
+  const badge = $('#dirty-badge');
+  badge.textContent = '변경 없음';
+  badge.classList.remove('is-dirty');
+}
+
+/* ── 폼 조각 ──────────────────────────────────────────────── */
+function field(label, hint, control, wide) {
+  return h('div', { class: 'field' + (wide ? ' is-wide' : '') },
+    h('label', { text: label }),
+    control,
+    hint ? h('span', { class: 'hint', text: hint }) : null);
+}
+
+/* 값이 바뀌면 obj[key] 에 바로 써 넣습니다. 객체 참조를 그대로 고치므로
+   따로 상태를 합쳐 줄 필요가 없습니다. */
+function input(obj, key, opts = {}) {
+  const el = h('input', {
+    type: opts.type || 'text',
+    value: obj[key] ?? '',
+    placeholder: opts.placeholder || '',
+    oninput: event => {
+      obj[key] = opts.number ? Number(event.target.value) : event.target.value;
+      markDirty();
+      if (opts.rerender) render();
+    }
+  });
+  return el;
+}
+function textarea(obj, key, opts = {}) {
+  return h('textarea', {
+    rows: opts.rows || 3,
+    placeholder: opts.placeholder || '',
+    value: obj[key] ?? '',
+    oninput: event => { obj[key] = event.target.value; markDirty(); }
+  });
+}
+function checkbox(label, obj, key, onChange) {
+  return h('label', { class: 'checkline' },
+    h('input', {
+      type: 'checkbox', checked: !!obj[key],
+      onchange: event => { obj[key] = event.target.checked; markDirty(); if (onChange) onChange(); }
+    }),
+    h('span', { text: label }));
+}
+
+/* 줄 하나짜리 목록 편집기. 위/아래/삭제 버튼이 붙습니다. */
+function listEditor(arr, renderRow, makeNew, addLabel, opts = {}) {
+  const wrap = h('div', { class: 'rows' });
+  if (!arr.length) wrap.append(h('div', { class: 'empty', text: opts.emptyText || '아직 없습니다. 아래에서 추가하세요.' }));
+  arr.forEach((item, i) => {
+    const tools = h('div', { class: 'row-tools' },
+      h('button', { class: 'icon-btn', type: 'button', title: '위로', disabled: i === 0,
+        onclick: () => { arr.splice(i - 1, 0, arr.splice(i, 1)[0]); markDirty(); render(); } }, '↑'),
+      h('button', { class: 'icon-btn', type: 'button', title: '아래로', disabled: i === arr.length - 1,
+        onclick: () => { arr.splice(i + 1, 0, arr.splice(i, 1)[0]); markDirty(); render(); } }, '↓'),
+      h('button', { class: 'icon-btn danger', type: 'button', title: '삭제',
+        onclick: () => { arr.splice(i, 1); markDirty(); render(); } }, '✕'));
+    wrap.append(h('div', { class: 'row' + (opts.block ? ' is-block' : '') },
+      renderRow(item, i),
+      opts.block ? null : tools,
+      opts.block ? h('div', { class: 'row-tools', style: 'justify-content:flex-end' }, tools.children) : null));
+  });
+  wrap.append(h('button', { class: 'add-btn', type: 'button',
+    onclick: () => { arr.push(makeNew()); markDirty(); render(); } }, '＋ ' + addLabel));
+  return wrap;
+}
+
+/* 연도 + 설명 두 칸짜리 줄 (학력 · 경력 · 자격증 공용) */
+function periodRow(item) {
+  return h('div', { class: 'grid2', style: 'gap:10px' },
+    h('div', { class: 'field' }, input(item, 'period', { placeholder: '2024' })),
+    h('div', { class: 'field' }, input(item, 'text', { placeholder: '내용' })));
+}
+
+function imageField(obj, key, label, hint) {
+  const preview = h('div', { class: 'box' });
+  const paint = () => {
+    const raw = (obj[key] || '').trim();
+    preview.replaceChildren();
+    if (!raw) { preview.append(h('span', { text: '이미지 없음' })); return; }
+    const src = /^(https?:|data:|assets\/)/.test(raw) ? raw : ASSET_BASE + raw + '.webp';
+    const img = h('img', { src, alt: '', onerror: () => { preview.replaceChildren(h('span', { text: '파일을 찾지 못했습니다' })); } });
+    preview.append(img);
+  };
+  const box = input(obj, key, { placeholder: 'hero-gunslinger.webp 또는 파일 이름' });
+  box.addEventListener('input', paint);
+  paint();
+  return h('div', { class: 'thumb-preview' },
+    preview,
+    h('div', { class: 'field' },
+      h('label', { text: label }),
+      box,
+      h('span', { class: 'hint', text: hint || '지금은 저장소에 올려 둔 파일 이름을 적습니다. 업로드 기능은 다음 단계에서 붙습니다.' })));
+}
+
+/* ── 탭: 개인정보 ─────────────────────────────────────────── */
+function tabProfile() {
+  const p = state.data.profile;
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '기본 정보' }),
+      h('p', { class: 'desc', text: '이름과 연락처는 사이트 곳곳(머리말·프로필·맨 아래 Contact·footer)에 한꺼번에 반영됩니다.' }),
+      h('div', { class: 'grid3' },
+        field('이름', null, input(p, 'name', { placeholder: '홍길동' })),
+        field('영문 이름', '프로필 이름 아래 작게 들어갑니다', input(p, 'englishName', { placeholder: 'GILDONG HONG' })),
+        field('약칭', '왼쪽 위 로고 옆 글자', input(p, 'shortName', { placeholder: 'G.H' }))),
+      h('div', { class: 'grid2', style: 'margin-top:14px' },
+        field('이메일', null, input(p, 'email', { type: 'email', placeholder: 'name@example.com' })),
+        field('카카오톡 오픈채팅 주소', '지금은 임시 주소가 들어 있습니다', input(p, 'kakaoOpenChat', { type: 'url', placeholder: 'https://open.kakao.com/o/...' })),
+        field('ArtStation 주소', '내 프로필 주소로 바꾸세요', input(p, 'artstation', { type: 'url', placeholder: 'https://www.artstation.com/내아이디' })))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '학력' }),
+      h('p', { class: 'desc', text: '연도와 학교 이름을 적습니다. 순서는 화살표로 바꿉니다.' }),
+      listEditor(p.education, periodRow, () => ({ period: '', text: '' }), '학력 추가')),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '경력 · 교육' }),
+      h('p', { class: 'desc', text: '기간은 2023~2024 처럼 적으면 됩니다.' }),
+      listEditor(p.experience, periodRow, () => ({ period: '', text: '' }), '경력 추가')),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '자격증' }),
+      h('p', { class: 'desc', text: '취득 연도와 자격증 이름입니다.' }),
+      listEditor(p.certificates, periodRow, () => ({ period: '', text: '' }), '자격증 추가')),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '활용 능력' }),
+      h('p', { class: 'desc', text: '막대 길이와 옆의 퍼센트 숫자가 같이 바뀝니다.' }),
+      listEditor(p.abilities, (item) => {
+        const pct = h('span', { class: 'pct', text: item.level + '%' });
+        const range = h('input', {
+          type: 'range', min: '0', max: '100', step: '5', value: String(item.level),
+          oninput: event => { item.level = Number(event.target.value); pct.textContent = item.level + '%'; markDirty(); }
+        });
+        return h('div', { class: 'ability-row' },
+          input(item, 'name', { placeholder: '프로그램 이름' }), range, pct);
+      }, () => ({ name: '', level: 50 }), '항목 추가'))
+  ];
+}
+
+/* ── 탭: 작품 ─────────────────────────────────────────────── */
+function metaEditor(meta) {
+  const keys = Object.keys(meta);
+  const rows = h('div', { class: 'rows' });
+  keys.forEach(key => {
+    const value = meta[key];
+    const isLink = value && typeof value === 'object';
+    const body = isLink
+      ? h('div', { class: 'grid3', style: 'gap:10px' },
+          h('div', { class: 'field' }, h('label', { text: '출처' }), input(value, 'source', { placeholder: 'ArtStation' })),
+          h('div', { class: 'field' }, h('label', { text: '작가 이름' }), input(value, 'name', { placeholder: '작가명' })),
+          h('div', { class: 'field' }, h('label', { text: '링크' }), input(value, 'href', { type: 'url', placeholder: 'https://' })))
+      : h('div', { class: 'field' }, input({ get [key]() { return meta[key]; }, set [key](v) { meta[key] = v; } }, key));
+    rows.append(h('div', { class: 'row is-block' },
+      h('div', { class: 'field' },
+        h('label', { text: key }),
+        body),
+      h('div', { class: 'row-tools', style: 'justify-content:flex-end' },
+        h('button', { class: 'icon-btn danger', type: 'button', title: '이 줄 삭제',
+          onclick: () => { delete meta[key]; markDirty(); render(); } }, '✕'))));
+  });
+  rows.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
+    const name = prompt('항목 이름을 영문 대문자로 적어 주세요 (예: PERIOD, SCOPE, SPECS, TOOLS)');
+    if (!name) return;
+    meta[name.trim().toUpperCase()] = '';
+    markDirty(); render();
+  } }, '＋ 항목 추가'));
+  return rows;
+}
+
+function sentenceEditor(arr, label) {
+  return listEditor(arr,
+    (item, i) => h('div', { class: 'field' },
+      h('textarea', {
+        rows: 2, value: item,
+        oninput: event => { arr[i] = event.target.value; markDirty(); }
+      })),
+    () => '', label + ' 추가', { block: true, emptyText: '문장이 없습니다.' });
+}
+
+function workDetailEditor(detail, title) {
+  const blocks = [
+    h('section', { class: 'card' },
+      h('h2', { text: '상세 - 기본' }),
+      h('p', { class: 'desc', text: '작품을 눌렀을 때 뜨는 상세 화면 왼쪽입니다.' }),
+      h('div', { class: 'grid2' },
+        field('한 줄 설명', '제목 바로 아래 분홍색 글씨', input(detail, 'sub')),
+        field('턴테이블 영상 경로', '없으면 비워 두세요', input(detail, 'video', { placeholder: 'assets/portfolio/video/이름.mp4' }))),
+      h('div', { style: 'margin-top:14px' }, imageField(detail, 'image', '상세 대표 이미지', '상세 화면 맨 위 큰 이미지입니다. assets/ 로 시작하는 경로를 그대로 적어도 됩니다.'))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: 'FOCUS 문장' }),
+      h('p', { class: 'desc', text: '작업에서 신경 쓴 점을 한 문단씩 적습니다.' }),
+      sentenceEditor(detail.focus, '문장')),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '정보 표' }),
+      h('p', { class: 'desc', text: 'PERIOD · SCOPE · SPECS · TOOLS · CONCEPT 같은 항목입니다. CONCEPT 처럼 링크가 붙는 항목은 칸이 세 개로 나뉩니다.' }),
+      metaEditor(detail.meta))
+  ];
+
+  if (detail.breakdown) {
+    blocks.push(h('section', { class: 'card' },
+      h('h2', { text: 'Focus 3컷' }),
+      h('p', { class: 'desc', text: '상세 화면 맨 위에 가로로 깔리는 참고 이미지입니다. 비율은 이미지 가로÷세로 값이고, 이 값으로 세 장의 높이를 맞춥니다.' }),
+      listEditor(detail.breakdown, item => h('div', { class: 'grid3', style: 'gap:10px' },
+        h('div', { class: 'field' }, h('label', { text: '이미지 이름' }), input(item, 'img', { placeholder: 'bd-gunslinger-1' })),
+        h('div', { class: 'field' }, h('label', { text: '캡션' }), input(item, 'cap', { placeholder: '실루엣 수정' })),
+        h('div', { class: 'field' }, h('label', { text: '비율 (가로÷세로)' }), input(item, 'r', { type: 'number', number: true, placeholder: '1.3' }))),
+        () => ({ img: '', cap: '', r: 1.3 }), '컷 추가', { block: true })));
+  }
+
+  if (detail.steps) {
+    blocks.push(h('section', { class: 'card' },
+      h('h2', { text: '제작 과정' }),
+      h('p', { class: 'desc', text: '이미지 줄 + 설명으로 이루어진 단계입니다. 구분 라벨을 적으면 그 위에 큰 글씨 라벨이 들어갑니다.' }),
+      listEditor(detail.steps, (step, i) => h('div', { class: 'step' },
+        h('div', { class: 'step-head' },
+          h('span', { class: 'n', text: String(i + 1) }),
+          h('span', { class: 't', text: step.title || '(제목 없음)' })),
+        h('div', { class: 'grid2' },
+          field('구분 라벨', '비워 두면 안 나옵니다', input(step, 'group', { placeholder: 'UI' })),
+          field('단계 제목', null, input(step, 'title', { rerender: false }))),
+        h('div', { class: 'grid3', style: 'margin-top:4px' },
+          field('배치', null, h('select', {
+            onchange: event => { step.layout = event.target.value || undefined; markDirty(); },
+            value: step.layout || ''
+          }, h('option', { value: '', text: '기본 (이미지 위, 글 아래)' }),
+             h('option', { value: 'side', text: 'side - 글 왼쪽, 이미지 오른쪽' }),
+             h('option', { value: 'split', text: 'split - 이미지 왼쪽, 글 오른쪽' }))),
+          field('이미지 열 수', null, input(step, 'cols', { type: 'number', number: true, placeholder: '2' }))),
+        h('div', { class: 'field', style: 'margin-top:4px' },
+          h('label', { text: '이미지' }),
+          listEditor(step.images || (step.images = []), img => h('div', { class: 'grid2', style: 'gap:10px' },
+            h('div', { class: 'field' }, h('label', { text: '이름' }), input(img, 'img', { placeholder: 'ui-sub-a' })),
+            h('div', { class: 'field' }, h('label', { text: '캡션 (없으면 비움)' }), input(img, 'cap', { placeholder: '' }))),
+            () => ({ img: '' }), '이미지 추가', { block: true, emptyText: '이미지가 없습니다.' })),
+        h('div', { class: 'field' },
+          h('label', { text: '설명' }),
+          Array.isArray(step.body)
+            ? sentenceEditor(step.body, '문단')
+            : h('textarea', { rows: 3, value: step.body || '',
+                oninput: event => { step.body = event.target.value; markDirty(); } }),
+          h('span', { class: 'hint', text: Array.isArray(step.body) ? '문단이 여러 개인 단계입니다.' : '' }))),
+        () => ({ title: '', images: [], body: '' }), '단계 추가', { block: true })));
+  }
+
+  blocks.push(h('section', { class: 'card' },
+    h('h2', { text: '최종 렌더' }),
+    h('p', { class: 'desc', text: '설명 없이 쭉 보여 주는 이미지입니다. 첫 장만 전체 폭으로 깔리고 나머지는 2열입니다.' }),
+    listEditor(detail.gallery, (name, i) => h('div', { class: 'field' },
+      h('input', { type: 'text', value: name, placeholder: 'gunslinger-01',
+        oninput: event => { detail.gallery[i] = event.target.value; markDirty(); } })),
+      () => '', '이미지 추가', { emptyText: '이미지가 없습니다.' }),
+    h('div', { class: 'grid2', style: 'margin-top:14px' },
+      field('열 수 고정', '비워 두면 첫 장만 전체 폭이 됩니다',
+        input(detail, 'galleryCols', { type: 'number', number: true, placeholder: '비움' })))));
+
+  return blocks;
+}
+
+function tabWorks() {
+  const works = state.data.works;
+  const picker = h('div', { class: 'picker' });
+  works.forEach((work, i) => {
+    picker.append(h('button', {
+      class: 'chip' + (i === state.workIndex ? ' is-on' : ''), type: 'button',
+      onclick: () => { state.workIndex = i; render(); }
+    }, work.image ? h('img', { src: work.image, alt: '' }) : h('span', { class: 'no-img', text: '?' }),
+       h('span', { text: work.title || '(제목 없음)' })));
+  });
+  picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
+    works.push({ id: 'work-' + Date.now().toString(36), title: '새 작품', cardSub: 'Character',
+      image: '', alt: '', portrait: true, inHero: true,
+      detail: { kind: 'character', sub: '', image: '', alt: '', focus: [], meta: {},
+        breakdown: [], gallery: [], video: null } });
+    state.workIndex = works.length - 1; markDirty(); render();
+  } }, '＋ 작품 추가'));
+
+  if (!works.length) return [h('section', { class: 'card' }, picker, h('div', { class: 'empty', text: '작품이 없습니다.' }))];
+
+  const i = Math.min(state.workIndex, works.length - 1);
+  state.workIndex = i;
+  const work = works[i];
+
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '작품' }),
+      h('p', { class: 'desc', text: '수정할 작품을 고르세요. 순서를 바꾸면 목록과 맨 위 슬라이드 순서가 같이 바뀝니다.' }),
+      picker,
+      h('div', { class: 'row-tools', style: 'margin-bottom:16px' },
+        h('span', { class: 'hint', style: 'margin-right:4px', text: '이 작품 순서 · 삭제' }),
+        h('button', { class: 'icon-btn', type: 'button', title: '앞으로', disabled: i === 0,
+          onclick: () => { works.splice(i - 1, 0, works.splice(i, 1)[0]); state.workIndex = i - 1; markDirty(); render(); } }, '←'),
+        h('button', { class: 'icon-btn', type: 'button', title: '뒤로', disabled: i === works.length - 1,
+          onclick: () => { works.splice(i + 1, 0, works.splice(i, 1)[0]); state.workIndex = i + 1; markDirty(); render(); } }, '→'),
+        h('button', { class: 'icon-btn danger', type: 'button', title: '이 작품 삭제',
+          onclick: () => { if (confirm(`'${work.title}' 을(를) 지울까요?`)) { works.splice(i, 1); state.workIndex = 0; markDirty(); render(); } } }, '✕')),
+      h('div', { class: 'grid2' },
+        field('제목', '카드와 상세 화면에 같이 들어갑니다', input(work, 'title', { rerender: true })),
+        field('카드 부제', '카드 제목 아래 작은 글씨', input(work, 'cardSub', { placeholder: 'Character · Hard Surface' })),
+        field('구분 아이디', '영문·숫자·하이픈. 한 번 정하면 바꾸지 않는 편이 좋습니다', input(work, 'id'))),
+      h('div', { style: 'margin-top:14px' }, imageField(work, 'image', '카드 썸네일', '목록 카드와 맨 위 슬라이드에 함께 쓰입니다.')),
+      h('div', { class: 'grid2', style: 'margin-top:14px' },
+        field('이미지 대체 텍스트', '화면을 못 보는 사람에게 읽어 주는 설명', input(work, 'alt')),
+        h('div', { class: 'field' },
+          h('label', { text: '표시 방식' }),
+          checkbox('세로로 긴 이미지 (위쪽 기준으로 자릅니다)', work, 'portrait'),
+          checkbox('맨 위 슬라이드에 넣기', work, 'inHero')))),
+    ...workDetailEditor(work.detail, work.title)
+  ];
+}
+
+/* ── 탭: AI & Design ──────────────────────────────────────── */
+function tabLabs() {
+  const labs = state.data.labs;
+  const picker = h('div', { class: 'picker' });
+  labs.forEach((lab, i) => {
+    picker.append(h('button', {
+      class: 'chip' + (i === state.labIndex ? ' is-on' : ''), type: 'button',
+      onclick: () => { state.labIndex = i; render(); }
+    }, lab.image ? h('img', { src: lab.image, alt: '' }) : h('span', { class: 'no-img', text: '?' }),
+       h('span', { text: lab.title || '(제목 없음)' })));
+  });
+  picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
+    labs.push({ id: 'lab-' + Date.now().toString(36), title: '새 작업', kindLabel: '', copy: '', tags: [],
+      image: '', alt: '', detail: { kind: 'story', sub: '', image: '', alt: '', focus: [], meta: {}, steps: [], gallery: [], video: null } });
+    state.labIndex = labs.length - 1; markDirty(); render();
+  } }, '＋ 작업 추가'));
+
+  if (!labs.length) return [h('section', { class: 'card' }, picker, h('div', { class: 'empty', text: '작업이 없습니다.' }))];
+
+  const i = Math.min(state.labIndex, labs.length - 1);
+  state.labIndex = i;
+  const lab = labs[i];
+
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: 'AI & Design' }),
+      h('p', { class: 'desc', text: '3D 작품과 따로 아래쪽에 가로로 긴 카드로 들어가는 작업입니다.' }),
+      picker,
+      h('div', { class: 'row-tools', style: 'margin-bottom:16px' },
+        h('span', { class: 'hint', style: 'margin-right:4px', text: '이 작업 순서 · 삭제' }),
+        h('button', { class: 'icon-btn', type: 'button', title: '앞으로', disabled: i === 0,
+          onclick: () => { labs.splice(i - 1, 0, labs.splice(i, 1)[0]); state.labIndex = i - 1; markDirty(); render(); } }, '←'),
+        h('button', { class: 'icon-btn', type: 'button', title: '뒤로', disabled: i === labs.length - 1,
+          onclick: () => { labs.splice(i + 1, 0, labs.splice(i, 1)[0]); state.labIndex = i + 1; markDirty(); render(); } }, '→'),
+        h('button', { class: 'icon-btn danger', type: 'button', title: '이 작업 삭제',
+          onclick: () => { if (confirm(`'${lab.title}' 을(를) 지울까요?`)) { labs.splice(i, 1); state.labIndex = 0; markDirty(); render(); } } }, '✕')),
+      h('div', { class: 'grid2' },
+        field('제목', null, input(lab, 'title', { rerender: true })),
+        field('분류 라벨', '제목 위 분홍색 작은 글씨', input(lab, 'kindLabel', { placeholder: 'AI Pipeline · 2D & 3D' })),
+        field('구분 아이디', null, input(lab, 'id'))),
+      h('div', { class: 'field is-wide', style: 'margin-top:14px' },
+        h('label', { text: '카드 설명' }), textarea(lab, 'copy', { rows: 2 })),
+      h('div', { style: 'margin-top:14px' }, imageField(lab, 'image', '카드 이미지', '카드 왼쪽에 들어가는 가로 이미지입니다.')),
+      h('div', { class: 'field', style: 'margin-top:14px' },
+        h('label', { text: '이미지 대체 텍스트' }), input(lab, 'alt')),
+      h('div', { class: 'field', style: 'margin-top:14px' },
+        h('label', { text: '태그' }),
+        listEditor(lab.tags, (tag, i2) => h('div', { class: 'field' },
+          h('input', { type: 'text', value: tag, placeholder: 'Figma',
+            oninput: event => { lab.tags[i2] = event.target.value; markDirty(); } })),
+          () => '', '태그 추가', { emptyText: '태그가 없습니다.' }))),
+    ...workDetailEditor(lab.detail, lab.title)
+  ];
+}
+
+/* ── 탭: 문서 PDF ─────────────────────────────────────────── */
+function docRow(key, doc, note) {
+  const has = !!doc.url;
+  return h('div', { class: 'doc-row' },
+    h('span', { class: 'ic', text: 'PDF' }),
+    h('div', { class: 'meta' },
+      h('b', { text: doc.label }),
+      h('span', { text: has ? doc.url : note })),
+    h('div', { class: 'row-tools' },
+      h('span', { class: 'state ' + (has ? 'on' : 'off'), text: has ? '연결됨' : '미연결' }),
+      h('button', { class: 'btn quiet', type: 'button', disabled: true, title: '업로드는 다음 단계에서 붙입니다' }, '파일 올리기')));
+}
+
+function tabDocs() {
+  const d = state.data.documents;
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '문서 PDF' }),
+      h('p', { class: 'desc', text: '맨 아래 Contact 영역의 내려받기 버튼 두 개입니다. 파일이 연결되면 버튼이 눌리는 상태로 바뀝니다.' }),
+      h('div', { class: 'rows' },
+        docRow('portfolio', d.portfolio, '아직 파일이 없습니다'),
+        docRow('resume', d.resume, '아직 파일이 없습니다')),
+      h('div', { class: 'grid2', style: 'margin-top:16px' },
+        field('포트폴리오 버튼 글자', null, input(d.portfolio, 'label')),
+        field('이력서 버튼 글자', null, input(d.resume, 'label'))),
+      h('div', { class: 'grid2', style: 'margin-top:14px' },
+        field('포트폴리오 PDF 주소', '파일을 직접 저장소에 올렸다면 경로를 적어도 됩니다', input(d.portfolio, 'url', { placeholder: 'assets/portfolio.pdf' })),
+        field('이력서 PDF 주소', null, input(d.resume, 'url', { placeholder: 'assets/resume.pdf' }))),
+      h('div', { class: 'notice warn', style: 'margin-top:18px' },
+        h('span', { text: '⚠' }),
+        h('div', null,
+          h('b', { text: '업로드는 아직 안 붙었습니다' }),
+          h('span', { text: '파일을 고르는 버튼은 다음 단계에서 Supabase 스토리지에 연결합니다. 지금은 이미 올려 둔 파일의 주소를 적는 칸만 동작합니다.' })))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '안내 문구' }),
+      h('p', { class: 'desc', text: '내려받기 버튼 왼쪽에 들어가는 설명입니다.' }),
+      h('div', { class: 'grid2' },
+        field('제목', null, input(state.data.sections.contact, 'docsTitle')),
+        field('설명', null, input(state.data.sections.contact, 'docsCopy'))))
+  ];
+}
+
+/* ── 탭: 사이트 문구 ──────────────────────────────────────── */
+function tabTexts() {
+  const hero = state.data.hero, s = state.data.sections;
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '맨 위 (Hero)' }),
+      h('p', { class: 'desc', text: '사이트를 열었을 때 가장 먼저 보이는 영역입니다.' }),
+      h('div', { class: 'grid2' },
+        field('작은 머리말', null, input(hero, 'eyebrow', { placeholder: 'Portfolio 2026' })),
+        field('제목 첫 줄', null, input(hero, 'titleTop', { placeholder: '3D 캐릭터 모델러' })),
+        field('제목 둘째 줄', '분홍색으로 나오는 부분입니다', input(hero, 'titleEm', { placeholder: '000입니다.' })),
+        field('한 줄 소개', null, input(hero, 'copy'))),
+      h('div', { class: 'field', style: 'margin-top:14px' },
+        h('label', { text: '도구 태그' }),
+        listEditor(hero.tags, (tag, i) => h('div', { class: 'field' },
+          h('input', { type: 'text', value: tag, placeholder: 'ZBrush',
+            oninput: event => { hero.tags[i] = event.target.value; markDirty(); } })),
+          () => '', '태그 추가'))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '섹션 제목' }),
+      h('p', { class: 'desc', text: '각 구역의 머리말·제목·설명 한 줄입니다.' }),
+      h('div', { class: 'grid3' },
+        field('작품 - 머리말', null, input(s.work, 'eyebrow')),
+        field('작품 - 제목', null, input(s.work, 'title')),
+        field('작품 - 설명', null, input(s.work, 'lead'))),
+      h('div', { class: 'grid3', style: 'margin-top:14px' },
+        field('AI & Design - 머리말', null, input(s.lab, 'eyebrow')),
+        field('AI & Design - 제목', null, input(s.lab, 'title')),
+        field('AI & Design - 설명', null, input(s.lab, 'lead')))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '맨 아래 (Contact)' }),
+      h('div', { class: 'grid2' },
+        field('제목', null, input(s.contact, 'title')),
+        field('맺음말', null, input(s.contact, 'sub'))))
+  ];
+}
+
+/* ── 탭: 데이터 보기 ──────────────────────────────────────── */
+function tabJson() {
+  const text = JSON.stringify(state.data, null, 2);
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '지금 화면의 데이터' }),
+      h('p', { class: 'desc', text: '저장을 누르면 이 내용이 그대로 들어갑니다. 지금은 눈으로 확인하거나 파일로 받아 둘 수만 있습니다.' }),
+      h('div', { class: 'row-tools', style: 'margin-bottom:14px; gap:8px' },
+        h('button', { class: 'btn quiet', type: 'button', onclick: () => {
+          navigator.clipboard?.writeText(text).then(() => toast('복사했습니다')).catch(() => toast('복사하지 못했습니다'));
+        } }, '복사'),
+        h('button', { class: 'btn quiet', type: 'button', onclick: () => {
+          const blob = new Blob([text + '\n'], { type: 'application/json' });
+          const a = h('a', { href: URL.createObjectURL(blob), download: 'site.json' });
+          document.body.append(a); a.click(); a.remove();
+          setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+          toast('site.json 을 내려받았습니다');
+        } }, 'JSON 내려받기')),
+      h('pre', { class: 'json', text })),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '다음 단계' }),
+      h('p', { class: 'desc', text: '화면을 먼저 보고 고칠 곳을 정한 뒤에 붙일 것들입니다.' }),
+      h('div', { class: 'rows' },
+        h('div', { class: 'notice info' }, h('div', null,
+          h('b', { text: '1. Supabase 데이터베이스 연결' }),
+          h('span', { text: '이 JSON 을 통째로 한 줄에 담고, 저장을 누르면 거기에 씁니다. 읽기는 누구나, 쓰기는 로그인한 사람만 가능하도록 막습니다.' }))),
+        h('div', { class: 'notice info' }, h('div', null,
+          h('b', { text: '2. 이미지 · PDF 업로드' }),
+          h('span', { text: 'Supabase 스토리지에 올리고 주소를 자동으로 칸에 채웁니다. 지금 있는 이미지와 영상은 전송량을 아끼려고 GitHub 에 그대로 둡니다.' }))),
+        h('div', { class: 'notice info' }, h('div', null,
+          h('b', { text: '3. 로그인' }),
+          h('span', { text: '이 페이지에 이메일·비밀번호 잠금을 겁니다. 주소를 난수로 둔 것만으로는 가림막일 뿐 잠금이 아닙니다.' }))),
+        h('div', { class: 'notice info' }, h('div', null,
+          h('b', { text: '4. 사이트가 이 데이터를 읽도록 바꾸기' }),
+          h('span', { text: '지금 index.html 안에 박혀 있는 작품·프로필 정보를 걷어내고 이 데이터를 읽게 합니다. Supabase 가 쉬고 있을 때를 대비해 저장소의 site.json 을 예비로 씁니다.' })))))
+  ];
+}
+
+/* ── 그리기 ───────────────────────────────────────────────── */
+const TABS = { profile: tabProfile, works: tabWorks, labs: tabLabs, docs: tabDocs, texts: tabTexts, json: tabJson };
+
+function render() {
+  if (!state.data) return;
+  $('#count-works').textContent = state.data.works.length;
+  $('#count-labs').textContent = state.data.labs.length;
+  document.querySelectorAll('#tabs button[data-tab]').forEach(button => {
+    button.classList.toggle('is-on', button.dataset.tab === state.tab);
+  });
+  const panel = $('#panel');
+  const keep = panel.scrollTop;
+  panel.replaceChildren(...TABS[state.tab]());
+  panel.scrollTop = keep;
+}
+
+document.querySelectorAll('#tabs button[data-tab]').forEach(button => {
+  button.addEventListener('click', () => { state.tab = button.dataset.tab; window.scrollTo({ top: 0 }); render(); });
+});
+
+$('#btn-reload').addEventListener('click', () => {
+  if (state.dirty && !confirm('고친 내용을 버리고 처음 상태로 되돌릴까요?')) return;
+  state.data = structuredClone(state.origin);
+  clearDirty(); render(); toast('처음 상태로 되돌렸습니다');
+});
+
+$('#btn-save').addEventListener('click', () => toast('저장은 다음 단계에서 붙입니다'));
+
+window.addEventListener('beforeunload', event => {
+  if (state.dirty) { event.preventDefault(); event.returnValue = ''; }
+});
+
+/* ── 데이터 읽기 ──────────────────────────────────────────── */
+function useData(json) {
+  state.origin = structuredClone(json);
+  state.data = json;
+  clearDirty();
+  render();
+}
+
+/* 로컬에서 파일을 더블클릭해 열면 fetch 가 막힙니다(브라우저 보안).
+   그때는 파일을 직접 고르게 해서 같은 화면을 볼 수 있게 합니다. */
+function showLoadFallback(reason) {
+  $('#panel').replaceChildren(h('section', { class: 'card' },
+    h('h2', { text: '데이터를 불러오지 못했습니다' }),
+    h('p', { class: 'desc', text: reason }),
+    h('div', { class: 'notice warn' }, h('div', null,
+      h('b', { text: '파일을 더블클릭해서 여셨나요?' }),
+      h('span', { text: '그 경우 브라우저가 보안상 옆 파일(data/site.json)을 읽지 못합니다. 아래에서 직접 고르시거나, 올라간 사이트 주소로 접속하세요.' }))),
+    h('div', { style: 'margin-top:16px' },
+      h('input', { type: 'file', accept: '.json,application/json', onchange: event => {
+        const file = event.target.files[0];
+        if (!file) return;
+        file.text().then(text => { try { useData(JSON.parse(text)); toast('불러왔습니다'); } catch (error) { alert('JSON 을 읽지 못했습니다: ' + error.message); } });
+      } }))));
+}
+
+fetch(DATA_URL, { cache: 'no-store' })
+  .then(response => { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
+  .then(useData)
+  .catch(error => showLoadFallback(DATA_URL + ' 를 읽지 못했습니다 (' + error.message + ')'));
+</script>
+</body>
+</html>

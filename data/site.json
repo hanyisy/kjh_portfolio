@@ -1,0 +1,588 @@
+{
+  "version": 1,
+  "profile": {
+    "name": "이름 입력",
+    "englishName": "YOUR NAME",
+    "shortName": "Y.N",
+    "email": "your-email@example.com",
+    "kakaoOpenChat": "https://kakaocorp.com",
+    "artstation": "https://www.artstation.com/",
+    "education": [
+      {
+        "period": "2000",
+        "text": "00고등학교"
+      }
+    ],
+    "experience": [
+      {
+        "period": "2000~2000",
+        "text": "(주)000 디자인팀"
+      },
+      {
+        "period": "2000~2000",
+        "text": "강의명 학원"
+      },
+      {
+        "period": "2000~2000",
+        "text": "강의명 학원2"
+      }
+    ],
+    "certificates": [
+      {
+        "period": "2023",
+        "text": "게임그래픽전문가"
+      },
+      {
+        "period": "2023",
+        "text": "컴퓨터그래픽스운용기능사"
+      },
+      {
+        "period": "2022",
+        "text": "GTQi 일러스트"
+      },
+      {
+        "period": "2022",
+        "text": "GTQ 포토샵"
+      }
+    ],
+    "abilities": [
+      {
+        "name": "3ds Max",
+        "level": 75
+      },
+      {
+        "name": "ZBrush",
+        "level": 90
+      },
+      {
+        "name": "Substance 3D Painter",
+        "level": 70
+      },
+      {
+        "name": "Marmoset Toolbag",
+        "level": 65
+      },
+      {
+        "name": "Photoshop",
+        "level": 90
+      },
+      {
+        "name": "Unreal Engine",
+        "level": 40
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Portfolio 2026",
+    "titleTop": "3D 캐릭터 모델러",
+    "titleEm": "000입니다.",
+    "copy": "반실사 캐릭터부터 캐주얼한 캐릭터까지, 다양한 스타일을 유연하게 제작합니다.",
+    "tags": [
+      "3ds Max",
+      "ZBrush",
+      "Substance 3D Painter",
+      "Marmoset Toolbag"
+    ]
+  },
+  "sections": {
+    "work": {
+      "eyebrow": "Selected work",
+      "title": "Modeling",
+      "lead": "반실사부터 스타일라이즈까지, 원화의 의도를 읽고 실루엣과 재질을 다시 설계한 3D 캐릭터 작업입니다."
+    },
+    "lab": {
+      "eyebrow": "Beyond modeling",
+      "title": "AI & Design",
+      "lead": "3D 캐릭터 모델링 외에, AI 파이프라인으로 제작한 작업과 실무에서 진행한 UI · 상세페이지 디자인입니다."
+    },
+    "contact": {
+      "title": "Thank you for your time.",
+      "sub": "끝까지 읽어주셔서 진심으로 감사드립니다.",
+      "docsTitle": "Description",
+      "docsCopy": "포트폴리오 및 지원 서류를 열람하거나 PDF로 내려받으실 수 있습니다."
+    }
+  },
+  "documents": {
+    "portfolio": {
+      "label": "포트폴리오 PDF",
+      "url": null
+    },
+    "resume": {
+      "label": "이력서 및 자기소개서",
+      "url": null
+    }
+  },
+  "works": [
+    {
+      "id": "gunslinger",
+      "title": "Gunslinger",
+      "cardSub": "Character · Hard Surface",
+      "image": "assets/portfolio/hero-gunslinger.webp",
+      "alt": "Gunslinger 캐릭터 렌더",
+      "portrait": true,
+      "inHero": true,
+      "detail": {
+        "kind": "character",
+        "sub": "반실사 여성 건슬링어 스타일 캐릭터",
+        "image": "assets/portfolio/hero-gunslinger.webp",
+        "alt": "Gunslinger 캐릭터 렌더",
+        "focus": [
+          "원화의 퍼 코트는 캐릭터의 실루엣이 가려지지 않도록 폭이 좁고 긴 일자형 망토와 어깨 장식으로 대체하여 제작했습니다.",
+          "가벼워진 상체의 디테일을 보완하고자 레이스와 시스루 옷을 추가했습니다.",
+          "무릎은 반복되는 총알 형태나 부피감이 부족했던 장식 대신, 입체감을 살린 경량 갑주 형태로 제작하여 원화의 밀도감을 유지하면서도 조화로운 실루엣이 되도록 제작했습니다."
+        ],
+        "meta": {
+          "PERIOD": "2025.10 ~ 2026.06 (실작업 약 6주)",
+          "SCOPE": "모델링 · 리토폴로지 · UV · 텍스처링 · 렌더",
+          "SPECS": "139,600 Tris / 4K Texture × 3",
+          "TOOLS": "3ds Max, ZBrush, Photoshop, Substance 3D Painter, Marmoset Toolbag",
+          "CONCEPT": {
+            "source": "ArtStation",
+            "name": "DS K",
+            "href": "https://www.artstation.com/artwork/v2kn5O"
+          }
+        },
+        "breakdown": [
+          {
+            "img": "bd-gunslinger-1",
+            "cap": "실루엣 수정",
+            "r": 1.306
+          },
+          {
+            "img": "bd-gunslinger-2",
+            "cap": "팔 디테일 추가",
+            "r": 1.306
+          },
+          {
+            "img": "bd-gunslinger-3",
+            "cap": "무릎 장식 수정",
+            "r": 1.945
+          }
+        ],
+        "gallery": [
+          "gunslinger-01",
+          "gunslinger-02",
+          "gunslinger-03",
+          "gunslinger-04",
+          "gunslinger-05",
+          "gunslinger-06",
+          "gunslinger-07",
+          "gunslinger-08"
+        ],
+        "video": "assets/portfolio/video/gunslinger.mp4"
+      }
+    },
+    {
+      "id": "steampunk",
+      "title": "Steampunk",
+      "cardSub": "Character · Hard Surface",
+      "image": "assets/portfolio/hero-steampunk.webp",
+      "alt": "Steampunk 캐릭터 렌더",
+      "portrait": false,
+      "inHero": true,
+      "detail": {
+        "kind": "character",
+        "sub": "반실사 남성 스팀펑크 스타일 캐릭터",
+        "image": "assets/portfolio/hero-steampunk.webp",
+        "alt": "Steampunk 캐릭터 렌더",
+        "focus": [
+          "반실사적인 느낌을 주기 위해서 단순하게 표현된 원화의 가죽 코트에 디테일을 추가했습니다.",
+          "모델링 단계에선 스티치 디테일을 넣었고 텍스처 작업 시엔 4종의 가죽 재질을 적용하고 채도는 원화보다 낮춰 제작했습니다.",
+          "또한 실루엣 및 시각적 밀도를 높이기 위해, AI 원화를 참고하여 컨셉에 맞는 무기를 추가 제작했습니다.",
+          "렌더링 단계에서는 굴절 효과를 적용한 액체 표현과 파티클 연출, 바닥 에셋을 사용하여 완성도를 높였습니다."
+        ],
+        "meta": {
+          "PERIOD": "2026.05 ~ 2026.09 (실작업 약 7주)",
+          "SCOPE": "모델링 · 리토폴로지 · UV · 텍스처링 · 렌더",
+          "SPECS": "116,600 Tris / 4K Texture × 4",
+          "TOOLS": "3ds Max, ZBrush, Photoshop, Substance 3D Painter, Marmoset Toolbag",
+          "CONCEPT": {
+            "source": "ArtStation",
+            "name": "Kang jihun",
+            "href": "https://www.artstation.com/artwork/wJwE56"
+          }
+        },
+        "breakdown": [
+          {
+            "img": "bd-steampunk-1",
+            "cap": "스티치 추가",
+            "r": 1.03
+          },
+          {
+            "img": "bd-steampunk-2",
+            "cap": "가죽 텍스처 적용",
+            "r": 1.03
+          },
+          {
+            "img": "bd-steampunk-3",
+            "cap": "무기 제작",
+            "r": 1.03
+          }
+        ],
+        "gallery": [
+          "steampunk-01",
+          "steampunk-02",
+          "steampunk-03",
+          "steampunk-04",
+          "steampunk-05",
+          "steampunk-06",
+          "steampunk-07",
+          "steampunk-08",
+          "steampunk-09",
+          "steampunk-10",
+          "steampunk-11"
+        ],
+        "video": "assets/portfolio/video/steampunk.mp4"
+      }
+    },
+    {
+      "id": "elf",
+      "title": "SD Elf",
+      "cardSub": "SD Character · Stylized",
+      "image": "assets/portfolio/hero-elf.webp",
+      "alt": "SD Elf 캐릭터 렌더",
+      "portrait": true,
+      "inHero": true,
+      "detail": {
+        "kind": "character",
+        "sub": "스타일라이즈 판타지 스타일 캐릭터",
+        "image": "assets/portfolio/hero-elf.webp",
+        "alt": "SD Elf 캐릭터 렌더",
+        "focus": [
+          "헤어에 불필요하게 쏠려 있던 폴리곤 밀도를 바디와 비슷하게 수정하여 메쉬를 최적화했습니다.",
+          "UV 가독성 또한 정돈한 뒤 서브스턴스 페인터를 사용해 텍스처를 보완했습니다.",
+          "이마와 헤어가 맞닿는 부분이 튀지 않도록 헤어 텍스처에 피부 톤을 섞어 헤어라인을 부드럽게 표현했습니다.",
+          "또한 디테일한 표정 연출을 위해 얼굴에도 리깅 작업을 진행했습니다.",
+          "원화의 투명한 분위기는 그라데이션으로 표현했으며, 지브러쉬에서 추출한 노멀 맵을 더해 손맵만으로 부족했던 입체감도 보완했습니다."
+        ],
+        "meta": {
+          "PERIOD": "2025.06 ~ 2026.09 (실작업 약 3주)",
+          "SCOPE": "모델링 · 리토폴로지 · UV · 텍스처링 · 렌더",
+          "SPECS": "26,900 Tris / 2K Texture × 3",
+          "TOOLS": "3ds Max, ZBrush, Photoshop, Substance 3D Painter, Marmoset Toolbag",
+          "CONCEPT": {
+            "source": "Pinterest",
+            "name": "Q Dreamy AI Studio",
+            "href": "https://kr.pinterest.com/pin/391461392629691331/"
+          }
+        },
+        "breakdown": [
+          {
+            "img": "bd-elf-1",
+            "cap": "헤어 수정 전",
+            "r": 1.821
+          },
+          {
+            "img": "bd-elf-2",
+            "cap": "헤어 수정 후",
+            "r": 1.821
+          },
+          {
+            "img": "bd-elf-3",
+            "cap": "텍스처 및 본",
+            "r": 1
+          }
+        ],
+        "gallery": [
+          "elf-01",
+          "elf-02",
+          "elf-03",
+          "elf-04",
+          "elf-05",
+          "elf-06"
+        ],
+        "video": "assets/portfolio/video/elf.mp4"
+      }
+    },
+    {
+      "id": "monster",
+      "title": "Monster",
+      "cardSub": "Character · Diorama",
+      "image": "assets/portfolio/hero-monster.webp",
+      "alt": "Monster 캐릭터 렌더",
+      "portrait": true,
+      "inHero": true,
+      "detail": {
+        "kind": "character",
+        "sub": "스타일라이즈 몬스터 스타일 캐릭터",
+        "image": "assets/portfolio/hero-monster.webp",
+        "alt": "Monster 캐릭터 렌더",
+        "focus": [
+          "파츠 경계마다 윤곽선 텍스처를 적용하여 캐주얼 특유의 선명도를 높였습니다.",
+          "또한 부족한 깊이감을 주기 위해, AO 맵 영향이 적은 굴곡에는 곱하기 레이어를 사용하여 명암 대비를 주었습니다.",
+          "최종 렌더링은 원화처럼 일러스트 느낌을 목표로 언덕 및 표지판, 깃발 에셋을 제작했습니다.",
+          "안정적인 삼각형 구도로 오브젝트들을 배치하여 시선이 중심 캐릭터에 집중되도록 구성했습니다."
+        ],
+        "meta": {
+          "PERIOD": "2025.05 ~ 2026.06 (실작업 약 1주)",
+          "SCOPE": "모델링 · 리토폴로지 · UV · 텍스처링 · 렌더",
+          "SPECS": "11,000 Tris / 2K Texture × 1",
+          "TOOLS": "3ds Max, ZBrush, Photoshop, Cinema 4D, Marmoset Toolbag",
+          "CONCEPT": {
+            "source": "ArtStation",
+            "name": "hanska3d",
+            "href": "https://www.artstation.com/artwork/xDQaxm"
+          }
+        },
+        "breakdown": [
+          {
+            "img": "bd-monster-1",
+            "cap": "윤곽선 추가",
+            "r": 1.306
+          },
+          {
+            "img": "bd-monster-2",
+            "cap": "텍스처 깊이감 추가",
+            "r": 1.306
+          },
+          {
+            "img": "bd-monster-3",
+            "cap": "배경 제작",
+            "r": 1.306
+          }
+        ],
+        "gallery": [
+          "monster-01",
+          "monster-02",
+          "monster-03",
+          "monster-04",
+          "monster-05",
+          "monster-06"
+        ],
+        "video": "assets/portfolio/video/monster.mp4"
+      }
+    }
+  ],
+  "workPlaceholder": {
+    "show": true,
+    "title": "Coming soon",
+    "sub": "Next character project"
+  },
+  "labs": [
+    {
+      "id": "aihunter",
+      "title": "AI SD Hunter",
+      "kindLabel": "AI Pipeline · 2D & 3D",
+      "copy": "AI로 원화부터 2D 배경·스프라이트, 3D 모델 리소스까지 제작하고 언리얼 엔진에서 하나의 씬으로 완성한 작업입니다.",
+      "tags": [
+        "Unreal Engine",
+        "Aether AI",
+        "Tripo AI",
+        "3ds Max",
+        "Marmoset Toolbag"
+      ],
+      "image": "assets/portfolio/ai-01.webp",
+      "alt": "AI SD Hunter 캐릭터 최종 렌더",
+      "detail": {
+        "kind": "story",
+        "sub": "스타일라이즈 판타지 스타일 캐릭터 · AI 파이프라인",
+        "image": "assets/portfolio/hero-ai.webp",
+        "alt": "AI SD Hunter 캐릭터 렌더",
+        "focus": [
+          "AI를 활용해 '장마 도시 조사원' 컨셉의 캐릭터 원화와 2D 배경, 3D 모델 리소스를 제작했습니다.",
+          "스프라이트 시트를 언리얼 엔진에서 세팅하여 대기·걷기·뛰기 3종의 2D 스프라이트 모션을 완성했습니다.",
+          "2D 배경을 포토샵으로 레이어 분할 및 보정 후 언리얼에 원근별로 배치하고, 나이아가라로 비 효과를 더해 씬을 구성했습니다.",
+          "생성된 3D 모델의 폴리곤과 텍스처를 정리하고 리깅을 적용한 뒤, 마모셋에서 렌더링했습니다."
+        ],
+        "meta": {
+          "PERIOD": "2026.05 ~ 2026.08 (실작업 약 1주)",
+          "SCOPE": "3D 모델 최적화(리토폴로지·UV·텍스처링) · 2D 스프라이트 애니메이션 · 언리얼 씬 구성 · 렌더",
+          "SPECS": "12,600 Tris / 2K Texture × 1, 1K Texture × 1",
+          "TOOLS": "3ds Max, Photoshop, Cinema 4D, Marmoset Toolbag, Unreal Engine, Aether AI, Tripo AI, ChatGPT, Gemini",
+          "CONCEPT": "AI로 자체 원화 제작"
+        },
+        "steps": [
+          {
+            "title": "원화 / 컨셉 기획",
+            "layout": "side",
+            "images": [
+              {
+                "img": "ai-concept",
+                "cap": "캐릭터 원화"
+              }
+            ],
+            "body": "'장마 도시로 파견된 조사원'을 컨셉으로 설정하고, AI를 활용해 캐릭터 원화를 제작했습니다. 의상 및 소품 디테일이 설정에 가장 잘 어울리는 시안을 선별해 이후 2D 모션과 3D 제작의 기준 원화로 잡았습니다."
+          },
+          {
+            "title": "2D 캐릭터 애니메이션",
+            "layout": "split",
+            "cols": 1,
+            "images": [
+              {
+                "img": "ai-sprite",
+                "cap": "스프라이트 시트 (대기 · 걷기 · 뛰기)"
+              },
+              {
+                "vid": "ai-motion",
+                "cap": "플립북 세팅"
+              }
+            ],
+            "body": "원화를 바탕으로 AI를 통해 스프라이트 시트를 추출했습니다. 이를 언리얼 엔진을 활용해 자동 분할하고 플립북으로 세팅하여, 기본 동작인 대기, 걷기, 뛰기 3종 애니메이션을 구현했습니다."
+          },
+          {
+            "title": "2D 배경 및 씬 구성",
+            "layout": "split",
+            "rows": [
+              {
+                "cols": 2,
+                "items": [
+                  {
+                    "img": "ai-bg",
+                    "cap": "배경 원화"
+                  },
+                  {
+                    "img": "ai-parts",
+                    "cap": "파츠 분리"
+                  }
+                ]
+              },
+              {
+                "cols": 1,
+                "items": [
+                  {
+                    "vid": "ai-scene",
+                    "cap": "언리얼 엔진 세팅"
+                  }
+                ]
+              }
+            ],
+            "body": "AI로 생성한 배경 원화를 포토샵으로 가져와 원경 배경, 건물, 다리 및 주요 오브젝트를 보정했습니다. 언리얼 엔진 상에서 깊이감 있게 평면 레이어를 배치하고, 맨 앞에 나이아가라 시스템으로 비 효과를 적용해 입체적인 느낌이 들도록 구성했습니다."
+          },
+          {
+            "title": "3D 모델 최적화 및 렌더링",
+            "layout": "split",
+            "cols": 2,
+            "images": [
+              {
+                "img": "ai-model-a",
+                "cap": "모델링 수정 전"
+              },
+              {
+                "img": "ai-model-b",
+                "cap": "모델링 수정 후"
+              },
+              {
+                "img": "ai-tex-a",
+                "cap": "텍스처 수정 전"
+              },
+              {
+                "img": "ai-tex-b",
+                "cap": "텍스처 수정 후"
+              },
+              {
+                "img": "ai-uv-a",
+                "cap": "UV 수정 전"
+              },
+              {
+                "img": "ai-uv-b",
+                "cap": "UV 수정 후"
+              }
+            ],
+            "aside": [
+              {
+                "img": "ai-rig",
+                "cap": "리깅"
+              }
+            ],
+            "body": "AI로 도출한 3D 모델의 폴리곤 구조를 정리하고 텍스처를 리터칭했습니다. 기본적인 포즈가 가능하도록 리깅 작업을 진행한 뒤, 마모셋으로 가져가 렌더링했습니다."
+          }
+        ],
+        "gallery": [
+          "ai-01",
+          "ai-02"
+        ],
+        "galleryCols": 2,
+        "video": "assets/portfolio/video/ai.mp4"
+      }
+    },
+    {
+      "id": "uidesign",
+      "title": "UI & Content Design",
+      "kindLabel": "UI · Content Design",
+      "copy": "자사몰 리뉴얼의 누락된 서브페이지 UI를 채우고, 블랙프라이데이 프로모션 상세페이지를 기획부터 디자인까지 담당했습니다.",
+      "tags": [
+        "Figma",
+        "Photoshop",
+        "Illustrator"
+      ],
+      "image": "assets/portfolio/lab-ui.webp",
+      "alt": "자사몰 UI 및 블랙프라이데이 상세페이지 디자인",
+      "detail": {
+        "kind": "story",
+        "sub": "UI · 상세페이지 디자인",
+        "image": "assets/portfolio/hero-ui.webp",
+        "alt": "UI 및 상세페이지 디자인 대표 이미지",
+        "focus": [
+          "UI - 웹 템플릿을 당사 서비스에 맞춰 리뉴얼하는 과정에서, 템플릿에 없는 세부 화면을 채우고 최종 웹사이트의 완성도를 높이는 데 집중했습니다.",
+          "상세페이지 - 기획을 바탕으로, 신규 회원이 이벤트 참여 방법을 쉽게 이해하고 원활하게 행동할 수 있도록 정보 배치와 가독성에 집중하여 디자인했습니다."
+        ],
+        "meta": {
+          "PROJECT": "자사몰 리뉴얼 및 블랙프라이데이 프로모션",
+          "ROLE": "UI & 콘텐츠 디자이너",
+          "SHARE": "UI 디자인 50%, 상세페이지 디자인 100%",
+          "TOOLS": "Figma, Photoshop, Illustrator"
+        },
+        "steps": [
+          {
+            "group": "UI",
+            "title": "디자인 통일 및 서브페이지 디자인",
+            "layout": "side",
+            "cols": 2,
+            "images": [
+              {
+                "img": "ui-sub-a"
+              },
+              {
+                "img": "ui-sub-b"
+              }
+            ],
+            "body": "완성된 메인 템플릿 분위기에 맞춰 누락된 세부 서브페이지들을 기획하고 일관된 톤앤매너로 화면을 구성했습니다."
+          },
+          {
+            "title": "디자인 가이드 추가",
+            "layout": "split",
+            "cols": 1,
+            "images": [
+              {
+                "img": "ui-guide"
+              }
+            ],
+            "body": "개발자가 원활하게 작업할 수 있도록 색상, 글자 크기, 간격 등 필요한 디자인 가이드를 추가로 정리했습니다."
+          },
+          {
+            "title": "화면 검토 및 수정",
+            "layout": "split",
+            "cols": 1,
+            "images": [
+              {
+                "img": "ui-review"
+              }
+            ],
+            "body": "개발 과정에서 발생한 오류를 확인하고, 수정 요청 및 직접 보완을 거쳐 웹사이트의 완성도를 높였습니다."
+          },
+          {
+            "group": "상세페이지",
+            "title": "컬러 · 그래픽 요소 · 정보 구조",
+            "layout": "side",
+            "cols": 2,
+            "images": [
+              {
+                "img": "ui-detail"
+              },
+              {
+                "img": "ui-detail-2"
+              }
+            ],
+            "body": [
+              "[컬러 및 컨셉] 블랙프라이데이 특유의 다크한 무드를 유지하면서, 어두운 배경에서도 시선이 집중되도록 초록색과 보라색을 메인으로 사용하여 작년 블랙프라이데이 이벤트와 컬러가 겹치지 않도록 디자인했습니다.",
+              "[그래픽 요소] 상단 배경은 입체적인 세로 패턴을 넣어 미니멀하게 표현하고, 'Black Friday' 텍스트는 메인 내용을 해치지 않도록 했습니다. 핵심 혜택인 쿠폰은 실제 티켓처럼 측면 파임 디테일을 적용하고, 보라색 배경에는 흰색 텍스트를, 회색 배경에는 검은색 텍스트를 적용하는 등 배경에 맞춰 색상을 대비시켜 선명한 가독성을 확보했습니다.",
+              "[정보 구조 및 레이아웃] '메인 문구 - 이벤트 설명 - 참여 방법 - 유의사항' 순으로 흐름을 구성했습니다. 참여 방법 구간에는 실제 캡처 이미지를 넣어 이해를 도왔고, 접근성을 높이기 위해 하단에 이동 버튼을 2개 배치했습니다."
+            ]
+          }
+        ],
+        "gallery": [],
+        "video": null
+      }
+    }
+  ]
+}
