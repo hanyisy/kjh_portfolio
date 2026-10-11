@@ -549,7 +549,7 @@ function tabProfile() {
       h('div', { class: 'grid3' },
         field('이름', null, input(p, 'name', { placeholder: '홍길동' })),
         field('영문 이름', '프로필 이름 아래 작게 들어갑니다', input(p, 'englishName', { placeholder: 'GILDONG HONG' })),
-        field('로고 옆 글자', '왼쪽 위 로고 오른쪽에 붙는 글자', input(p, 'shortName', { placeholder: '포트폴리오' }))),
+        field('로고 옆 글자', '왼쪽 위 로고 오른쪽에 붙는 글자. 포인트 핑크로 나옵니다', input(p, 'shortName', { placeholder: 'Portfolio' }))),
       h('div', { style: 'margin-top:14px' },
         imageField(p, 'logo', '로고 이미지', '왼쪽 위 로고와 브라우저 탭 아이콘 두 곳에 같이 들어갑니다. 높이 24px 에 맞춰 들어가고 폭은 그림 비율을 따릅니다. 비워 두면 기본 아이콘이 나옵니다.', true)),
       h('div', { class: 'field', style: 'margin-top:14px' },

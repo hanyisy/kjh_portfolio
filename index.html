@@ -76,7 +76,9 @@
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
     .page-progress { height:3.2px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
     .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,#f7bfd0 0%,#ed82a8 54%,#d94f84 100%); box-shadow:0 0 11.2px rgba(217,79,132,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
-    .brand { font:800 15px/1 "Manrope"; letter-spacing:-.03em; display:flex; align-items:center; gap:8px; }
+    .brand { font:800 18px/1 "Manrope",Pretendard,"Apple SD Gothic Neo",sans-serif; letter-spacing:-.03em; display:flex; align-items:center; gap:7px; }
+    /* 로고 옆 글자는 포인트 색(진한 핑크)으로 둡니다. */
+    .brand-text { color:var(--pink-strong); }
     .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
     .brand-mark svg { width:15.2px; }
     /* 로고 이미지를 넣으면 분홍 네모를 걷어 내고 그림만 둡니다.
@@ -84,7 +86,9 @@
        높이를 퍼센트로 주면 칸 크기가 그림 크기에 따라 정해지는 순환이 생겨 먹히지 않습니다.
        flex:0 0 auto 는 좁은 화면에서 로고가 찌그러지지 않게 합니다. */
     .brand-mark.has-image { display:block; width:auto; height:auto; aspect-ratio:auto; flex:0 0 auto; border-radius:0; background:none; box-shadow:none; }
-    .brand-mark.has-image img { display:block; width:auto; height:24px; object-fit:contain; }
+    /* 높이를 em 으로 두면 마크와 글자가 한 덩어리로 같이 커지고 작아집니다.
+       조합 전체 크기는 .brand 의 font-size, 둘의 비율은 아래 1.22em 하나로 조절합니다. */
+    .brand-mark.has-image img { display:block; width:auto; height:1.22em; object-fit:contain; }
     .nav-links { display:flex; align-items:center; gap:22.4px; font-size:13px; font-weight:600; }
     .nav-links a { position:relative; }
     .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-4.8px; height:2px; background:var(--pink-strong); transition:.25s ease; }
@@ -550,7 +554,7 @@
   <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
   <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><span class="loader-year">2026</span><p class="loader-title">Portfolio</p><span class="loader-role">3D CHARACTER MODELING</span><div class="loader-bottom"><span class="loader-stage" id="loader-stage">MODELING</span><span class="loader-count" id="loader-count">00</span></div><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div></div></div>
 
-  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work" data-nav="work">WORK</a><a href="#lab" data-nav="lab">AI &amp; DESIGN</a><a href="#about" data-nav="about">PROFILE</a><a class="contact-pill" href="#contact" data-nav="contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
+  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span class="brand-text" data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work" data-nav="work">WORK</a><a href="#lab" data-nav="lab">AI &amp; DESIGN</a><a href="#about" data-nav="about">PROFILE</a><a class="contact-pill" href="#contact" data-nav="contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
 
   <main id="top">
     <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow" id="hero-eyebrow">Portfolio 2026</p><h1 id="hero-title">3D 캐릭터 모델러<em>000입니다.</em></h1><p class="hero-copy" id="hero-copy">반실사 캐릭터부터 캐주얼한 캐릭터까지, 다양한 스타일을 유연하게 제작합니다.</p><div class="hero-meta" id="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-portrait is-active" data-label="01 · GUNSLINGER"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide" data-label="02 · STEAMPUNK"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="assets/portfolio/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · GUNSLINGER</span></div></div></section>
