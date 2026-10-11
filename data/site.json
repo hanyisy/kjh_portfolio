@@ -82,6 +82,28 @@
       "ZBrush",
       "Substance 3D Painter",
       "Marmoset Toolbag"
+    ],
+    "slides": [
+      {
+        "img": "assets/portfolio/hero-gunslinger.webp",
+        "label": "GUNSLINGER",
+        "portrait": true
+      },
+      {
+        "img": "assets/portfolio/hero-steampunk.webp",
+        "label": "STEAMPUNK",
+        "portrait": false
+      },
+      {
+        "img": "assets/portfolio/hero-elf.webp",
+        "label": "SD ELF",
+        "portrait": true
+      },
+      {
+        "img": "assets/portfolio/hero-monster.webp",
+        "label": "MONSTER",
+        "portrait": true
+      }
     ]
   },
   "sections": {
@@ -120,7 +142,6 @@
       "image": "assets/portfolio/hero-gunslinger.webp",
       "alt": "Gunslinger 캐릭터 렌더",
       "portrait": true,
-      "inHero": true,
       "detail": {
         "kind": "character",
         "sub": "반실사 여성 건슬링어 스타일 캐릭터",
@@ -179,7 +200,6 @@
       "image": "assets/portfolio/hero-steampunk.webp",
       "alt": "Steampunk 캐릭터 렌더",
       "portrait": false,
-      "inHero": true,
       "detail": {
         "kind": "character",
         "sub": "반실사 남성 스팀펑크 스타일 캐릭터",
@@ -242,7 +262,6 @@
       "image": "assets/portfolio/hero-elf.webp",
       "alt": "SD Elf 캐릭터 렌더",
       "portrait": true,
-      "inHero": true,
       "detail": {
         "kind": "character",
         "sub": "스타일라이즈 판타지 스타일 캐릭터",
@@ -301,7 +320,6 @@
       "image": "assets/portfolio/hero-monster.webp",
       "alt": "Monster 캐릭터 렌더",
       "portrait": true,
-      "inHero": true,
       "detail": {
         "kind": "character",
         "sub": "스타일라이즈 몬스터 스타일 캐릭터",

@@ -504,6 +504,13 @@ function normalizeDetail(detail) {
 function normalizeData(data) {
   (data.works || []).forEach(work => normalizeDetail(work.detail));
   (data.labs || []).forEach(lab => normalizeDetail(lab.detail));
+  data.hero = data.hero || {};
+  /* 맨 위 슬라이드는 작품과 별개입니다. 옛 데이터라 비어 있으면
+     지금 작품 썸네일로 한 번 채워 두고, 그 뒤로는 따로 관리합니다. */
+  if (!Array.isArray(data.hero.slides) || !data.hero.slides.length) {
+    data.hero.slides = (data.works || []).filter(work => work.image)
+      .map(work => ({ img: work.image, label: (work.title || '').toUpperCase(), portrait: !!work.portrait }));
+  }
   return data;
 }
 
@@ -816,7 +823,7 @@ function tabWorks() {
   } }, '⧉ 선택한 작품 복제'));
   picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
     works.push({ id: 'work-' + Date.now().toString(36), title: '새 작품', cardSub: 'Character',
-      image: '', alt: '', portrait: true, inHero: true,
+      image: '', alt: '', portrait: true,
       detail: { kind: 'character', sub: '', image: '', alt: '', focus: [''], meta: {},
         breakdown: [], steps: [], gallery: [], video: null } });
     state.workIndex = works.length - 1; markDirty(); render();
@@ -851,7 +858,7 @@ function tabWorks() {
         h('div', { class: 'field' },
           h('label', { text: '표시 방식' }),
           checkbox('세로로 긴 이미지 (위쪽 기준으로 자릅니다)', work, 'portrait'),
-          checkbox('맨 위 슬라이드에 넣기', work, 'inHero')))),
+          h('span', { class: 'hint', text: '맨 위 슬라이드는 이제 「사이트 문구」 탭에서 따로 관리합니다. 작품과 상관없는 이미지·영상도 넣을 수 있습니다.' })))),
     ...workDetailEditor(work.detail, work.title)
   ];
 }
@@ -982,6 +989,57 @@ function tabTexts() {
           h('input', { type: 'text', value: tag, placeholder: 'ZBrush',
             oninput: event => { hero.tags[i] = event.target.value; markDirty(); } })),
           () => '', '태그 추가'))),
+
+    h('section', { class: 'card' },
+      h('h2', { text: '맨 위 슬라이드' }),
+      h('p', { class: 'desc', text: '사이트를 열면 오른쪽에서 몇 초마다 넘어가는 그 화면입니다. 작품과 상관없는 이미지나 영상도 넣을 수 있습니다. 번호(01, 02…)는 순서대로 저절로 붙습니다.' }),
+      listEditor(hero.slides, (slide, i) => {
+        const isVideo = 'vid' in slide;
+        const preview = h('div', { class: 'box' });
+        const paint = () => {
+          const raw = ((isVideo ? slide.vid : slide.img) || '').trim();
+          preview.replaceChildren();
+          if (!raw) { preview.append(h('span', { text: '비어 있음' })); return; }
+          if (isVideo) { preview.append(h('span', { text: '영상' })); return; }
+          const src = /^(https?:|data:|assets\/)/.test(raw) ? raw : ASSET_BASE + raw + '.webp';
+          preview.append(h('img', { src, alt: '',
+            onerror: () => preview.replaceChildren(h('span', { text: '파일 없음' })) }));
+        };
+        const pathInput = input(slide, isVideo ? 'vid' : 'img',
+          { placeholder: isVideo ? 'assets/portfolio/video/이름.mp4' : 'assets/portfolio/hero-이름.webp' });
+        pathInput.addEventListener('input', paint);
+        paint();
+        return h('div', { class: 'thumb-preview', style: 'grid-template-columns:72px minmax(0,1fr)' },
+          preview,
+          h('div', null,
+            h('div', { class: 'grid3', style: 'gap:10px' },
+              h('div', { class: 'field' },
+                h('label', { text: '종류' }),
+                h('select', { value: isVideo ? 'vid' : 'img', onchange: event => {
+                  const toVideo = event.target.value === 'vid';
+                  const value = slide.img ?? slide.vid ?? '';
+                  delete slide.img; delete slide.vid;
+                  slide[toVideo ? 'vid' : 'img'] = value;
+                  markDirty(); render();
+                } }, h('option', { value: 'img', text: '이미지' }), h('option', { value: 'vid', text: '영상' }))),
+              h('div', { class: 'field' },
+                h('label', { text: (i + 1 + '').padStart(2, '0') + ' · 라벨' }),
+                input(slide, 'label', { placeholder: 'GUNSLINGER' })),
+              h('div', { class: 'field' },
+                h('label', { text: '자르기' }),
+                checkbox('세로로 긴 이미지', slide, 'portrait'))),
+            h('div', { class: 'field', style: 'margin-top:10px' },
+              h('label', { text: isVideo ? '영상 경로' : '이미지 경로' }),
+              pathInput,
+              h('span', { class: 'hint', text: isVideo ? '소리 없이 저절로 반복됩니다. 보이지 않을 때는 멈춥니다.' : 'assets/ 로 시작하는 경로를 그대로 적으세요.' }))));
+      }, () => ({ img: '', label: '', portrait: false }), '슬라이드 추가', { block: true, emptyText: '슬라이드가 없습니다.' }),
+      h('div', { class: 'row-tools', style: 'margin-top:10px; flex-wrap:wrap' },
+        h('span', { class: 'hint', style: 'margin-right:4px', text: '작품 썸네일에서 가져오기:' }),
+        ...state.data.works.map(work => h('button', { class: 'add-btn', type: 'button', style: 'margin-top:0',
+          onclick: () => {
+            hero.slides.push({ img: work.image, label: (work.title || '').toUpperCase(), portrait: !!work.portrait });
+            markDirty(); render(); toast(work.title + ' 을(를) 넣었습니다');
+          } }, work.title)))),
 
     h('section', { class: 'card' },
       h('h2', { text: '섹션 제목' }),

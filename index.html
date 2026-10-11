@@ -115,7 +115,7 @@
     .hero-slide { position:absolute; inset:0; opacity:0; transition:opacity 1.15s ease; }
     .hero-slide.is-active { opacity:1; z-index:1; }
     .hero-slide img,.hero-slide video { width:100%; height:100%; object-fit:cover; }
-    .hero-slide.is-portrait img { object-position:center 18%; }
+    .hero-slide.is-portrait img,.hero-slide.is-portrait video { object-position:center 18%; }
     .hero-note { position:absolute; z-index:5; right:-14.4px; bottom:-14.4px; padding:10.4px 12.8px; border-radius:11.2px; background:var(--pink); font:700 11px "Manrope"; letter-spacing:.08em; transform:rotate(-3deg); }
 
     .selected { padding:72px 0 104px; }
@@ -676,13 +676,30 @@
 
       const slider=document.querySelector('#hero-slider');
       if(!slider) return;
-      const slides=(data.works||[]).filter(work => work.inHero!==false&&work.image);
-      slider.replaceChildren(...slides.map((work,i) => {
-        const slide=el('div','hero-slide'+(work.portrait?' is-portrait':'')+(i===0?' is-active':''));
-        slide.dataset.label=`${String(i+1).padStart(2,'0')} · ${(work.title||'').toUpperCase()}`;
-        const img=el('img'); img.src=work.image; img.alt=`${work.title} 3D 캐릭터 메인 이미지`;
-        if(i===0) img.setAttribute('fetchpriority','high'); else img.loading='lazy';
-        slide.append(img);
+      /* 슬라이드는 작품과 별개입니다. hero.slides 가 비어 있을 때만 예전처럼
+         작품 썸네일을 끌어다 씁니다(옛 데이터 호환). */
+      const slides=(hero.slides&&hero.slides.length)
+        ? hero.slides
+        : (data.works||[]).filter(work => work.image)
+            .map(work => ({ img:work.image, label:(work.title||'').toUpperCase(), portrait:work.portrait }));
+      slider.replaceChildren(...slides.map((item,i) => {
+        const slide=el('div','hero-slide'+(item.portrait?' is-portrait':'')+(i===0?' is-active':''));
+        const number=String(i+1).padStart(2,'0');
+        slide.dataset.label=item.label?`${number} · ${item.label}`:number;
+        if(item.vid){
+          /* 소리 없이 저절로 도는 영상. muted·playsinline 은 '속성'으로도 달아야
+             자동재생 정책에 막히지 않습니다(특히 iOS 사파리). */
+          const video=document.createElement('video');
+          video.src=item.vid; video.muted=true; video.loop=true; video.autoplay=true; video.playsInline=true;
+          ['muted','playsinline','autoplay','loop'].forEach(name => video.setAttribute(name,''));
+          video.preload=i===0?'auto':'metadata';
+          if(item.label) video.setAttribute('aria-label',item.label);
+          slide.append(video);
+        } else {
+          const img=el('img'); img.src=item.img||''; img.alt=item.label?`${item.label} 메인 이미지`:'메인 이미지';
+          if(i===0) img.setAttribute('fetchpriority','high'); else img.loading='lazy';
+          slide.append(img);
+        }
         return slide;
       }));
     }
@@ -792,7 +809,13 @@
     function showHero(index){
       if(!heroSlides.length) return;
       heroIndex=(index+heroSlides.length)%heroSlides.length;
-      heroSlides.forEach((slide,i) => slide.classList.toggle('is-active',i===heroIndex));
+      heroSlides.forEach((slide,i) => {
+        const on=i===heroIndex;
+        slide.classList.toggle('is-active',on);
+        // 안 보이는 슬라이드의 영상까지 돌릴 필요는 없습니다.
+        const video=slide.querySelector('video');
+        if(video){ if(on) video.play().catch(() => {}); else video.pause(); }
+      });
       heroNote.textContent=heroSlides[heroIndex].dataset.label;
     }
     function startHero(){
