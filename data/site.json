@@ -4,9 +4,12 @@
     "name": "이름 입력",
     "englishName": "YOUR NAME",
     "shortName": "Y.N",
+    "logo": "",
     "email": "your-email@example.com",
     "kakaoOpenChat": "https://kakaocorp.com",
+    "kakaoLabel": "",
     "artstation": "https://www.artstation.com/",
+    "artstationLabel": "",
     "education": [
       {
         "period": "2000",

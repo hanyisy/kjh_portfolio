@@ -79,6 +79,9 @@
     .brand { font:800 15px/1 "Manrope"; letter-spacing:-.03em; display:flex; align-items:center; gap:8px; }
     .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
     .brand-mark svg { width:15.2px; }
+    /* 로고 이미지를 넣으면 분홍 네모를 꽉 채웁니다(모서리는 그대로 둥글게). */
+    .brand-mark.has-image { background:none; box-shadow:none; overflow:hidden; }
+    .brand-mark img { width:100%; height:100%; object-fit:cover; border-radius:inherit; }
     .nav-links { display:flex; align-items:center; gap:22.4px; font-size:13px; font-weight:600; }
     .nav-links a { position:relative; }
     .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-4.8px; height:2px; background:var(--pink-strong); transition:.25s ease; }
@@ -187,7 +190,6 @@
        화살표를 붙이고 호버 반응을 줘서 눌리는 곳임이 보이도록 했습니다. */
     .profile-contact a { text-decoration:none; transition:color .2s ease; }
     .profile-contact a:hover,.profile-contact a:focus-visible { color:var(--pink); }
-    .contact-link i { display:inline-block; margin-left:.28em; font-style:normal; }
     .profile-facts { grid-column:1/-1; display:grid; grid-template-columns:repeat(3,1fr); gap:9.6px; margin-top:24px; }
     /* 하단 개수 표기(1 ENTRY 등)를 뺐으므로 최소 높이를 낮춰 빈 공간이 남지 않게 했습니다.
        세 장의 높이는 그리드가 알아서 가장 긴 카드에 맞춰 줍니다. */
@@ -574,7 +576,7 @@
 
     <section class="about" id="about"><div class="wrap about-grid reveal">
       <div class="profile-identity"><p class="eyebrow">Profile</p><h2 data-profile="name">이름 입력</h2><span class="profile-name-en" data-profile="englishName">YOUR NAME</span></div>
-      <div class="profile-contact"><div><small>EMAIL</small><a data-profile-link="email" href="mailto:your-email@example.com" data-profile="email">your-email@example.com</a></div><div><small>KAKAO</small><a class="contact-link" data-profile-link="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener">오픈채팅방 바로가기<i aria-hidden="true">↗</i></a></div><div><small>ARTSTATION</small><a class="contact-link" data-profile-link="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener">작업물 더 보기<i aria-hidden="true">↗</i></a></div></div>
+      <div class="profile-contact"><div><small>EMAIL</small><a data-profile-link="email" href="mailto:your-email@example.com" data-profile="email">your-email@example.com</a></div><div><small>KAKAO</small><a class="contact-link" data-profile-link="kakao" data-profile-text="kakao" href="https://kakaocorp.com" target="_blank" rel="noopener">오픈채팅방 바로가기</a></div><div><small>ARTSTATION</small><a class="contact-link" data-profile-link="artstation" data-profile-text="artstation" href="https://www.artstation.com/" target="_blank" rel="noopener">작업물 더 보기</a></div></div>
       <div class="profile-facts">
         <article class="profile-card"><small>Education</small><div class="cert-list is-range" data-profile-list="education"></div></article>
         <article class="profile-card"><small>Experience & Training</small><div class="cert-list is-range" data-profile-list="experience"></div></article>
@@ -653,6 +655,25 @@
         if(!href) return;
         document.querySelectorAll(`[data-profile-link="${key}"]`).forEach(link => { link.href=href; });
       });
+      /* 프로필의 카카오·ArtStation 줄에 보이는 글자.
+         비워 두면 주소를 그대로 보여 줍니다. https:// 와 끝의 / 는 읽기 편하게 떼어 냅니다. */
+      const plain=url => String(url||'').replace(/^https?:\/\//,'').replace(/\/$/,'');
+      [['kakao',profile.kakaoLabel,profile.kakaoOpenChat],
+       ['artstation',profile.artstationLabel,profile.artstation]].forEach(([key,label,href]) => {
+        const text=(label&&label.trim())||plain(href);
+        document.querySelectorAll(`[data-profile-text="${key}"]`).forEach(node => { node.textContent=text; });
+      });
+      /* 로고. 이미지 주소를 적으면 기본 아이콘 대신 그 그림이 들어갑니다. */
+      const mark=document.querySelector('.brand-mark');
+      if(mark&&!mark.dataset.original) mark.dataset.original=mark.innerHTML;
+      if(mark){
+        const logo=(profile.logo||'').trim();
+        mark.classList.toggle('has-image',!!logo);
+        if(logo){
+          const image=el('img'); image.src=logo; image.alt=profile.name||'로고';
+          mark.replaceChildren(image);
+        } else mark.innerHTML=mark.dataset.original;
+      }
       const abilityList=document.querySelector('#ability-list');
       if(abilityList) abilityList.replaceChildren(...(profile.abilities||[]).map(item => {
         const row=el('div','ability-item');
