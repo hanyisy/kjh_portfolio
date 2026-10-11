@@ -493,6 +493,9 @@ function normalizeDetail(detail) {
       // 관리자에서 고른 열 수와 실제 화면이 어긋나지 않습니다.
       if (!row.cols) row.cols = Math.min(row.items.length || 1, 2);
     });
+    /* aside: 오른쪽에 따로 세우는 이미지. 없으면 빈 배열로 둬서 편집기가 같은 모양을 씁니다.
+       (내보낼 때 비어 있으면 다시 지웁니다 - exportData 참고) */
+    step.aside = Array.isArray(step.aside) ? step.aside : [];
     step.body = Array.isArray(step.body) ? step.body : (step.body ? [step.body] : ['']);
   });
 }
@@ -761,11 +764,16 @@ function workDetailEditor(detail, title) {
       h('div', { class: 'field', style: 'margin-top:4px' },
         h('label', { text: '이미지' }),
         rowsEditor(step)),
+      h('div', { class: 'field', style: 'margin-top:4px' },
+        h('label', { text: '옆에 세우는 이미지' + (step.aside.length ? '' : ' (없음)') }),
+        listEditor(step.aside, mediaItemEditor, () => ({ img: '' }), '옆 이미지 추가',
+          { block: true, emptyText: '비어 있습니다. 보통은 여기를 쓰지 않습니다.' }),
+        h('span', { class: 'hint', text: '배치를 split 으로 두면 오른쪽 좁은 칸에 세로로 서고, 설명 글이 그 아래에 붙습니다. 가로 이미지들 사이에 세로 이미지 한 장을 끼워야 할 때 씁니다. 좁은 화면에서는 가운데 절반 폭으로 줄어듭니다.' })),
       h('div', { class: 'field' },
         h('label', { text: '설명' }),
         sentenceEditor(step.body, '문단'),
         h('span', { class: 'hint', text: '맨 앞에 [소제목] 을 적으면 사이트에서 굵게 나옵니다.' }))),
-      () => ({ title: '', rows: [], body: [''] }), '단계 추가', { block: true,
+      () => ({ title: '', rows: [], aside: [], body: [''] }), '단계 추가', { block: true,
         emptyText: '단계가 없습니다. 이 작품은 아래 「최종 렌더」만 보여 줍니다.' })));
 
   blocks.push(h('section', { class: 'card' },
@@ -1068,9 +1076,22 @@ function tabPreview() {
     h('p', { class: 'pv-hint', text: '실제 사이트(index.html)를 그대로 띄워 데이터만 바꿔 넣는 방식입니다. 그래서 여기서 보이는 모습이 올라간 뒤의 모습과 같습니다. 다만 아직 저장 기능이 없어, 새로고침하면 고친 내용은 사라집니다.' }))];
 }
 
+/* 보여 주고 내려받는 데이터. 편집 편하자고 만들어 둔 빈 칸은 빼서
+   실제로 저장될 모양만 남깁니다. */
+function exportData() {
+  const copy = JSON.parse(JSON.stringify(state.data));
+  [...(copy.works || []), ...(copy.labs || [])].forEach(item => {
+    (item.detail && item.detail.steps || []).forEach(step => {
+      if (Array.isArray(step.aside) && !step.aside.length) delete step.aside;
+      if (Array.isArray(step.rows) && !step.rows.length) delete step.rows;
+    });
+  });
+  return copy;
+}
+
 /* ── 탭: 데이터 보기 ──────────────────────────────────────── */
 function tabJson() {
-  const text = JSON.stringify(state.data, null, 2);
+  const text = JSON.stringify(exportData(), null, 2);
   return [
     h('section', { class: 'card' },
       h('h2', { text: '지금 화면의 데이터' }),
