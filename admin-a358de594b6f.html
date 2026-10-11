@@ -312,10 +312,14 @@ const ASSET_BASE = 'assets/portfolio/';
 const state = { data:null, origin:null, tab:'profile', workIndex:0, labIndex:0, dirty:false, previewSize:'pc', previewHeight:null };
 
 /* ── 아주 작은 DOM 도우미 ─────────────────────────────────── */
+/* checked 처럼 '있으면 켜짐'인 속성들. 빈 문자열로도 켜지므로
+   거짓 값일 때는 아예 달지 않아야 합니다. (checked:'' 가 체크로 둔갑했습니다) */
+const BOOL_ATTRS = new Set(['checked', 'disabled', 'hidden', 'readonly', 'required', 'selected', 'multiple', 'open']);
 function h(tag, attrs, ...kids) {
   const el = document.createElement(tag);
   if (attrs) for (const [k, v] of Object.entries(attrs)) {
     if (v === null || v === undefined || v === false) continue;
+    if (BOOL_ATTRS.has(k)) { if (v) el.setAttribute(k, ''); continue; }
     if (k === 'class') el.className = v;
     else if (k === 'text') el.textContent = v;
     else if (k === 'html') el.innerHTML = v;
@@ -612,7 +616,8 @@ function metaEditor(meta) {
   const rows = h('div', { class: 'rows' });
   Object.keys(meta).forEach(key => {
     const value = meta[key];
-    const isLink = value && typeof value === 'object';
+    // !! 를 빼면 값이 '' 일 때 isLink 가 false 가 아니라 '' 가 됩니다.
+    const isLink = !!value && typeof value === 'object';
     const body = isLink
       ? h('div', { class: 'grid3', style: 'gap:10px' },
           h('div', { class: 'field' }, h('label', { text: '출처' }), input(value, 'source', { placeholder: 'ArtStation' })),
@@ -629,11 +634,12 @@ function metaEditor(meta) {
              껐다 켜는 동안 주소가 날아가지 않도록 따로 기억해 둔 값을 되살립니다. */
           const split = text.split(/\s[-–]\s/);
           meta[key] = { source: split[0] || '', name: split[1] || '', href: rememberedHref(meta, key) };
-        } else {
-          const v = meta[key] || {};
+        } else if (meta[key] && typeof meta[key] === 'object') {
+          const v = meta[key];
           rememberHref(meta, key, v.href);
           meta[key] = [v.source, v.name].filter(Boolean).join(' - ');
         }
+        // 이미 글자면 손대지 않습니다. 예전엔 여기서 빈 값으로 덮어써 글자가 날아갔습니다.
         markDirty(); render();
       } }),
       h('span', { text: '링크 붙이기' }));
@@ -670,7 +676,7 @@ function sentenceEditor(arr, label) {
 
 /* 이미지 한 장(또는 영상 한 개) 칸. 이름 옆에서 종류를 바꿀 수 있습니다. */
 function mediaItemEditor(item) {
-  const isVideo = 'vid' in item;
+  const isVideo = 'vid' in item;  // 키 존재 여부라 항상 참거짓입니다
   const nameKey = isVideo ? 'vid' : 'img';
   return h('div', { class: 'grid3', style: 'gap:10px' },
     h('div', { class: 'field' },
