@@ -663,16 +663,29 @@
         const text=(label&&label.trim())||plain(href);
         document.querySelectorAll(`[data-profile-text="${key}"]`).forEach(node => { node.textContent=text; });
       });
-      /* 로고. 이미지 주소를 적으면 기본 아이콘 대신 그 그림이 들어갑니다. */
+      /* 로고. 이미지 주소를 적으면 기본 아이콘 대신 그 그림이 들어갑니다.
+         왼쪽 위 로고와 브라우저 탭 아이콘 두 곳에 함께 적용됩니다. */
+      const logo=(profile.logo||'').trim();
       const mark=document.querySelector('.brand-mark');
-      if(mark&&!mark.dataset.original) mark.dataset.original=mark.innerHTML;
       if(mark){
-        const logo=(profile.logo||'').trim();
+        if(!mark.dataset.original) mark.dataset.original=mark.innerHTML;
         mark.classList.toggle('has-image',!!logo);
         if(logo){
           const image=el('img'); image.src=logo; image.alt=profile.name||'로고';
           mark.replaceChildren(image);
         } else mark.innerHTML=mark.dataset.original;
+      }
+      const favicon=document.querySelector('link[rel="icon"]');
+      if(favicon){
+        if(!favicon.dataset.original){
+          favicon.dataset.original=favicon.getAttribute('href');
+          favicon.dataset.originalType=favicon.getAttribute('type')||'';
+        }
+        favicon.setAttribute('href',logo||favicon.dataset.original);
+        // 기본 아이콘은 SVG 라 type 을 적어 두지만, 올린 그림은 확장자가 제각각이라
+        // type 을 지워 브라우저가 알아서 판단하게 둡니다.
+        if(logo) favicon.removeAttribute('type');
+        else if(favicon.dataset.originalType) favicon.setAttribute('type',favicon.dataset.originalType);
       }
       const abilityList=document.querySelector('#ability-list');
       if(abilityList) abilityList.replaceChildren(...(profile.abilities||[]).map(item => {
