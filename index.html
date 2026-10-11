@@ -18,7 +18,12 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23f7bfd0'/%3E%3Cpath d='M17 18h30v28H17z' fill='%23fff8f8' stroke='%232c2529' stroke-width='4'/%3E%3Cpath d='M24 18v28M40 18v28M17 29h30M17 38h30' stroke='%232c2529' stroke-width='3'/%3E%3Ccircle cx='46' cy='17' r='7' fill='%23ed6d98'/%3E%3C/svg%3E">
   <style>
     :root {
-      --ink:#292429; --muted:#766a70; --milk:#fff9fb; --pink:#f7bfd0; --mist:#eddee3; /* Contact·footer 배경 */ --pink-strong:#e96f99; --line:rgba(41,36,41,.14); --radius:20.8px;
+      /* 메인 색. 투명도를 섞어 쓰는 색은 -rgb 로 채널만 따로 두어,
+         한 곳만 바꾸면 그 색을 쓰는 모든 자리가 같이 바뀝니다. */
+      --ink-rgb:41 36 41; --pink-rgb:247 191 208; --pink-strong-rgb:233 111 153;
+      --ink:rgb(var(--ink-rgb)); --pink:rgb(var(--pink-rgb)); --pink-strong:rgb(var(--pink-strong-rgb));
+      --muted:#766a70; --milk:#fff9fb; --mist:#eddee3; /* Contact·footer 배경 */
+      --line:rgb(var(--ink-rgb)/.14); --radius:20.8px;
       /* 글자 계층 - 위에서부터 한 단계씩 약 1.3배씩 줄어듭니다. 크기는 여기서만 바꾸세요.
          1400px 기준: 48 / 42 / 34 / 21 / 17 / 15 / 13 / 12 px
          단위가 rem 이 아니라 px 인 이유: 예전엔 html 의 font-size 를 86% 로 줄여 놔서
@@ -52,37 +57,37 @@
        흰색과 --pink 의 중간)과 같아야 합니다. var(--pink) 를 두면 진한 색이
        한 번 번쩍 보였다가 연한 색으로 떨어집니다. */
     .loader { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; background:rgb(251,223,232); transition:transform .8s cubic-bezier(.76,0,.24,1),visibility .8s,background-color .3s linear; }
-    .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgba(41,36,41,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(41,36,41,.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
+    .loader::before { content:""; position:absolute; inset:0; opacity:.2; background-image:linear-gradient(rgb(var(--ink-rgb)/.2) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--ink-rgb)/.2) 1px,transparent 1px); background-size:51.2px 51.2px; transform:perspective(400px) rotateX(55deg) scale(1.6) translateY(16%); transform-origin:bottom; }
     .loader.is-done { transform:translateY(-100%); visibility:hidden; }
     .loader-inner { position:relative; width:min(432px,calc(100% - 40px)); }
     /* 로딩 화면: 2026(작게) → Portfolio(크게) → 3D CHARACTER MODELING(작게) 순으로 쌓습니다.
        세 줄이 0.1초 간격으로 차례로 올라와, 멈춰 있는 화면이 아니라 열리는 화면으로 보이게 했습니다. */
     /* 배경은 기존 연핑크 그대로. Portfolio 만 흰색으로 띄우고
        나머지 작은 글자는 어두운 회색이라 연핑크 위에서 잘 읽힙니다. */
-    .loader-year { display:block; margin-bottom:6.4px; color:rgba(41,36,41,.52); font:800 16px "Manrope"; letter-spacing:.01em; }
+    .loader-year { display:block; margin-bottom:6.4px; color:rgb(var(--ink-rgb)/.52); font:800 16px "Manrope"; letter-spacing:.01em; }
     .loader-title { margin:0; color:#fff; font:800 clamp(41px,10vw,77px)/.96 "Manrope"; letter-spacing:-.055em; }
-    .loader-role { display:block; margin-top:13.6px; color:rgba(41,36,41,.58); font:600 12px "Manrope"; letter-spacing:.2em; }
+    .loader-role { display:block; margin-top:13.6px; color:rgb(var(--ink-rgb)/.58); font:600 12px "Manrope"; letter-spacing:.2em; }
     .loader-year,.loader-title,.loader-role { opacity:0; transform:translateY(14px); animation:loader-rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
     .loader-title { animation-delay:.1s; }
     .loader-role { animation-delay:.2s; }
     @keyframes loader-rise { to { opacity:1; transform:none; } }
     .loader-bottom { display:flex; align-items:baseline; justify-content:space-between; gap:14.4px; margin-top:40px; }
-    .loader-stage { color:rgba(41,36,41,.6); font:600 11px "Manrope"; letter-spacing:.14em; }
-    .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgba(41,36,41,.18); }
+    .loader-stage { color:rgb(var(--ink-rgb)/.6); font:600 11px "Manrope"; letter-spacing:.14em; }
+    .loader-track { margin-top:11.2px; height:3.2px; overflow:hidden; border-radius:79.2px; background:rgb(var(--ink-rgb)/.18); }
     .loader-bar { width:0; height:100%; background:var(--ink); transition:width .15s linear; }
     .loader-count { min-width:33.6px; color:var(--ink); font:700 12px "Manrope"; text-align:right; font-variant-numeric:tabular-nums; }
 
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
-    .page-progress { height:3.2px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
+    .page-progress { height:3.2px; overflow:hidden; background:rgb(var(--ink-rgb)/.08); box-shadow:0 1px 0 rgb(var(--ink-rgb)/.05); }
     /* 진행 막대는 팔레트의 두 핑크(--pink → --pink-strong)만 씁니다.
        예전엔 중간에 #ed82a8, 끝에 #d94f84 라는 팔레트 밖 색이 섞여 있었습니다. */
-    .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,var(--pink) 0%,var(--pink-strong) 100%); box-shadow:0 0 11.2px rgba(233,111,153,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
+    .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,var(--pink) 0%,var(--pink-strong) 100%); box-shadow:0 0 11.2px rgb(var(--pink-strong-rgb)/.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
     /* --logo-h : 로고 이미지 높이. font-size 는 옆 글자를 쓸 때의 글자 크기입니다. */
     .brand { --logo-h:14px; font:800 14px/1 "Manrope",Pretendard,"Apple SD Gothic Neo",sans-serif; letter-spacing:-.03em; display:flex; align-items:center; gap:7px; }
     /* 로고 옆 글자는 포인트 색(진한 핑크)으로 둡니다. */
     .brand-text { color:var(--pink-strong); }
-    .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
+    .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgb(var(--ink-rgb)/.09); }
     .brand-mark svg { width:15.2px; }
     /* 로고 이미지를 넣으면 분홍 네모를 걷어 내고 그림만 둡니다.
        가로세로 비율이 제각각이라 높이만 24px 로 고정하고 폭은 그림을 따라가게 둡니다.
@@ -110,8 +115,8 @@
     /* 왼쪽 위에서 대각선으로 흘러 들어옵니다. 중심을 왼쪽 여백에 둬서
        번지는 끝자락만 제목 첫머리에 옅게 걸칩니다.
        글자 위에 깔리는 색이므로 농도는 아주 옅게 유지해야 읽힙니다. */
-    .hero::before { width:clamp(420px,58vw,800px); aspect-ratio:1.45; left:-58%; top:-40%; transform:rotate(-16deg); background:radial-gradient(ellipse at center,rgba(247,191,208,.4),rgba(247,191,208,.15) 38%,rgba(247,191,208,0) 66%); }
-    .hero::after { width:clamp(200px,24vw,340px); aspect-ratio:1; left:-14%; top:48%; background:radial-gradient(circle,rgba(233,111,153,.11),rgba(233,111,153,0) 68%); }
+    .hero::before { width:clamp(420px,58vw,800px); aspect-ratio:1.45; left:-58%; top:-40%; transform:rotate(-16deg); background:radial-gradient(ellipse at center,rgb(var(--pink-rgb)/.4),rgb(var(--pink-rgb)/.15) 38%,rgb(var(--pink-rgb)/0) 66%); }
+    .hero::after { width:clamp(200px,24vw,340px); aspect-ratio:1; left:-14%; top:48%; background:radial-gradient(circle,rgb(var(--pink-strong-rgb)/.11),rgb(var(--pink-strong-rgb)/0) 68%); }
     .hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,.82fr) minmax(336px,1.18fr); gap:44.8px; align-items:center; }
     .eyebrow { display:inline-flex; align-items:center; gap:7.2px; margin:0 0 14.4px; font-weight:700; font-size:12px; letter-spacing:.15em; text-transform:uppercase; }
     .eyebrow::before { content:""; width:21.6px; height:2px; background:var(--pink-strong); }
@@ -139,7 +144,7 @@
     .section-head h2,.about h2,.contact h2 { margin:0; font:800 var(--fs-h2)/1.12 "Manrope",Pretendard,"Apple SD Gothic Neo","Malgun Gothic",sans-serif; letter-spacing:-.055em; }
     /* 섹션 제목 옆 '04 PROJECTS' 는 곁들이는 정보라 눈에 덜 띄게 색만 죽였습니다.
        크기는 그대로 둡니다(요청이 색이었습니다). */
-    .counter { color:rgba(41,36,41,.42); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+    .counter { color:rgb(var(--ink-rgb)/.42); font-size:11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
     .project-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:11.2px; }
     .project-card { position:relative; min-width:0; cursor:pointer; border:0; padding:0; background:transparent; text-align:left; color:inherit; }
     .project-card:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:4px; border-radius:var(--radius); }
@@ -157,7 +162,7 @@
        작품 카드와 AI·UI 카드의 모양이 서로 어긋나고, 원 안에서 위로 떠 보였습니다. */
     .arrow { width:28.8px; height:28.8px; border-radius:50%; flex:0 0 auto; display:grid; place-items:center; background:var(--pink); color:var(--ink); }
     .project-placeholder { position:relative; min-width:0; opacity:.42; pointer-events:none; }
-    .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgba(247,191,208,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(247,191,208,.08) 1px,transparent 1px); background-size:24px 24px; }
+    .project-placeholder .thumb { display:grid; place-items:center; background-color:#211b1f; background-image:linear-gradient(rgb(var(--pink-rgb)/.08) 1px,transparent 1px),linear-gradient(90deg,rgb(var(--pink-rgb)/.08) 1px,transparent 1px); background-size:24px 24px; }
     .placeholder-mark { display:grid; place-items:center; width:51.2px; height:51.2px; border:1px solid rgba(255,255,255,.3); border-radius:50%; color:var(--pink); font:300 28px/1 "Manrope"; }
 
     /* ──────────────────────────────────────────────────────────────
@@ -168,14 +173,14 @@
        ────────────────────────────────────────────────────────────── */
     /* 경계선(border-top)을 없애고, 배경도 맨 위에서 투명하게 시작해 서서히 올라오게 합니다.
        전에는 선 + 그라데이션이 꼭대기부터 .22 로 시작해 윗 섹션과 딱 끊겨 보였습니다. */
-    .lab { padding:88px 0 104px; background:linear-gradient(180deg,rgba(247,191,208,0),rgba(247,191,208,.15) 30%,rgba(247,191,208,0) 82%); }
+    .lab { padding:88px 0 104px; background:linear-gradient(180deg,rgb(var(--pink-rgb)/0),rgb(var(--pink-rgb)/.15) 30%,rgb(var(--pink-rgb)/0) 82%); }
     .hero .eyebrow,.selected .eyebrow,.lab .eyebrow { color:var(--pink-strong); }
     .lab-lead,.section-lead { max-width:536px; margin:16px 0 36px; color:var(--muted); font-size:13px; }
     .lab-grid { display:grid; gap:16px; }
-    .lab-card { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); width:100%; padding:0; overflow:hidden; border:1px solid rgba(233,111,153,.26); border-radius:var(--radius); background:#fff; color:inherit; text-align:left; cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s ease; }
+    .lab-card { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); width:100%; padding:0; overflow:hidden; border:1px solid rgb(var(--pink-strong-rgb)/.26); border-radius:var(--radius); background:#fff; color:inherit; text-align:left; cursor:pointer; transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s ease; }
     /* 호버 시 회색 그림자를 쓰지 않습니다. 배경이 연핑크라 회색 그림자·회색 테두리가
        톤에서 겉돌았습니다. 테두리를 핑크로 두고 호버 때 진해지는 것만으로 반응을 줍니다. */
-    .lab-card:hover { transform:translateY(-3px); border-color:rgba(233,111,153,.55); }
+    .lab-card:hover { transform:translateY(-3px); border-color:rgb(var(--pink-strong-rgb)/.55); }
     .lab-card:focus-visible { outline:2.4px solid var(--pink-strong); outline-offset:4px; }
     .lab-shot { position:relative; overflow:hidden; aspect-ratio:4/3; background:#211b1f; }
     .lab-shot img { width:100%; height:100%; object-fit:cover; transition:transform .7s cubic-bezier(.2,.7,.2,1); }
@@ -236,26 +241,26 @@
        스크롤해도 빛이 커서에 붙어 있습니다. 배경이라 섹션 밖으로 삐져나오지도 않고,
        두 섹션이 같은 좌표계를 쓰니 경계에서 빛이 끊기지 않고 이어집니다.
        반지름 368px·정지점 44%/72% 는 위 .cursor-glow(520px 원)와 같은 모양입니다. */
-    .contact,footer { background-color:var(--mist); background-image:radial-gradient(circle 368px at var(--cgx,50vw) var(--cgy,50vh),rgba(247,191,208,calc(.46*var(--cga,0))),rgba(247,191,208,calc(.18*var(--cga,0))) 44%,rgba(247,191,208,0) 72%); background-repeat:no-repeat; background-attachment:fixed; }
+    .contact,footer { background-color:var(--mist); background-image:radial-gradient(circle 368px at var(--cgx,50vw) var(--cgy,50vh),rgb(var(--pink-rgb)/calc(.46*var(--cga,0))),rgb(var(--pink-rgb)/calc(.18*var(--cga,0))) 44%,rgb(var(--pink-rgb)/0) 72%); background-repeat:no-repeat; background-attachment:fixed; }
     .contact { padding:100px 0 32px; }
     .contact-row { display:flex; align-items:end; justify-content:space-between; gap:40px; }
     .contact h2 { max-width:608px; font-size:var(--fs-h1); }
     /* 맺음말은 제목에 딸린 보조 문장이라 굵기를 낮추고(800 → 600) 색도 어둡게 둡니다. */
-    .contact h2 i { display:inline-block; margin-top:10px; color:rgba(41,36,41,.66); font-weight:600; font-size:.5em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
+    .contact h2 i { display:inline-block; margin-top:10px; color:rgb(var(--ink-rgb)/.66); font-weight:600; font-size:.5em; font-style:normal; line-height:1.45; letter-spacing:-.03em; }
     .contact-info { flex:0 0 auto; display:grid; gap:6.4px; text-align:right; }
     /* 세 줄(메일 · 카카오 · 아트스테이션)을 완전히 같은 색·크기로 맞춥니다.
        전에는 메일만 화살표가 본문색 굵은 글씨라 혼자 진하게 떠 보였습니다. */
-    .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgba(41,36,41,.62); font-size:13px; font-weight:600; text-decoration:none; transition:color .2s ease; }
+    .contact-info a { display:inline-flex; align-items:baseline; justify-content:flex-end; gap:.32em; color:rgb(var(--ink-rgb)/.62); font-size:13px; font-weight:600; text-decoration:none; transition:color .2s ease; }
     .contact-info a:hover,.contact-info a:focus-visible { color:var(--ink); }
     .contact-info a span { color:inherit; font-size:inherit; }
     .contact-info a i { font-style:normal; }
     .documents { margin-top:56px; padding-top:22.4px; display:grid; grid-template-columns:1fr repeat(2,auto); gap:9.6px; align-items:center; }
     .documents-copy b { display:block; font:700 15px "Manrope"; }
-    .documents-copy span { color:rgba(41,36,41,.6); font-size:13px; }
-    .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgba(41,36,41,.24); border-radius:12px; font:700 12px "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
+    .documents-copy span { color:rgb(var(--ink-rgb)/.6); font-size:13px; }
+    .download-btn { min-height:43.2px; padding:0 14.4px; display:inline-flex; align-items:center; justify-content:center; gap:14.4px; border:1px solid rgb(var(--ink-rgb)/.24); border-radius:12px; font:700 12px "Manrope"; background:rgba(255,255,255,.38); transition:.25s ease; }
     .download-btn:hover,.download-btn:focus-visible { background:#fff; transform:translateY(-2px); }
     .download-btn.is-pending { opacity:.48; cursor:not-allowed; }
-    footer { padding:25.6px 0; border-top:1px solid rgba(41,36,41,.12); font-size:12px; }
+    footer { padding:25.6px 0; border-top:1px solid rgb(var(--ink-rgb)/.12); font-size:12px; }
     footer .wrap { display:flex; justify-content:space-between; gap:16px; }
 
     /* 높이는 svh(작은 뷰포트) 기준으로 잡습니다.
@@ -302,7 +307,7 @@
        화면이 낮아 아래 텍스트가 밀리면 왼쪽 패널(.project-overview)이 스크롤된다. */
     .modal-hero { position:relative; width:100%; height:auto; aspect-ratio:1500/1920; margin:0; overflow:hidden; background:#161216; }
     /* 세로로 긴 화면 설계물(UI 등)은 잘리지 않도록 전체를 보여주고 배경을 사이트 톤으로 깔아줍니다. */
-    .modal-hero.is-contain,.lab-shot.is-contain { background:linear-gradient(160deg,#fff9fb,#f8dde6); }
+    .modal-hero.is-contain,.lab-shot.is-contain { background:linear-gradient(160deg,var(--milk),#f8dde6); }
     .modal-hero.is-contain img,.lab-shot.is-contain img { object-fit:contain; padding:16px; }
     .lab-shot.is-contain img { padding:12px; }
     .modal-hero img,.modal-hero video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
@@ -339,7 +344,7 @@
     .details div { display:grid; grid-template-columns:5.2em minmax(0,1fr); gap:12px; border-bottom:1px solid var(--line); padding-bottom:4px; }
     .details span { color:var(--muted); font-weight:700; letter-spacing:.04em; }
     .details b { font-weight:600; overflow-wrap:anywhere; }
-    .details .meta-link { color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-decoration-color:rgba(41,36,41,.32); text-underline-offset:2.5px; transition:text-decoration-color .2s ease,color .2s ease; }
+    .details .meta-link { color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-decoration-color:rgb(var(--ink-rgb)/.32); text-underline-offset:2.5px; transition:text-decoration-color .2s ease,color .2s ease; }
     .details .meta-link:hover,.details .meta-link:focus-visible { color:var(--pink-strong); text-decoration-color:var(--pink-strong); }
     /* 갤러리 패널: 이미지 아래에 설명이 붙는 블록 단위로 쌓입니다.
        breakdown(3컷 참고 이미지) → steps(제작 과정) → gallery(최종 렌더) 순으로 자동 생성됩니다. */
@@ -442,7 +447,7 @@
        커서 좌표(--cgx/--cgy)는 JS 가 body 에 심고 두 곳이 같이 상속받습니다. */
     body { --cga:0; }         /* 빛의 세기. 마우스가 움직이기 전엔 0(=안 보임) */
     body.glow-active { --cga:1; }
-    .cursor-glow { position:fixed; z-index:-1; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(circle,rgba(247,191,208,.46),rgba(247,191,208,.18) 44%,rgba(247,191,208,0) 72%); transform:translate3d(var(--cgx,50vw),var(--cgy,50vh),0); will-change:transform; }
+    .cursor-glow { position:fixed; z-index:-1; left:0; top:0; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .5s ease; background:radial-gradient(circle,rgb(var(--pink-rgb)/.46),rgb(var(--pink-rgb)/.18) 44%,rgb(var(--pink-rgb)/0) 72%); transform:translate3d(var(--cgx,50vw),var(--cgy,50vh),0); will-change:transform; }
     body.glow-active .cursor-glow { opacity:1; }
     /* 손가락으로 쓰는 기기엔 커서가 없으니 아예 만들지 않습니다. */
     /* 손가락 기기에선 빛 자체를 그리지 않습니다. background-attachment:fixed 는
@@ -520,7 +525,7 @@
       .g-say b,.g-say p b { color:var(--ink); }
       .g-say span { color:var(--pink-strong); }
       .g-step { border-color:var(--line); background:rgba(255,255,255,.6); }
-      .g-fig .gallery-image { background:rgba(41,36,41,.06); }
+      .g-fig .gallery-image { background:rgb(var(--ink-rgb)/.06); }
       /* 모바일은 폭이 좁아 3열이 너무 작아지므로 한 장씩 세로로 쌓습니다(원본 비율 유지). */
       .bd-row { flex-direction:column; gap:14.4px; }
       .bd-row .g-fig { flex:none; }
@@ -735,6 +740,31 @@
       }
     }
 
+    /* ── 색 ────────────────────────────────────────────────
+       데이터에 적힌 색을 :root 변수에 덮어씁니다. 투명도를 섞어 쓰는 세 색은
+       채널(-rgb)로도 넣어야, 그 색을 흐리게 쓴 자리(테두리·그림자·빛)까지 같이 바뀝니다. */
+    const hexToRgb = hex => {
+      const value=String(hex||'').trim().replace('#','');
+      const full=value.length===3?value.split('').map(c=>c+c).join(''):value;
+      if(!/^[0-9a-fA-F]{6}$/.test(full)) return null;
+      return [0,2,4].map(i => parseInt(full.slice(i,i+2),16)).join(' ');
+    };
+    function applyTheme(data){
+      const theme=data.theme;
+      if(!theme) return;
+      const root=document.documentElement.style;
+      const put=(name,hex) => { if(hex) root.setProperty('--'+name,hex); };
+      const putChannel=(name,hex) => {
+        const rgb=hexToRgb(hex);
+        if(rgb) root.setProperty('--'+name+'-rgb',rgb);
+      };
+      putChannel('ink',theme.ink); putChannel('pink',theme.pink); putChannel('pink-strong',theme.pinkStrong);
+      put('muted',theme.muted); put('milk',theme.milk); put('mist',theme.mist);
+      // 휴대폰 주소창 색도 메인 핑크를 따라갑니다.
+      const meta=document.querySelector('meta[name="theme-color"]');
+      if(meta&&theme.pink) meta.setAttribute('content',theme.pink);
+    }
+
     function applyNav(data){
       const nav=data.nav;
       if(!nav) return;
@@ -872,6 +902,7 @@
     function applySiteData(data){
       profileConfig=data.profile||{};
       projects=buildProjects(data);
+      applyTheme(data);
       applyLoader(data);
       applyNav(data);
       applyProfile(data);

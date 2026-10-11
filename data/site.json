@@ -1,5 +1,13 @@
 {
   "version": 1,
+  "theme": {
+    "ink": "#292429",
+    "muted": "#766a70",
+    "milk": "#fff9fb",
+    "mist": "#eddee3",
+    "pink": "#f7bfd0",
+    "pinkStrong": "#e96f99"
+  },
   "profile": {
     "name": "이름 입력",
     "englishName": "YOUR NAME",

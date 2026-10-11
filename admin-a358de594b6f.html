@@ -228,6 +228,20 @@
     .col-ic { display:flex; gap:2px; width:26px; height:11px; }
     .col-ic i { flex:1; border-radius:2px; background:rgba(41,36,41,.28); }
 
+    /* ── 색 고르기 ─────────────────────────────────────────── */
+    .swatch-row { display:grid; grid-template-columns:52px minmax(0,1fr) 112px; gap:12px; align-items:center; }
+    .swatch-row input[type=color] {
+      width:52px; height:52px; padding:0; border:1px solid var(--line); border-radius:12px;
+      background:none; cursor:pointer;
+    }
+    .swatch-row input[type=color]::-webkit-color-swatch-wrapper { padding:3px; }
+    .swatch-row input[type=color]::-webkit-color-swatch { border:0; border-radius:9px; }
+    .swatch-row .name { font-weight:700; font-size:14px; }
+    .swatch-row .use { font-size:12px; color:var(--muted); line-height:1.5; }
+    .swatch-row input[type=text] { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; text-transform:lowercase; }
+    .theme-strip { display:flex; height:56px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--line); }
+    .theme-strip i { flex:1; }
+
     /* ── 문서(PDF) ─────────────────────────────────────────── */
     .doc-row {
       display:grid; grid-template-columns:40px minmax(0,1fr) auto; gap:14px; align-items:center;
@@ -323,6 +337,7 @@
       <button type="button" data-tab="labs">AI &amp; Design <i id="count-labs">0</i></button>
       <button type="button" data-tab="docs">문서 PDF <i id="count-docs">0</i></button>
       <button type="button" data-tab="texts">사이트 문구</button>
+      <button type="button" data-tab="theme">색</button>
       <button type="button" data-tab="json">데이터 보기</button>
       <div class="side-note">
         지금은 <b>화면만</b> 동작합니다.<br>저장을 눌러도 사이트에는 반영되지 않습니다.<br><br>위 <b>미리보기 열기</b>를 누르면 오른쪽에 띄워 두고 고치면서 바로 볼 수 있습니다.
@@ -1312,6 +1327,68 @@ function exportData() {
   return copy;
 }
 
+/* ── 탭: 색 ───────────────────────────────────────────────
+   사이트의 모든 색은 이 여섯 개에서 나옵니다. 흐리게 쓰는 자리(테두리·그림자·
+   커서 빛 등)는 같은 색의 투명도만 바꾼 것이라 여기만 고치면 전부 따라옵니다. */
+const THEME_FIELDS = [
+  { key: 'pink',       name: '메인 핑크',   use: '히어로 뒤 번짐, 태그, 로딩 화면, 커서를 따라오는 빛' },
+  { key: 'pinkStrong', name: '진한 핑크',   use: '머리말 글씨, 링크, 버튼, 스크롤 막대. 포인트가 되는 자리' },
+  { key: 'ink',        name: '글자색',     use: '본문 글자. 흐리게 쓰면 테두리와 그림자도 됩니다' },
+  { key: 'muted',      name: '흐린 글자색', use: '설명문, 작은 글씨' },
+  { key: 'milk',       name: '배경색',     use: '페이지 바탕. 거의 흰색에 가깝게 두는 편이 좋습니다' },
+  { key: 'mist',       name: '맨 아래 배경', use: 'Thank you 영역과 footer 바탕' }
+];
+const THEME_DEFAULT = { ink:'#292429', muted:'#766a70', milk:'#fff9fb', mist:'#eddee3', pink:'#f7bfd0', pinkStrong:'#e96f99' };
+
+function tabTheme() {
+  const theme = state.data.theme || (state.data.theme = { ...THEME_DEFAULT });
+  const strip = h('div', { class: 'theme-strip' });
+  const paintStrip = () => strip.replaceChildren(
+    ...THEME_FIELDS.map(f => h('i', { style: 'background:' + (theme[f.key] || '#fff') })));
+  paintStrip();
+
+  return [
+    h('section', { class: 'card' },
+      h('h2', { text: '색' }),
+      h('p', { class: 'desc', text: '사이트에 쓰이는 색은 이 여섯 개가 전부입니다. 흐린 테두리나 그림자도 같은 색의 투명도만 바꾼 것이라 여기만 고치면 함께 바뀝니다.' }),
+      strip,
+      h('div', { style: 'display:grid; gap:14px; margin-top:18px' },
+        ...THEME_FIELDS.map(f => {
+          const swatch = h('input', { type: 'color', value: theme[f.key] || '#ffffff',
+            'aria-label': f.name,
+            oninput: event => { theme[f.key] = event.target.value; box.value = event.target.value; paintStrip(); markDirty(); } });
+          /* 색 고르개는 #rrggbb 만 받습니다. 직접 적는 칸은 올바른 값일 때만 넘깁니다. */
+          const box = h('input', { type: 'text', value: theme[f.key] || '', placeholder: '#f7bfd0',
+            oninput: event => {
+              const value = event.target.value.trim();
+              theme[f.key] = value;
+              if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(value)) { swatch.value = normalizeHex(value); paintStrip(); }
+              markDirty();
+            } });
+          return h('div', { class: 'swatch-row' },
+            swatch,
+            h('div', null, h('div', { class: 'name', text: f.name }), h('div', { class: 'use', text: f.use })),
+            box);
+        })),
+      h('div', { class: 'row-tools', style: 'margin-top:18px' },
+        h('button', { class: 'btn quiet', type: 'button', onclick: () => {
+          if (!confirm('여섯 색을 모두 처음 값으로 되돌릴까요?')) return;
+          Object.assign(theme, THEME_DEFAULT); markDirty(); render(); toast('처음 색으로 되돌렸습니다');
+        } }, '↺ 처음 색으로'))),
+
+    h('section', { class: 'card' },
+      h('div', { class: 'notice info' }, h('div', null,
+        h('b', { text: '색을 바꾸기 전에' }),
+        h('span', { text: '오른쪽 미리보기를 열어 두고 고르면 바로 확인할 수 있습니다. 작품 이미지 자체의 색은 바뀌지 않으므로, 이미지와 너무 동떨어진 색은 피하는 편이 좋습니다.' }))))
+  ];
+}
+
+/* #abc 처럼 세 자리로 적어도 색 고르개가 알아듣게 여섯 자리로 펴 줍니다. */
+function normalizeHex(value) {
+  const raw = value.replace('#', '');
+  return '#' + (raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw).toLowerCase();
+}
+
 /* ── 탭: 데이터 보기 ──────────────────────────────────────── */
 function tabJson() {
   const text = JSON.stringify(exportData(), null, 2);
@@ -1352,7 +1429,7 @@ function tabJson() {
 }
 
 /* ── 그리기 ───────────────────────────────────────────────── */
-const TABS = { profile: tabProfile, works: tabWorks, labs: tabLabs, docs: tabDocs, texts: tabTexts, json: tabJson };
+const TABS = { profile: tabProfile, works: tabWorks, labs: tabLabs, docs: tabDocs, texts: tabTexts, theme: tabTheme, json: tabJson };
 
 function render() {
   if (!state.data) return;
