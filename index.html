@@ -1149,9 +1149,11 @@
       stepVideos=collected; // 이전 작품의 영상 목록은 여기서 교체됩니다
       if(stepVideos.length) requestAnimationFrame(syncStepVideos);
     }
+    let openProjectKey=null;
     function openProject(key){
       const project=projects[key];
       if(!project) return;
+      openProjectKey=key;
       renderOverview(project);
       document.querySelector('#dialog-image').src=project.image;
       document.querySelector('#dialog-image').alt=project.alt;
@@ -1178,7 +1180,21 @@
     dialog.addEventListener('scroll',queueStepVideoSync,{passive:true});
     document.querySelector('#project-gallery-pane').addEventListener('scroll',queueStepVideoSync,{passive:true});
     window.addEventListener('resize',queueStepVideoSync);
-    dialog.addEventListener('close',() => { stepVideos.forEach(v => v.pause()); stepVideos=[]; });
+    dialog.addEventListener('close',() => { stepVideos.forEach(v => v.pause()); stepVideos=[]; openProjectKey=null; });
+
+    /* 미리보기에서 데이터가 새로 들어왔을 때, 상세 모달이 열려 있으면 그 안도 다시 그립니다.
+       모달을 닫았다 열면 보던 위치를 잃으므로 글과 갤러리만 갈아 끼우고
+       스크롤 위치는 그대로 돌려놓습니다. 메인 썸네일·영상은 건드리지 않습니다. */
+    function refreshOpenProject(){
+      if(!dialog.open||!openProjectKey) return;
+      const project=projects[openProjectKey];
+      if(!project) return;
+      const overview=document.querySelector('.project-overview');
+      const keep=[dialog.scrollTop,projectGalleryPane.scrollTop,overview.scrollTop];
+      renderOverview(project);
+      renderGallery(project);
+      [dialog.scrollTop,projectGalleryPane.scrollTop,overview.scrollTop]=keep;
+    }
     const lightbox=document.querySelector('#image-lightbox');
     const lightboxImage=document.querySelector('#lightbox-image');
     const lightboxStatus=document.querySelector('#lightbox-status');
@@ -1292,9 +1308,12 @@
        성공하면 HTML 에 적힌 기본값 위에 덮어씁니다.
        실패하면(파일 없음·오프라인·주소 오류) 아무것도 하지 않아 기본값이 그대로 남습니다.
        로딩 화면이 1초 가까이 떠 있으므로 그 사이에 교체가 끝나 깜빡임이 보이지 않습니다. */
+    /* 미리보기로 열렸을 때는 관리자 쪽이 보내 주는 데이터가 주인입니다.
+       파일 읽기가 조금 늦게 끝나면서 방금 받은 수정본을 덮어쓰는 일이 있었습니다. */
+    let previewOwnsData=false;
     fetch(SITE_DATA_URL,{ cache:'no-store' })
       .then(response => { if(!response.ok) throw new Error('HTTP '+response.status); return response.json(); })
-      .then(applySiteData)
+      .then(data => { if(previewOwnsData) return; applySiteData(data); })
       .catch(error => { console.warn('사이트 데이터를 불러오지 못해 기본 내용으로 표시합니다.',error); });
 
     /* ── 관리자 미리보기 ──────────────────────────────────────
@@ -1322,7 +1341,8 @@
         if(event.origin!==location.origin) return;
         const payload=event.data;
         if(!payload||payload.type!=='portfolio-preview'||!payload.data) return;
-        try { applySiteData(payload.data); }
+        previewOwnsData=true;
+        try { applySiteData(payload.data); refreshOpenProject(); }
         catch(error){ console.warn('미리보기 데이터를 그리지 못했습니다.',error); }
       });
       if(window.parent!==window) window.parent.postMessage({ type:'portfolio-preview-ready' },location.origin);

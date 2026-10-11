@@ -317,6 +317,8 @@ const state = { data:null, origin:null, tab:'profile', workIndex:0, labIndex:0, 
 const BOOL_ATTRS = new Set(['checked', 'disabled', 'hidden', 'readonly', 'required', 'selected', 'multiple', 'open']);
 function h(tag, attrs, ...kids) {
   const el = document.createElement(tag);
+  let deferredValue;
+  let hasValue = false;
   if (attrs) for (const [k, v] of Object.entries(attrs)) {
     if (v === null || v === undefined || v === false) continue;
     if (BOOL_ATTRS.has(k)) { if (v) el.setAttribute(k, ''); continue; }
@@ -324,11 +326,14 @@ function h(tag, attrs, ...kids) {
     else if (k === 'text') el.textContent = v;
     else if (k === 'html') el.innerHTML = v;
     else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
-    else if (k === 'value') el.value = v;
+    /* value 는 자식(<option>)을 다 넣은 뒤에 줍니다. 먼저 주면 고를 보기가
+       아직 없어서 select 가 그 값을 버리고 늘 첫 번째 항목을 보여 줍니다. */
+    else if (k === 'value') { deferredValue = v; hasValue = true; }
     else if (v === true) el.setAttribute(k, '');
     else el.setAttribute(k, v);
   }
   kids.flat().forEach(kid => { if (kid !== null && kid !== undefined && kid !== false) el.append(kid); });
+  if (hasValue) el.value = deferredValue;
   return el;
 }
 const $ = sel => document.querySelector(sel);
