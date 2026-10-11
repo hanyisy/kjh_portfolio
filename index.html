@@ -197,7 +197,10 @@
 
     .about { padding:100px 0; background:var(--ink); color:#fff; }
     .about-grid { display:grid; grid-template-columns:.72fr 1.28fr; gap:72px; }
+    /* 어두운 바탕에서는 진한 핑크가 가라앉아, 글자와 그 앞의 선을 모두
+       메인 핑크로 맞춥니다. 밝은 구역은 그대로 진한 핑크를 씁니다. */
     .about .eyebrow { color:var(--pink); }
+    .about .eyebrow::before { background:var(--pink); }
     .profile-identity h2 { font-size:var(--fs-h1); word-break:keep-all; }
     .profile-name-en { display:block; margin-top:11.2px; color:var(--pink); font:700 13px "Manrope"; letter-spacing:.18em; text-transform:uppercase; }
     .profile-contact { align-self:end; display:grid; gap:10.4px; padding-bottom:4px; }
