@@ -170,6 +170,23 @@
     .step-head .t { flex:1; font-weight:700; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .sub-rows { display:grid; gap:8px; padding-left:12px; border-left:2px solid var(--soft); }
 
+    /* ── 이미지 줄 편집기 ──────────────────────────────────── */
+    .media-row { padding:12px; border:1px solid var(--line); border-radius:var(--radius-sm); background:rgba(247,191,208,.1); display:grid; gap:10px; }
+    .media-row-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .media-row-head .n { font:700 12px "Manrope",Pretendard,sans-serif; color:var(--pink-strong); letter-spacing:.06em; }
+    .col-picker { display:flex; gap:6px; }
+    .col-btn {
+      display:grid; gap:3px; justify-items:center; padding:5px 8px; border:1px solid var(--line);
+      border-radius:8px; background:#fff; cursor:pointer; transition:.16s ease;
+    }
+    .col-btn:hover { border-color:var(--pink-strong); }
+    .col-btn.is-on { border-color:var(--ink); background:var(--ink); }
+    .col-btn.is-on small { color:#fff; }
+    .col-btn.is-on .col-ic i { background:var(--pink); }
+    .col-btn small { font-size:10px; color:var(--muted); font-weight:700; }
+    .col-ic { display:flex; gap:2px; width:26px; height:11px; }
+    .col-ic i { flex:1; border-radius:2px; background:rgba(41,36,41,.28); }
+
     /* ── 문서(PDF) ─────────────────────────────────────────── */
     .doc-row {
       display:grid; grid-template-columns:40px minmax(0,1fr) auto; gap:14px; align-items:center;
@@ -182,6 +199,21 @@
     .state { font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
     .state.off { background:var(--soft); color:var(--muted); }
     .state.on { background:rgba(47,143,91,.12); color:var(--ok); }
+
+    /* ── 사이트 미리보기 ───────────────────────────────────── */
+    .pv-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+    .pv-size { display:flex; gap:4px; padding:3px; border-radius:999px; background:var(--soft); }
+    .pv-size button {
+      padding:6px 14px; border:0; border-radius:999px; background:transparent; color:var(--muted);
+      font-size:13px; font-weight:700; cursor:pointer; transition:.16s ease;
+    }
+    .pv-size button.is-on { background:#fff; color:var(--ink); box-shadow:0 1px 3px rgba(41,36,41,.12); }
+    /* 틀(stage)은 가운데 정렬만 맡고, 실제 크기는 holder 가 가집니다.
+       iframe 은 transform-origin 이 왼쪽 위라 혼자서는 가운데로 못 옵니다. */
+    .pv-stage { display:flex; justify-content:center; background:var(--soft); border-radius:var(--radius-sm); padding:0; }
+    .pv-holder { overflow:hidden; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff9fb; }
+    .pv-stage iframe { display:block; border:0; transform-origin:top left; background:#fff9fb; }
+    .pv-hint { margin-top:10px; font-size:12px; color:var(--muted); line-height:1.6; }
 
     /* ── JSON 미리보기 ─────────────────────────────────────── */
     pre.json {
@@ -242,6 +274,7 @@
       <button type="button" data-tab="labs">AI &amp; Design <i id="count-labs">0</i></button>
       <button type="button" data-tab="docs">문서 PDF <i>02</i></button>
       <button type="button" data-tab="texts">사이트 문구 <i>05</i></button>
+      <button type="button" data-tab="preview">미리보기 <i>▶</i></button>
       <button type="button" data-tab="json">데이터 보기 <i>{ }</i></button>
       <div class="side-note">
         지금은 <b>화면만</b> 동작합니다.<br>저장을 눌러도 사이트에는 반영되지 않습니다.
@@ -301,6 +334,7 @@ function toast(message) {
 
 function markDirty() {
   state.dirty = true;
+  queuePreview();
   const badge = $('#dirty-badge');
   badge.textContent = '수정됨 · 저장 안 됨';
   badge.classList.add('is-dirty');
@@ -364,10 +398,13 @@ function listEditor(arr, renderRow, makeNew, addLabel, opts = {}) {
         onclick: () => { arr.splice(i + 1, 0, arr.splice(i, 1)[0]); markDirty(); render(); } }, '↓'),
       h('button', { class: 'icon-btn danger', type: 'button', title: '삭제',
         onclick: () => { arr.splice(i, 1); markDirty(); render(); } }, '✕'));
+    /* HTMLCollection 은 배열이 아니라서 그대로 넘기면 "[object HTMLCollection]" 이
+       글자로 찍힙니다. 펼쳐서 넘겨야 합니다. */
     wrap.append(h('div', { class: 'row' + (opts.block ? ' is-block' : '') },
       renderRow(item, i),
-      opts.block ? null : tools,
-      opts.block ? h('div', { class: 'row-tools', style: 'justify-content:flex-end' }, tools.children) : null));
+      opts.block
+        ? h('div', { class: 'row-tools', style: 'justify-content:flex-end' }, [...tools.children])
+        : tools));
   });
   wrap.append(h('button', { class: 'add-btn', type: 'button',
     onclick: () => { arr.push(makeNew()); markDirty(); render(); } }, '＋ ' + addLabel));
@@ -379,6 +416,90 @@ function periodRow(item) {
   return h('div', { class: 'grid2', style: 'gap:10px' },
     h('div', { class: 'field' }, input(item, 'period', { placeholder: '2024' })),
     h('div', { class: 'field' }, input(item, 'text', { placeholder: '내용' })));
+}
+
+/* ── 이미지 비율 자동 측정 ─────────────────────────────────
+   Focus 3컷은 '가로÷세로' 값으로 폭을 나눠 세 장의 높이를 맞춥니다.
+   손으로 적는 건 번거로우니 이미지를 실제로 읽어서 채웁니다.
+   (사이트 쪽에서 매번 재면 이미지가 로드되기 전 줄이 출렁이므로 값은 저장해 둡니다.) */
+const ratioCache = new Map();
+const ratioNodes = new WeakMap();
+
+function assetSrc(name) {
+  const raw = (name || '').trim();
+  if (!raw) return '';
+  return /^(https?:|data:|assets\/)/.test(raw) ? raw : ASSET_BASE + raw + '.webp';
+}
+function measureRatio(name) {
+  const src = assetSrc(name);
+  if (!src) return Promise.resolve(null);
+  if (ratioCache.has(src)) return Promise.resolve(ratioCache.get(src));
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const r = img.naturalHeight ? Math.round(img.naturalWidth / img.naturalHeight * 1000) / 1000 : null;
+      ratioCache.set(src, r); resolve(r);
+    };
+    img.onerror = () => { ratioCache.set(src, null); resolve(null); };
+    img.src = src;
+  });
+}
+function applyRatio(item, loud) {
+  return measureRatio(item.img).then(r => {
+    if (r == null) { if (loud) toast('이미지를 찾지 못해 비율을 재지 못했습니다'); return false; }
+    if (item.r === r) return false;
+    item.r = r;
+    const node = ratioNodes.get(item);
+    if (node) node.value = r;
+    markDirty();
+    return true;
+  });
+}
+function ratioInput(item) {
+  const el = input(item, 'img', { placeholder: 'bd-gunslinger-1' });
+  let timer;
+  el.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => applyRatio(item), 450); });
+  return el;
+}
+function ratioReadout(item) {
+  const el = h('input', { type: 'number', step: '0.001', value: item.r ?? '',
+    oninput: event => { item.r = Number(event.target.value) || undefined; markDirty(); } });
+  ratioNodes.set(item, el);
+  if (item.img && (item.r === undefined || item.r === null)) applyRatio(item);
+  return el;
+}
+
+/* ── 데이터 모양 맞추기 ────────────────────────────────────
+   사이트 렌더러는 단계의 이미지를 두 가지로 받습니다.
+     images + cols  → 한 줄짜리
+     rows[{cols,items}] → 줄 여러 개
+   관리자에서는 전부 rows 로 통일해 다룹니다. 한 줄짜리도 '줄 1개'로 보면
+   같은 화면으로 고칠 수 있고, 줄을 더 넣는 것도 자연스러워집니다.
+   설명(body)도 사이트는 글 한 덩어리와 문단 배열을 모두 그리므로 배열로 통일합니다. */
+function normalizeDetail(detail) {
+  if (!detail) return;
+  detail.focus = detail.focus || [];
+  detail.meta = detail.meta || {};
+  detail.gallery = detail.gallery || [];
+  detail.steps = detail.steps || [];
+  detail.steps.forEach(step => {
+    if (!Array.isArray(step.rows)) {
+      step.rows = (step.images && step.images.length) ? [{ cols: step.cols, items: step.images }] : [];
+    }
+    delete step.images; delete step.cols;
+    step.rows.forEach(row => {
+      row.items = row.items || [];
+      // cols 를 적지 않으면 사이트는 min(장수,2) 로 깝니다. 그 값을 그대로 적어 둬야
+      // 관리자에서 고른 열 수와 실제 화면이 어긋나지 않습니다.
+      if (!row.cols) row.cols = Math.min(row.items.length || 1, 2);
+    });
+    step.body = Array.isArray(step.body) ? step.body : (step.body ? [step.body] : ['']);
+  });
+}
+function normalizeData(data) {
+  (data.works || []).forEach(work => normalizeDetail(work.detail));
+  (data.labs || []).forEach(lab => normalizeDetail(lab.detail));
+  return data;
 }
 
 function imageField(obj, key, label, hint) {
@@ -449,28 +570,61 @@ function tabProfile() {
 }
 
 /* ── 탭: 작품 ─────────────────────────────────────────────── */
+/* 링크를 껐다 켤 때 주소가 사라지지 않도록 잠시 기억해 둡니다.
+   저장되는 데이터에는 들어가지 않고, 이 페이지를 떠나면 같이 사라집니다. */
+const hrefMemory = new WeakMap();
+function rememberHref(meta, key, href) {
+  if (!href) return;
+  const bag = hrefMemory.get(meta) || {};
+  bag[key] = href; hrefMemory.set(meta, bag);
+}
+function rememberedHref(meta, key) { return (hrefMemory.get(meta) || {})[key] || ''; }
+
+/* 정보 표. 값은 두 가지입니다.
+   - 그냥 글   : "2025.10 ~ 2026.06"
+   - 링크 붙은 것: { source:'ArtStation', name:'DS K', href:'https://...' }
+   줄마다 '링크 붙이기' 를 켜면 칸이 셋으로 갈라지고, 끄면 다시 한 줄로 합쳐집니다. */
 function metaEditor(meta) {
-  const keys = Object.keys(meta);
   const rows = h('div', { class: 'rows' });
-  keys.forEach(key => {
+  Object.keys(meta).forEach(key => {
     const value = meta[key];
     const isLink = value && typeof value === 'object';
     const body = isLink
       ? h('div', { class: 'grid3', style: 'gap:10px' },
           h('div', { class: 'field' }, h('label', { text: '출처' }), input(value, 'source', { placeholder: 'ArtStation' })),
-          h('div', { class: 'field' }, h('label', { text: '작가 이름' }), input(value, 'name', { placeholder: '작가명' })),
-          h('div', { class: 'field' }, h('label', { text: '링크' }), input(value, 'href', { type: 'url', placeholder: 'https://' })))
-      : h('div', { class: 'field' }, input({ get [key]() { return meta[key]; }, set [key](v) { meta[key] = v; } }, key));
+          h('div', { class: 'field' }, h('label', { text: '이름 (여기가 링크가 됩니다)' }), input(value, 'name', { placeholder: '작가명' })),
+          h('div', { class: 'field' }, h('label', { text: '주소' }), input(value, 'href', { type: 'url', placeholder: 'https://' })))
+      : h('input', { type: 'text', value: value ?? '', placeholder: '내용',
+          oninput: event => { meta[key] = event.target.value; markDirty(); } });
+
+    const toggle = h('label', { class: 'checkline', style: 'font-size:12px;color:var(--muted)' },
+      h('input', { type: 'checkbox', checked: isLink, onchange: event => {
+        if (event.target.checked) {
+          const text = String(meta[key] || '');
+          /* "ArtStation - hanska3d" 처럼 적혀 있으면 앞뒤를 나눠 미리 채워 줍니다.
+             껐다 켜는 동안 주소가 날아가지 않도록 따로 기억해 둔 값을 되살립니다. */
+          const split = text.split(/\s[-–]\s/);
+          meta[key] = { source: split[0] || '', name: split[1] || '', href: rememberedHref(meta, key) };
+        } else {
+          const v = meta[key] || {};
+          rememberHref(meta, key, v.href);
+          meta[key] = [v.source, v.name].filter(Boolean).join(' - ');
+        }
+        markDirty(); render();
+      } }),
+      h('span', { text: '링크 붙이기' }));
+
     rows.append(h('div', { class: 'row is-block' },
       h('div', { class: 'field' },
-        h('label', { text: key }),
+        h('div', { style: 'display:flex;align-items:center;justify-content:space-between;gap:12px' },
+          h('label', { text: key }), toggle),
         body),
       h('div', { class: 'row-tools', style: 'justify-content:flex-end' },
         h('button', { class: 'icon-btn danger', type: 'button', title: '이 줄 삭제',
           onclick: () => { delete meta[key]; markDirty(); render(); } }, '✕'))));
   });
   rows.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
-    const name = prompt('항목 이름을 영문 대문자로 적어 주세요 (예: PERIOD, SCOPE, SPECS, TOOLS)');
+    const name = prompt('항목 이름을 영문 대문자로 적어 주세요 (예: PERIOD, SCOPE, SPECS, TOOLS, CONCEPT)');
     if (!name) return;
     meta[name.trim().toUpperCase()] = '';
     markDirty(); render();
@@ -478,6 +632,8 @@ function metaEditor(meta) {
   return rows;
 }
 
+/* 문단 목록. 사이트는 어느 단계든 문단 여러 개를 그릴 수 있으므로
+   관리자에서도 전부 이 편집기를 씁니다. 맨 앞에 [소제목] 을 적으면 사이트에서 굵게 나옵니다. */
 function sentenceEditor(arr, label) {
   return listEditor(arr,
     (item, i) => h('div', { class: 'field' },
@@ -486,6 +642,67 @@ function sentenceEditor(arr, label) {
         oninput: event => { arr[i] = event.target.value; markDirty(); }
       })),
     () => '', label + ' 추가', { block: true, emptyText: '문장이 없습니다.' });
+}
+
+/* 이미지 한 장(또는 영상 한 개) 칸. 이름 옆에서 종류를 바꿀 수 있습니다. */
+function mediaItemEditor(item) {
+  const isVideo = 'vid' in item;
+  const nameKey = isVideo ? 'vid' : 'img';
+  return h('div', { class: 'grid3', style: 'gap:10px' },
+    h('div', { class: 'field' },
+      h('label', { text: '종류' }),
+      h('select', { onchange: event => {
+        const toVideo = event.target.value === 'vid';
+        const name = item.img ?? item.vid ?? '';
+        delete item.img; delete item.vid;
+        item[toVideo ? 'vid' : 'img'] = name;
+        markDirty(); render();
+      }, value: isVideo ? 'vid' : 'img' },
+        h('option', { value: 'img', text: '이미지' }),
+        h('option', { value: 'vid', text: '영상' }))),
+    h('div', { class: 'field' },
+      h('label', { text: isVideo ? '영상 이름 (mp4)' : '이미지 이름' }),
+      input(item, nameKey, { placeholder: isVideo ? 'ai-motion' : 'ui-sub-a' })),
+    h('div', { class: 'field' },
+      h('label', { text: '캡션 (없으면 비움)' }),
+      h('input', { type: 'text', value: item.cap ?? '', placeholder: '',
+        oninput: event => { const v = event.target.value; if (v) item.cap = v; else delete item.cap; markDirty(); } })));
+}
+
+/* 이미지 '줄' 편집기. 한 단계 안에 줄을 여러 개 둘 수 있고,
+   줄마다 몇 열로 깔지 따로 정합니다. (예: 윗줄 2열 + 아랫줄 1열) */
+function rowsEditor(step) {
+  const rows = step.rows;
+  const box = h('div', { class: 'rows' });
+  if (!rows.length) box.append(h('div', { class: 'empty', text: '이미지 줄이 없습니다. 글만 있는 단계입니다.' }));
+
+  rows.forEach((row, ri) => {
+    const colPicker = h('div', { class: 'col-picker' },
+      ...[1, 2, 3].map(n => h('button', {
+        type: 'button', class: 'col-btn' + ((row.cols || row.items.length) === n ? ' is-on' : ''),
+        title: n + '열', onclick: () => { row.cols = n; markDirty(); render(); }
+      }, h('span', { class: 'col-ic', 'data-n': String(n) },
+          ...Array.from({ length: n }, () => h('i'))),
+        h('small', { text: n + '열' }))));
+
+    box.append(h('div', { class: 'media-row' },
+      h('div', { class: 'media-row-head' },
+        h('span', { class: 'n', text: ri + 1 + '줄' }),
+        colPicker,
+        h('span', { class: 'spacer', style: 'flex:1' }),
+        h('button', { class: 'icon-btn', type: 'button', title: '위로', disabled: ri === 0,
+          onclick: () => { rows.splice(ri - 1, 0, rows.splice(ri, 1)[0]); markDirty(); render(); } }, '↑'),
+        h('button', { class: 'icon-btn', type: 'button', title: '아래로', disabled: ri === rows.length - 1,
+          onclick: () => { rows.splice(ri + 1, 0, rows.splice(ri, 1)[0]); markDirty(); render(); } }, '↓'),
+        h('button', { class: 'icon-btn danger', type: 'button', title: '이 줄 삭제',
+          onclick: () => { rows.splice(ri, 1); markDirty(); render(); } }, '✕')),
+      listEditor(row.items, mediaItemEditor, () => ({ img: '' }), '이 줄에 추가',
+        { block: true, emptyText: '이 줄에 이미지가 없습니다.' })));
+  });
+
+  box.append(h('button', { class: 'add-btn', type: 'button',
+    onclick: () => { rows.push({ cols: 2, items: [{ img: '' }] }); markDirty(); render(); } }, '＋ 이미지 줄 추가'));
+  return box;
 }
 
 function workDetailEditor(detail, title) {
@@ -505,55 +722,51 @@ function workDetailEditor(detail, title) {
 
     h('section', { class: 'card' },
       h('h2', { text: '정보 표' }),
-      h('p', { class: 'desc', text: 'PERIOD · SCOPE · SPECS · TOOLS · CONCEPT 같은 항목입니다. CONCEPT 처럼 링크가 붙는 항목은 칸이 세 개로 나뉩니다.' }),
+      h('p', { class: 'desc', text: 'PERIOD · SCOPE · SPECS · TOOLS · CONCEPT 같은 항목입니다. 출처처럼 링크를 걸고 싶으면 그 줄의 「링크 붙이기」를 켜세요.' }),
       metaEditor(detail.meta))
   ];
 
   if (detail.breakdown) {
     blocks.push(h('section', { class: 'card' },
       h('h2', { text: 'Focus 3컷' }),
-      h('p', { class: 'desc', text: '상세 화면 맨 위에 가로로 깔리는 참고 이미지입니다. 비율은 이미지 가로÷세로 값이고, 이 값으로 세 장의 높이를 맞춥니다.' }),
+      h('p', { class: 'desc', text: '상세 화면 맨 위에 가로로 깔리는 참고 이미지입니다. 비율은 이미지를 읽어 자동으로 채웁니다 - 세 장의 높이를 맞추는 데 쓰입니다.' }),
+      h('button', { class: 'btn quiet', type: 'button', style: 'margin-bottom:12px',
+        onclick: () => Promise.all(detail.breakdown.map(item => applyRatio(item, true)))
+          .then(list => toast(list.filter(Boolean).length + '개를 다시 쟀습니다')) }, '↻ 비율 모두 다시 재기'),
       listEditor(detail.breakdown, item => h('div', { class: 'grid3', style: 'gap:10px' },
-        h('div', { class: 'field' }, h('label', { text: '이미지 이름' }), input(item, 'img', { placeholder: 'bd-gunslinger-1' })),
+        h('div', { class: 'field' }, h('label', { text: '이미지 이름' }), ratioInput(item)),
         h('div', { class: 'field' }, h('label', { text: '캡션' }), input(item, 'cap', { placeholder: '실루엣 수정' })),
-        h('div', { class: 'field' }, h('label', { text: '비율 (가로÷세로)' }), input(item, 'r', { type: 'number', number: true, placeholder: '1.3' }))),
+        h('div', { class: 'field' }, h('label', { text: '비율 (자동)' }), ratioReadout(item))),
         () => ({ img: '', cap: '', r: 1.3 }), '컷 추가', { block: true })));
   }
 
-  if (detail.steps) {
-    blocks.push(h('section', { class: 'card' },
-      h('h2', { text: '제작 과정' }),
-      h('p', { class: 'desc', text: '이미지 줄 + 설명으로 이루어진 단계입니다. 구분 라벨을 적으면 그 위에 큰 글씨 라벨이 들어갑니다.' }),
-      listEditor(detail.steps, (step, i) => h('div', { class: 'step' },
-        h('div', { class: 'step-head' },
-          h('span', { class: 'n', text: String(i + 1) }),
-          h('span', { class: 't', text: step.title || '(제목 없음)' })),
-        h('div', { class: 'grid2' },
-          field('구분 라벨', '비워 두면 안 나옵니다', input(step, 'group', { placeholder: 'UI' })),
-          field('단계 제목', null, input(step, 'title', { rerender: false }))),
-        h('div', { class: 'grid3', style: 'margin-top:4px' },
-          field('배치', null, h('select', {
-            onchange: event => { step.layout = event.target.value || undefined; markDirty(); },
-            value: step.layout || ''
-          }, h('option', { value: '', text: '기본 (이미지 위, 글 아래)' }),
-             h('option', { value: 'side', text: 'side - 글 왼쪽, 이미지 오른쪽' }),
-             h('option', { value: 'split', text: 'split - 이미지 왼쪽, 글 오른쪽' }))),
-          field('이미지 열 수', null, input(step, 'cols', { type: 'number', number: true, placeholder: '2' }))),
-        h('div', { class: 'field', style: 'margin-top:4px' },
-          h('label', { text: '이미지' }),
-          listEditor(step.images || (step.images = []), img => h('div', { class: 'grid2', style: 'gap:10px' },
-            h('div', { class: 'field' }, h('label', { text: '이름' }), input(img, 'img', { placeholder: 'ui-sub-a' })),
-            h('div', { class: 'field' }, h('label', { text: '캡션 (없으면 비움)' }), input(img, 'cap', { placeholder: '' }))),
-            () => ({ img: '' }), '이미지 추가', { block: true, emptyText: '이미지가 없습니다.' })),
-        h('div', { class: 'field' },
-          h('label', { text: '설명' }),
-          Array.isArray(step.body)
-            ? sentenceEditor(step.body, '문단')
-            : h('textarea', { rows: 3, value: step.body || '',
-                oninput: event => { step.body = event.target.value; markDirty(); } }),
-          h('span', { class: 'hint', text: Array.isArray(step.body) ? '문단이 여러 개인 단계입니다.' : '' }))),
-        () => ({ title: '', images: [], body: '' }), '단계 추가', { block: true })));
-  }
+  blocks.push(h('section', { class: 'card' },
+    h('h2', { text: '제작 과정' }),
+    h('p', { class: 'desc', text: '이미지 줄 + 설명으로 이루어진 단계입니다. 한 단계 안에 줄을 여러 개 두고 줄마다 열 수를 다르게 할 수 있습니다.' }),
+    listEditor(detail.steps, (step, i) => h('div', { class: 'step' },
+      h('div', { class: 'step-head' },
+        h('span', { class: 'n', text: String(i + 1) }),
+        h('span', { class: 't', text: step.title || '(제목 없음)' })),
+      h('div', { class: 'grid2' },
+        field('구분 라벨', '비워 두면 안 나옵니다', input(step, 'group', { placeholder: 'UI' })),
+        field('단계 제목', null, input(step, 'title'))),
+      h('div', { class: 'field', style: 'margin-top:4px' },
+        h('label', { text: '글과 이미지 배치' }),
+        h('select', {
+          onchange: event => { if (event.target.value) step.layout = event.target.value; else delete step.layout; markDirty(); },
+          value: step.layout || ''
+        }, h('option', { value: '', text: '기본 - 이미지가 위, 글이 아래' }),
+           h('option', { value: 'side', text: 'side - 글이 왼쪽, 이미지가 오른쪽' }),
+           h('option', { value: 'split', text: 'split - 이미지가 왼쪽, 글이 오른쪽' }))),
+      h('div', { class: 'field', style: 'margin-top:4px' },
+        h('label', { text: '이미지' }),
+        rowsEditor(step)),
+      h('div', { class: 'field' },
+        h('label', { text: '설명' }),
+        sentenceEditor(step.body, '문단'),
+        h('span', { class: 'hint', text: '맨 앞에 [소제목] 을 적으면 사이트에서 굵게 나옵니다.' }))),
+      () => ({ title: '', rows: [], body: [''] }), '단계 추가', { block: true,
+        emptyText: '단계가 없습니다. 이 작품은 아래 「최종 렌더」만 보여 줍니다.' })));
 
   blocks.push(h('section', { class: 'card' },
     h('h2', { text: '최종 렌더' }),
@@ -579,13 +792,25 @@ function tabWorks() {
     }, work.image ? h('img', { src: work.image, alt: '' }) : h('span', { class: 'no-img', text: '?' }),
        h('span', { text: work.title || '(제목 없음)' })));
   });
+  /* 빈 작품부터 만들면 칸이 전부 비어 있어 오히려 손이 많이 갑니다.
+     이미 있는 작품을 통째로 복제해서 고치는 쪽이 빠릅니다. */
+  if (works.length) picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
+    const i = Math.min(state.workIndex, works.length - 1);
+    const copy = structuredClone(works[i]);
+    copy.id = (works[i].id || 'work') + '-copy';
+    while (works.some(w => w.id === copy.id)) copy.id += '2';
+    copy.title = works[i].title + ' 복사';
+    works.splice(i + 1, 0, copy);
+    state.workIndex = i + 1; markDirty(); render();
+    toast('복제했습니다. 제목과 아이디를 바꿔 주세요');
+  } }, '⧉ 선택한 작품 복제'));
   picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
     works.push({ id: 'work-' + Date.now().toString(36), title: '새 작품', cardSub: 'Character',
       image: '', alt: '', portrait: true, inHero: true,
-      detail: { kind: 'character', sub: '', image: '', alt: '', focus: [], meta: {},
-        breakdown: [], gallery: [], video: null } });
+      detail: { kind: 'character', sub: '', image: '', alt: '', focus: [''], meta: {},
+        breakdown: [], steps: [], gallery: [], video: null } });
     state.workIndex = works.length - 1; markDirty(); render();
-  } }, '＋ 작품 추가'));
+  } }, '＋ 빈 작품 추가'));
 
   if (!works.length) return [h('section', { class: 'card' }, picker, h('div', { class: 'empty', text: '작품이 없습니다.' }))];
 
@@ -632,11 +857,21 @@ function tabLabs() {
     }, lab.image ? h('img', { src: lab.image, alt: '' }) : h('span', { class: 'no-img', text: '?' }),
        h('span', { text: lab.title || '(제목 없음)' })));
   });
+  if (labs.length) picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
+    const i = Math.min(state.labIndex, labs.length - 1);
+    const copy = structuredClone(labs[i]);
+    copy.id = (labs[i].id || 'lab') + '-copy';
+    while (labs.some(l => l.id === copy.id)) copy.id += '2';
+    copy.title = labs[i].title + ' 복사';
+    labs.splice(i + 1, 0, copy);
+    state.labIndex = i + 1; markDirty(); render();
+    toast('복제했습니다. 제목과 아이디를 바꿔 주세요');
+  } }, '⧉ 선택한 작업 복제'));
   picker.append(h('button', { class: 'add-btn', type: 'button', onclick: () => {
     labs.push({ id: 'lab-' + Date.now().toString(36), title: '새 작업', kindLabel: '', copy: '', tags: [],
-      image: '', alt: '', detail: { kind: 'story', sub: '', image: '', alt: '', focus: [], meta: {}, steps: [], gallery: [], video: null } });
+      image: '', alt: '', detail: { kind: 'story', sub: '', image: '', alt: '', focus: [''], meta: {}, steps: [], gallery: [], video: null } });
     state.labIndex = labs.length - 1; markDirty(); render();
-  } }, '＋ 작업 추가'));
+  } }, '＋ 빈 작업 추가'));
 
   if (!labs.length) return [h('section', { class: 'card' }, picker, h('div', { class: 'empty', text: '작업이 없습니다.' }))];
 
@@ -758,6 +993,81 @@ function tabTexts() {
   ];
 }
 
+/* ── 탭: 미리보기 ─────────────────────────────────────────
+   실제 index.html 을 ?preview=1 로 띄워 두고, 고친 데이터를 메시지로 넘깁니다.
+   사이트와 똑같은 코드가 그리므로 관리자 쪽에 화면을 또 만들 필요가 없고,
+   둘이 어긋날 일도 없습니다. 안에서 작품 카드를 눌러 상세까지 볼 수 있습니다. */
+const PREVIEW_SIZES = {
+  pc:     { label: 'PC',   w: 1440, h: 900 },
+  tablet: { label: '태블릿', w: 1024, h: 820 },
+  mobile: { label: '모바일', w: 390,  h: 780 }
+};
+let previewFrame = null;
+let previewTimer;
+
+function postPreview() {
+  if (!previewFrame || !previewFrame.contentWindow || !state.data) return;
+  previewFrame.contentWindow.postMessage(
+    { type: 'portfolio-preview', data: JSON.parse(JSON.stringify(state.data)) },
+    location.origin);
+}
+function queuePreview() {
+  clearTimeout(previewTimer);
+  previewTimer = setTimeout(postPreview, 250);
+}
+/* 미리보기 창이 다 떴다고 알려 오면 그때 한 번 보냅니다. */
+window.addEventListener('message', event => {
+  if (event.origin !== location.origin) return;
+  if (event.data && event.data.type === 'portfolio-preview-ready') postPreview();
+});
+
+function fitPreview(stage, frame, size) {
+  const holder = frame.parentElement;
+  const room = stage.clientWidth || size.w;
+  const scale = Math.min(1, room / size.w);
+  frame.style.width = size.w + 'px';
+  frame.style.height = size.h + 'px';
+  frame.style.transform = `scale(${scale})`;
+  holder.style.width = Math.round(size.w * scale) + 'px';
+  holder.style.height = Math.round(size.h * scale) + 'px';
+}
+
+function tabPreview() {
+  const key = state.previewSize || 'pc';
+  const size = PREVIEW_SIZES[key];
+  const stage = h('div', { class: 'pv-stage' });
+  const holder = h('div', { class: 'pv-holder' });
+  const frame = h('iframe', { src: 'index.html?preview=1', title: '사이트 미리보기',
+    loading: 'eager', onload: () => { postPreview(); } });
+  holder.append(frame);
+  stage.append(holder);
+  previewFrame = frame;
+
+  requestAnimationFrame(() => fitPreview(stage, frame, size));
+  if (!tabPreview.bound) {
+    window.addEventListener('resize', () => {
+      const node = document.querySelector('.pv-stage');
+      if (node && previewFrame) fitPreview(node, previewFrame, PREVIEW_SIZES[state.previewSize || 'pc']);
+    });
+    tabPreview.bound = true;
+  }
+
+  return [h('section', { class: 'card' },
+    h('h2', { text: '미리보기' }),
+    h('p', { class: 'desc', text: '왼쪽에서 고친 내용이 바로 여기에 반영됩니다. 안에서 작품 카드를 눌러 상세 화면까지 볼 수 있습니다.' }),
+    h('div', { class: 'pv-bar' },
+      h('div', { class: 'pv-size' },
+        ...Object.entries(PREVIEW_SIZES).map(([k, v]) => h('button', {
+          type: 'button', class: k === key ? 'is-on' : '',
+          onclick: () => { state.previewSize = k; render(); }
+        }, v.label + ' ' + v.w))),
+      h('span', { style: 'flex:1' }),
+      h('button', { class: 'btn quiet', type: 'button',
+        onclick: () => { frame.src = 'index.html?preview=1'; toast('다시 불러옵니다'); } }, '↻ 새로 고침')),
+    stage,
+    h('p', { class: 'pv-hint', text: '실제 사이트(index.html)를 그대로 띄워 데이터만 바꿔 넣는 방식입니다. 그래서 여기서 보이는 모습이 올라간 뒤의 모습과 같습니다. 다만 아직 저장 기능이 없어, 새로고침하면 고친 내용은 사라집니다.' }))];
+}
+
 /* ── 탭: 데이터 보기 ──────────────────────────────────────── */
 function tabJson() {
   const text = JSON.stringify(state.data, null, 2);
@@ -798,7 +1108,7 @@ function tabJson() {
 }
 
 /* ── 그리기 ───────────────────────────────────────────────── */
-const TABS = { profile: tabProfile, works: tabWorks, labs: tabLabs, docs: tabDocs, texts: tabTexts, json: tabJson };
+const TABS = { profile: tabProfile, works: tabWorks, labs: tabLabs, docs: tabDocs, texts: tabTexts, preview: tabPreview, json: tabJson };
 
 function render() {
   if (!state.data) return;
@@ -809,6 +1119,7 @@ function render() {
   });
   const panel = $('#panel');
   const keep = panel.scrollTop;
+  if (state.tab !== 'preview') previewFrame = null;
   panel.replaceChildren(...TABS[state.tab]());
   panel.scrollTop = keep;
 }
@@ -831,6 +1142,7 @@ window.addEventListener('beforeunload', event => {
 
 /* ── 데이터 읽기 ──────────────────────────────────────────── */
 function useData(json) {
+  normalizeData(json);
   state.origin = structuredClone(json);
   state.data = json;
   clearDirty();
