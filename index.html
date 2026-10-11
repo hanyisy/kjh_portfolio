@@ -89,6 +89,9 @@
     /* 높이를 em 으로 두면 마크와 글자가 한 덩어리로 같이 커지고 작아집니다.
        조합 전체 크기는 .brand 의 font-size, 둘의 비율은 아래 1.22em 하나로 조절합니다. */
     .brand-mark.has-image img { display:block; width:auto; height:1.22em; object-fit:contain; }
+    /* 옆 글자를 비우면 로고 이미지 하나만 남습니다. 그때는 글자 칸이 없으니
+       사이 여백도 지워 왼쪽 끝에 딱 붙게 합니다. */
+    .brand:has(.brand-text[hidden]) { gap:0; }
     .nav-links { display:flex; align-items:center; gap:22.4px; font-size:13px; font-weight:600; }
     .nav-links a { position:relative; }
     .nav-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-4.8px; height:2px; background:var(--pink-strong); transition:.25s ease; }
@@ -670,28 +673,35 @@
         const text=(label&&label.trim())||plain(href);
         document.querySelectorAll(`[data-profile-text="${key}"]`).forEach(node => { node.textContent=text; });
       });
-      /* 로고. 이미지 주소를 적으면 기본 아이콘 대신 그 그림이 들어갑니다.
-         왼쪽 위 로고와 브라우저 탭 아이콘 두 곳에 함께 적용됩니다. */
+      /* 로고. 주소를 적으면 기본 아이콘 대신 그 그림이 들어갑니다.
+         글자까지 들어간 가로 조합 이미지를 쓰면 옆 글자는 비워 두면 됩니다. */
       const logo=(profile.logo||'').trim();
       const mark=document.querySelector('.brand-mark');
       if(mark){
         if(!mark.dataset.original) mark.dataset.original=mark.innerHTML;
         mark.classList.toggle('has-image',!!logo);
         if(logo){
-          const image=el('img'); image.src=logo; image.alt=profile.name||'로고';
+          const image=el('img'); image.src=logo;
+          image.alt=(profile.shortName||'').trim()||'Portfolio';
           mark.replaceChildren(image);
         } else mark.innerHTML=mark.dataset.original;
       }
+      /* 옆 글자가 비어 있으면 칸을 아예 지웁니다. 안 그러면 사이 여백만 남습니다. */
+      const brandText=document.querySelector('.brand-text');
+      if(brandText) brandText.hidden=!(profile.shortName||'').trim();
+      /* 탭 아이콘. 로고가 가로로 길면 탭에서 알아보기 어려우므로 따로 받습니다.
+         안 적으면 로고를 그대로 쓰고, 둘 다 없으면 처음의 기본 아이콘으로 돌아갑니다. */
       const favicon=document.querySelector('link[rel="icon"]');
       if(favicon){
         if(!favicon.dataset.original){
           favicon.dataset.original=favicon.getAttribute('href');
           favicon.dataset.originalType=favicon.getAttribute('type')||'';
         }
-        favicon.setAttribute('href',logo||favicon.dataset.original);
+        const icon=(profile.favicon||'').trim()||logo;
+        favicon.setAttribute('href',icon||favicon.dataset.original);
         // 기본 아이콘은 SVG 라 type 을 적어 두지만, 올린 그림은 확장자가 제각각이라
         // type 을 지워 브라우저가 알아서 판단하게 둡니다.
-        if(logo) favicon.removeAttribute('type');
+        if(icon) favicon.removeAttribute('type');
         else if(favicon.dataset.originalType) favicon.setAttribute('type',favicon.dataset.originalType);
       }
       const abilityList=document.querySelector('#ability-list');
