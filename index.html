@@ -1200,6 +1200,19 @@
       document.body.classList.remove('loading');
       const loaderNode=document.querySelector('#loader');
       if(loaderNode) loaderNode.remove();
+      /* 메뉴를 누르면 주소 뒤에 #work 같은 조각이 붙는데, 브라우저는 그때
+         '이 iframe 을 화면에 보여 줘야겠다'며 바깥 관리자 창까지 스크롤합니다.
+         미리보기에서는 주소를 바꾸지 않고 안쪽만 직접 굴려 이 현상을 막습니다.
+         멈추는 위치는 원래 동작과 같게 맞췄습니다. */
+      document.addEventListener('click',event => {
+        const link=event.target.closest('a[href^="#"]');
+        if(!link) return;
+        event.preventDefault();
+        const id=link.getAttribute('href').slice(1);
+        const target=id?document.getElementById(id):null;
+        const top=target?target.getBoundingClientRect().top+window.scrollY:0;
+        window.scrollTo({ top,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth' });
+      });
       window.addEventListener('message',event => {
         if(event.origin!==location.origin) return;
         const payload=event.data;

@@ -211,7 +211,9 @@
     /* 틀(stage)은 가운데 정렬만 맡고, 실제 크기는 holder 가 가집니다.
        iframe 은 transform-origin 이 왼쪽 위라 혼자서는 가운데로 못 옵니다. */
     .pv-stage { display:flex; justify-content:center; background:var(--soft); border-radius:var(--radius-sm); padding:0; }
-    .pv-holder { overflow:hidden; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff9fb; }
+    /* resize:vertical 로 아래 모서리를 끌어 높이를 바꿉니다.
+       overflow 가 visible 이 아니어야 손잡이가 생깁니다. */
+    .pv-holder { overflow:hidden; resize:vertical; min-height:240px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff9fb; }
     .pv-stage iframe { display:block; border:0; transform-origin:top left; background:#fff9fb; }
     .pv-hint { margin-top:10px; font-size:12px; color:var(--muted); line-height:1.6; }
 
@@ -303,7 +305,7 @@
 const DATA_URL = 'data/site.json';
 const ASSET_BASE = 'assets/portfolio/';
 
-const state = { data:null, origin:null, tab:'profile', workIndex:0, labIndex:0, dirty:false };
+const state = { data:null, origin:null, tab:'profile', workIndex:0, labIndex:0, dirty:false, previewSize:'pc', previewHeight:null };
 
 /* ── 아주 작은 DOM 도우미 ─────────────────────────────────── */
 function h(tag, attrs, ...kids) {
@@ -1029,15 +1031,34 @@ window.addEventListener('message', event => {
   if (event.data && event.data.type === 'portfolio-preview-ready') postPreview();
 });
 
+/* 화면에 남은 세로 공간.
+   틀 아래에 깔리는 안내문과 카드 여백을 어림잡지 않고 실제로 재서 뺍니다.
+   (안내문은 창 폭에 따라 줄 수가 달라집니다.) */
+function previewRoomHeight(stage) {
+  const box = stage.getBoundingClientRect();
+  const card = stage.closest('.card');
+  const below = card ? Math.max(0, card.getBoundingClientRect().bottom - box.bottom) : 72;
+  return Math.max(240, Math.round(window.innerHeight - box.top - below - 24));
+}
+
+/* 폭은 고른 기기 크기로 고정하고 모자라면 줄여서 넣습니다.
+   세로는 '창에 맞추기'가 기본이고, 손잡이로 끌면 그 높이를 기억합니다.
+   보이는 높이를 배율로 나눠 iframe 자체를 그만큼 키우므로,
+   높이를 늘리면 잘리는 게 아니라 사이트가 그만큼 더 보입니다. */
+let fittingPreview = false;
 function fitPreview(stage, frame, size) {
   const holder = frame.parentElement;
   const room = stage.clientWidth || size.w;
   const scale = Math.min(1, room / size.w);
+  const shown = state.previewHeight || previewRoomHeight(stage);
+  fittingPreview = true;
   frame.style.width = size.w + 'px';
-  frame.style.height = size.h + 'px';
+  frame.style.height = Math.round(shown / scale) + 'px';
   frame.style.transform = `scale(${scale})`;
   holder.style.width = Math.round(size.w * scale) + 'px';
-  holder.style.height = Math.round(size.h * scale) + 'px';
+  holder.style.height = shown + 'px';
+  requestAnimationFrame(() => { fittingPreview = false; });
+  return scale;
 }
 
 function tabPreview() {
@@ -1052,6 +1073,19 @@ function tabPreview() {
   previewFrame = frame;
 
   requestAnimationFrame(() => fitPreview(stage, frame, size));
+
+  /* 손잡이로 끌면 holder 높이만 바뀌므로, 그 높이에 맞춰 안쪽 iframe 도 늘려 줍니다.
+     fitPreview 가 직접 바꾼 경우는 건너뛰어 서로 물고 늘어지지 않게 합니다. */
+  new ResizeObserver(() => {
+    if (fittingPreview || !holder.isConnected) return;
+    const scale = Math.min(1, (stage.clientWidth || size.w) / size.w);
+    const shown = holder.clientHeight;
+    state.previewHeight = shown;
+    frame.style.height = Math.round(shown / scale) + 'px';
+    const node = document.querySelector('#pv-fit');
+    if (node) node.hidden = false;
+  }).observe(holder);
+
   if (!tabPreview.bound) {
     window.addEventListener('resize', () => {
       const node = document.querySelector('.pv-stage');
@@ -1070,10 +1104,12 @@ function tabPreview() {
           onclick: () => { state.previewSize = k; render(); }
         }, v.label + ' ' + v.w))),
       h('span', { style: 'flex:1' }),
+      h('button', { class: 'btn quiet', type: 'button', id: 'pv-fit', hidden: !state.previewHeight,
+        onclick: () => { state.previewHeight = null; render(); toast('창 높이에 맞췄습니다'); } }, '⤢ 창 높이에 맞추기'),
       h('button', { class: 'btn quiet', type: 'button',
         onclick: () => { frame.src = 'index.html?preview=1'; toast('다시 불러옵니다'); } }, '↻ 새로 고침')),
     stage,
-    h('p', { class: 'pv-hint', text: '실제 사이트(index.html)를 그대로 띄워 데이터만 바꿔 넣는 방식입니다. 그래서 여기서 보이는 모습이 올라간 뒤의 모습과 같습니다. 다만 아직 저장 기능이 없어, 새로고침하면 고친 내용은 사라집니다.' }))];
+    h('p', { class: 'pv-hint', text: '실제 사이트(index.html)를 그대로 띄워 데이터만 바꿔 넣는 방식입니다. 그래서 여기서 보이는 모습이 올라간 뒤의 모습과 같습니다. 높이는 창에 맞춰 두었고, 틀 오른쪽 아래 모서리를 끌면 원하는 만큼 늘리거나 줄일 수 있습니다. 아직 저장 기능이 없어, 새로고침하면 고친 내용은 사라집니다.' }))];
 }
 
 /* 보여 주고 내려받는 데이터. 편집 편하자고 만들어 둔 빈 칸은 빼서
