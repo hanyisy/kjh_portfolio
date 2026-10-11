@@ -103,6 +103,12 @@
       background:#fff; font-size:14px; transition:border-color .18s ease,box-shadow .18s ease;
     }
     .field textarea { resize:vertical; min-height:72px; line-height:1.6; }
+    /* 브라우저 기본 안내 문구 색(rgb(117,117,117))은 실제 글자색과 가까워
+       빈 칸인지 적힌 칸인지 한눈에 구분되지 않습니다. 확실히 연하게 둡니다. */
+    .field input::placeholder, .field textarea::placeholder,
+    .ta-wrap textarea::placeholder, .row input::placeholder {
+      color:rgba(41,36,41,.36);
+    }
     .field input:focus, .field textarea:focus, .field select:focus {
       outline:0; border-color:var(--pink-strong); box-shadow:0 0 0 3px rgba(233,111,153,.16);
     }
