@@ -3,8 +3,8 @@
   "profile": {
     "name": "이름 입력",
     "englishName": "YOUR NAME",
-    "shortName": "Y.N",
-    "logo": "",
+    "shortName": "포트폴리오",
+    "logo": "assets/logo.webp",
     "email": "your-email@example.com",
     "kakaoOpenChat": "https://kakaocorp.com",
     "kakaoLabel": "",

@@ -155,7 +155,11 @@
       aspect-ratio:2/3; border-radius:8px; overflow:hidden; background:var(--soft);
       display:grid; place-items:center; color:var(--muted); font-size:11px; text-align:center; padding:6px;
     }
+    /* 썸네일은 꽉 채워 보여 주지만, 로고처럼 가로로 긴 그림은 잘리면 안 되므로
+       비율을 유지해 칸 안에 넣습니다. */
     .thumb-preview .box img { width:100%; height:100%; object-fit:cover; }
+    .thumb-preview.is-fit .box { aspect-ratio:1; }
+    .thumb-preview.is-fit .box img { object-fit:contain; }
 
     /* ── 단계(steps) 편집 ──────────────────────────────────── */
     .step {
@@ -514,7 +518,7 @@ function normalizeData(data) {
   return data;
 }
 
-function imageField(obj, key, label, hint) {
+function imageField(obj, key, label, hint, fit) {
   const preview = h('div', { class: 'box' });
   const paint = () => {
     const raw = (obj[key] || '').trim();
@@ -527,7 +531,7 @@ function imageField(obj, key, label, hint) {
   const box = input(obj, key, { placeholder: 'hero-gunslinger.webp 또는 파일 이름' });
   box.addEventListener('input', paint);
   paint();
-  return h('div', { class: 'thumb-preview' },
+  return h('div', { class: 'thumb-preview' + (fit ? ' is-fit' : '') },
     preview,
     h('div', { class: 'field' },
       h('label', { text: label }),
@@ -545,9 +549,9 @@ function tabProfile() {
       h('div', { class: 'grid3' },
         field('이름', null, input(p, 'name', { placeholder: '홍길동' })),
         field('영문 이름', '프로필 이름 아래 작게 들어갑니다', input(p, 'englishName', { placeholder: 'GILDONG HONG' })),
-        field('약칭', '왼쪽 위 로고 옆 글자', input(p, 'shortName', { placeholder: 'G.H' }))),
+        field('로고 옆 글자', '왼쪽 위 로고 오른쪽에 붙는 글자', input(p, 'shortName', { placeholder: '포트폴리오' }))),
       h('div', { style: 'margin-top:14px' },
-        imageField(p, 'logo', '로고 이미지', '왼쪽 위 작은 네모와 브라우저 탭 아이콘 두 곳에 같이 들어갑니다. 비워 두면 기본 아이콘이 그대로 나옵니다. 정사각형 이미지가 가장 잘 맞습니다.')),
+        imageField(p, 'logo', '로고 이미지', '왼쪽 위 로고와 브라우저 탭 아이콘 두 곳에 같이 들어갑니다. 높이 24px 에 맞춰 들어가고 폭은 그림 비율을 따릅니다. 비워 두면 기본 아이콘이 나옵니다.', true)),
       h('div', { class: 'field', style: 'margin-top:14px' },
         h('label', { text: '이메일' }),
         input(p, 'email', { type: 'email', placeholder: 'name@example.com' })),
