@@ -76,7 +76,8 @@
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
     .page-progress { height:3.2px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
     .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,#f7bfd0 0%,#ed82a8 54%,#d94f84 100%); box-shadow:0 0 11.2px rgba(217,79,132,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
-    .brand { font:800 18px/1 "Manrope",Pretendard,"Apple SD Gothic Neo",sans-serif; letter-spacing:-.03em; display:flex; align-items:center; gap:7px; }
+    /* --logo-h : 로고 이미지 높이. font-size 는 옆 글자를 쓸 때의 글자 크기입니다. */
+    .brand { --logo-h:17px; font:800 14px/1 "Manrope",Pretendard,"Apple SD Gothic Neo",sans-serif; letter-spacing:-.03em; display:flex; align-items:center; gap:7px; }
     /* 로고 옆 글자는 포인트 색(진한 핑크)으로 둡니다. */
     .brand-text { color:var(--pink-strong); }
     .brand-mark { width:27.2px; aspect-ratio:1; border-radius:8.8px; display:grid; place-items:center; background:var(--pink); box-shadow:inset 0 0 0 1px rgba(41,36,41,.09); }
@@ -86,9 +87,9 @@
        높이를 퍼센트로 주면 칸 크기가 그림 크기에 따라 정해지는 순환이 생겨 먹히지 않습니다.
        flex:0 0 auto 는 좁은 화면에서 로고가 찌그러지지 않게 합니다. */
     .brand-mark.has-image { display:block; width:auto; height:auto; aspect-ratio:auto; flex:0 0 auto; border-radius:0; background:none; box-shadow:none; }
-    /* 높이를 em 으로 두면 마크와 글자가 한 덩어리로 같이 커지고 작아집니다.
-       조합 전체 크기는 .brand 의 font-size, 둘의 비율은 아래 1.22em 하나로 조절합니다. */
-    .brand-mark.has-image img { display:block; width:auto; height:1.22em; object-fit:contain; }
+    /* 높이는 위 --logo-h 하나로 정합니다. 폭은 그림 비율을 따라갑니다.
+       소수점이 생기지 않도록 em 이 아니라 px 로 둡니다. */
+    .brand-mark.has-image img { display:block; width:auto; height:var(--logo-h); object-fit:contain; }
     /* 옆 글자를 비우면 로고 이미지 하나만 남습니다. 그때는 글자 칸이 없으니
        사이 여백도 지워 왼쪽 끝에 딱 붙게 합니다. */
     .brand:has(.brand-text[hidden]) { gap:0; }
