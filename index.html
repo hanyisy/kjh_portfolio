@@ -75,7 +75,9 @@
     header { position:sticky; z-index:20; top:0; background:rgba(255,249,251,.84); backdrop-filter:blur(14.4px); }
     nav { height:57.6px; display:flex; align-items:center; justify-content:space-between; gap:22.4px; }
     .page-progress { height:3.2px; overflow:hidden; background:rgba(41,36,41,.08); box-shadow:0 1px 0 rgba(41,36,41,.05); }
-    .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,#f7bfd0 0%,#ed82a8 54%,#d94f84 100%); box-shadow:0 0 11.2px rgba(217,79,132,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
+    /* 진행 막대는 팔레트의 두 핑크(--pink → --pink-strong)만 씁니다.
+       예전엔 중간에 #ed82a8, 끝에 #d94f84 라는 팔레트 밖 색이 섞여 있었습니다. */
+    .page-progress-bar { display:block; width:100%; height:100%; background:linear-gradient(90deg,var(--pink) 0%,var(--pink-strong) 100%); box-shadow:0 0 11.2px rgba(233,111,153,.45); transform:scaleX(0); transform-origin:left center; will-change:transform; }
     /* --logo-h : 로고 이미지 높이. font-size 는 옆 글자를 쓸 때의 글자 크기입니다. */
     .brand { --logo-h:14px; font:800 14px/1 "Manrope",Pretendard,"Apple SD Gothic Neo",sans-serif; letter-spacing:-.03em; display:flex; align-items:center; gap:7px; }
     /* 로고 옆 글자는 포인트 색(진한 핑크)으로 둡니다. */
