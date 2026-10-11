@@ -545,7 +545,7 @@
   <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
   <div class="loader" id="loader" role="status" aria-live="polite"><div class="loader-inner"><span class="loader-year">2026</span><p class="loader-title">Portfolio</p><span class="loader-role">3D CHARACTER MODELING</span><div class="loader-bottom"><span class="loader-stage" id="loader-stage">MODELING</span><span class="loader-count" id="loader-count">00</span></div><div class="loader-track"><div class="loader-bar" id="loader-bar"></div></div></div></div>
 
-  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work">WORK</a><a href="#lab">AI &amp; DESIGN</a><a href="#about">PROFILE</a><a class="contact-pill" href="#contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
+  <header><nav class="wrap" aria-label="주요 메뉴"><a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4zM8 4v16M16 4v16M4 10h16M4 16h16" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-profile="shortName">Y.N</span></a><div class="nav-links"><a href="#work" data-nav="work">WORK</a><a href="#lab" data-nav="lab">AI &amp; DESIGN</a><a href="#about" data-nav="about">PROFILE</a><a class="contact-pill" href="#contact" data-nav="contact">CONTACT</a></div></nav><div class="page-progress" aria-hidden="true"><i class="page-progress-bar" id="page-progress-bar"></i></div></header>
 
   <main id="top">
     <section class="hero wrap"><div class="hero-grid"><div><p class="eyebrow" id="hero-eyebrow">Portfolio 2026</p><h1 id="hero-title">3D 캐릭터 모델러<em>000입니다.</em></h1><p class="hero-copy" id="hero-copy">반실사 캐릭터부터 캐주얼한 캐릭터까지, 다양한 스타일을 유연하게 제작합니다.</p><div class="hero-meta" id="hero-meta"><span class="tag">3ds Max</span><span class="tag">ZBrush</span><span class="tag">Substance 3D Painter</span><span class="tag">Marmoset Toolbag</span></div></div><div class="hero-visual"><div class="hero-frame" id="hero-slider"><!-- 메인 비주얼 수정 위치: 추후 영상으로 교체할 때 각 .hero-slide 안의 img를 <video autoplay muted loop playsinline> 요소로 교체하세요. data-label은 우측 하단 작품명입니다. --><div class="hero-slide is-portrait is-active" data-label="01 · GUNSLINGER"><img src="assets/portfolio/hero-gunslinger.webp" alt="Gunslinger 3D 캐릭터 메인 이미지" fetchpriority="high"></div><div class="hero-slide" data-label="02 · STEAMPUNK"><img src="assets/portfolio/hero-steampunk.webp" alt="Steampunk 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="03 · SD ELF"><img src="assets/portfolio/hero-elf.webp" alt="SD Elf 3D 캐릭터 메인 이미지"></div><div class="hero-slide is-portrait" data-label="04 · MONSTER"><img src="assets/portfolio/hero-monster.webp" alt="Monster 3D 캐릭터 메인 이미지"></div></div><span class="hero-note" id="hero-note">01 · GUNSLINGER</span></div></div></section>
@@ -663,6 +663,31 @@
         return row;
       }));
       document.title=`${profile.name||''} - 3D Character Modeler Portfolio`.trim().replace(/^- /,'');
+    }
+
+    /* 로딩 화면 글자.
+       첫 화면은 HTML 에 적힌 기본값으로 뜹니다. 글자가 0.7초에 걸쳐 서서히 떠오르는
+       동안 데이터가 도착해 조용히 교체되므로, 바뀌는 순간이 눈에 띄지 않습니다. */
+    function applyLoader(data){
+      const loader=data.loader;
+      if(!loader) return;
+      setText('.loader-year',loader.year);
+      setText('.loader-title',loader.title);
+      setText('.loader-role',loader.role);
+      if(Array.isArray(loader.stages)&&loader.stages.length){
+        loaderStages=loader.stages
+          .map(stage => [Number(stage.at)||0,String(stage.text||'')])
+          .sort((a,b) => a[0]-b[0]);
+      }
+    }
+
+    function applyNav(data){
+      const nav=data.nav;
+      if(!nav) return;
+      Object.entries(nav).forEach(([key,text]) => {
+        if(!text) return;
+        document.querySelectorAll(`[data-nav="${key}"]`).forEach(link => { link.textContent=text; });
+      });
     }
 
     function applyHero(data){
@@ -793,6 +818,8 @@
     function applySiteData(data){
       profileConfig=data.profile||{};
       projects=buildProjects(data);
+      applyLoader(data);
+      applyNav(data);
       applyProfile(data);
       applyHero(data);
       applyWorkSection(data);
@@ -1191,7 +1218,8 @@
     /* 퍼센트가 오르면 3D 작업 단계 이름도 같이 바뀝니다.
        숫자만 올라가던 단조로움을 덜고, 무슨 포트폴리오인지도 로딩 중에 읽히게 했습니다.
        단계 문구 수정 위치: 아래 배열의 [시작 퍼센트, 문구] 를 바꾸세요. */
-    const loaderStages=[[0,'MODELING'],[32,'TEXTURING'],[62,'RENDERING'],[100,'COMPLETE']];
+    /* 로딩 중 바뀌는 단계 이름. data/site.json 의 loader.stages 가 들어오면 교체됩니다. */
+    let loaderStages=[[0,'MODELING'],[32,'TEXTURING'],[62,'RENDERING'],[100,'COMPLETE']];
     const setLoaderStage=value => { const stage=loaderStages.filter(([at]) => value>=at).pop(); if(stage&&loaderStage.textContent!==stage[1]) loaderStage.textContent=stage[1]; };
     /* 배경색이 진행률을 따라 옅은 핑크 → 원래 핑크로 짙어집니다.
        0% 에서 완전히 옅으면 흰 Portfolio 가 안 보이므로, 흰색과 핑크의 중간(50%)에서 출발해
