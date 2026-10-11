@@ -317,12 +317,13 @@
 
   <div class="shell">
     <nav class="side" id="tabs" aria-label="관리 항목">
-      <button type="button" data-tab="profile" class="is-on">개인정보 <i>01</i></button>
+      <!-- 오른쪽 숫자는 '몇 개 들어 있는지' 를 뜻합니다. 셀 것이 없는 탭에는 붙이지 않습니다. -->
+      <button type="button" data-tab="profile" class="is-on">개인정보</button>
       <button type="button" data-tab="works">작품 <i id="count-works">0</i></button>
       <button type="button" data-tab="labs">AI &amp; Design <i id="count-labs">0</i></button>
-      <button type="button" data-tab="docs">문서 PDF <i>02</i></button>
-      <button type="button" data-tab="texts">사이트 문구 <i>05</i></button>
-      <button type="button" data-tab="json">데이터 보기 <i>{ }</i></button>
+      <button type="button" data-tab="docs">문서 PDF <i id="count-docs">0</i></button>
+      <button type="button" data-tab="texts">사이트 문구</button>
+      <button type="button" data-tab="json">데이터 보기</button>
       <div class="side-note">
         지금은 <b>화면만</b> 동작합니다.<br>저장을 눌러도 사이트에는 반영되지 않습니다.<br><br>위 <b>미리보기 열기</b>를 누르면 오른쪽에 띄워 두고 고치면서 바로 볼 수 있습니다.
       </div>
@@ -1357,6 +1358,9 @@ function render() {
   if (!state.data) return;
   $('#count-works').textContent = state.data.works.length;
   $('#count-labs').textContent = state.data.labs.length;
+  // 연결된 PDF 가 몇 개인지. 아직 없으면 0 입니다.
+  const docs = state.data.documents || {};
+  $('#count-docs').textContent = Object.values(docs).filter(doc => doc && doc.url).length;
   document.querySelectorAll('#tabs button[data-tab]').forEach(button => {
     button.classList.toggle('is-on', button.dataset.tab === state.tab);
   });
