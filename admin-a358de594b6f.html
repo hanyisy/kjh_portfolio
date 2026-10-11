@@ -1279,10 +1279,14 @@ function paintDockSizes() {
       onclick: () => { state.previewSize = k; paintDockSizes(); fitDock(); } }, v.label)));
 }
 
+/* 브라우저가 index.html 을 캐시에 들고 있으면, 사이트를 고쳐도 미리보기에는
+   옛 화면이 뜹니다. 열 때마다 다른 값을 붙여 늘 새로 받게 합니다. */
+function previewUrl() { return 'index.html?preview=1&v=' + Date.now(); }
+
 function openDock() {
   const dock = $('#dock');
   if (!previewFrame) {
-    previewFrame = h('iframe', { src: 'index.html?preview=1', title: '사이트 미리보기',
+    previewFrame = h('iframe', { src: previewUrl(), title: '사이트 미리보기',
       onload: () => { postPreview(); fitDock(); } });
     $('#dock-holder').append(previewFrame);
     paintDockSizes();
@@ -1309,7 +1313,7 @@ $('#dock-wide').addEventListener('click', () => {
   requestAnimationFrame(fitDock);
 });
 $('#dock-reload').addEventListener('click', () => {
-  if (previewFrame) { previewFrame.src = 'index.html?preview=1'; toast('다시 불러옵니다'); }
+  if (previewFrame) { previewFrame.src = previewUrl(); toast('다시 불러옵니다'); }
 });
 window.addEventListener('resize', fitDock);
 
