@@ -277,6 +277,21 @@
       white-space:pre; -webkit-overflow-scrolling:touch;
     }
 
+    /* ── 로그인 가림막 ─────────────────────────────────────── */
+    .gate { position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:20px; background:var(--mist); }
+    .gate[hidden] { display:none; }
+    .gate-box {
+      width:min(100%,340px); display:grid; gap:12px; padding:28px 26px;
+      border-radius:var(--radius); background:var(--milk); border:1px solid var(--line);
+      box-shadow:0 20px 60px rgba(41,36,41,.12);
+    }
+    .gate-box h2 { margin:0; font:800 20px "Manrope",Pretendard,sans-serif; letter-spacing:-.02em; }
+    .gate-box p { margin:0; color:var(--muted); font-size:13px; line-height:1.6; }
+    .gate-box input { padding:11px 13px; border:1px solid var(--line); border-radius:var(--radius-sm); background:#fff; font-size:15px; }
+    .gate-box input:focus { outline:0; border-color:var(--pink-strong); box-shadow:0 0 0 3px rgba(233,111,153,.16); }
+    .gate-box .btn { justify-content:center; }
+    .gate-msg { min-height:17px; font-size:12px; color:#c64a4a; }
+
     /* ── 알림 / 상태 ───────────────────────────────────────── */
     .notice {
       display:flex; gap:10px; align-items:flex-start; padding:13px 15px; border-radius:var(--radius-sm);
@@ -326,7 +341,7 @@
     <span class="spacer"></span>
     <button class="btn ghost" type="button" id="btn-dock" aria-pressed="false">미리보기 열기</button>
     <button class="btn ghost" type="button" id="btn-reload">되돌리기</button>
-    <button class="btn" type="button" id="btn-save" disabled title="저장 연동은 다음 단계에서 붙입니다">저장 · 추후 연동</button>
+    <button class="btn" type="button" id="btn-save" disabled title="확인하는 중입니다">저장</button>
   </header>
 
   <div class="shell">
@@ -340,7 +355,7 @@
       <button type="button" data-tab="theme">색</button>
       <button type="button" data-tab="json">데이터 보기</button>
       <div class="side-note">
-        지금은 <b>화면만</b> 동작합니다.<br>저장을 눌러도 사이트에는 반영되지 않습니다.<br><br>위 <b>미리보기 열기</b>를 누르면 오른쪽에 띄워 두고 고치면서 바로 볼 수 있습니다.
+저장을 누르면 깃허브에 커밋되고 <b>1~2분 뒤</b> 사이트에 반영됩니다.<br><br>위 <b>미리보기 열기</b>를 누르면 오른쪽에 띄워 두고 고치면서 바로 볼 수 있습니다.
       </div>
     </nav>
 
@@ -361,6 +376,16 @@
       <div class="pv-stage" id="dock-stage"><div class="pv-holder" id="dock-holder"></div></div>
       <p class="dock-hint">실제 사이트를 그대로 띄워 데이터만 바꿔 넣습니다. 왼쪽에서 고치면 바로 여기에 반영됩니다.</p>
     </aside>
+  </div>
+
+  <div class="gate" id="gate" hidden>
+    <form class="gate-box" id="gate-form">
+      <h2>포트폴리오 관리자</h2>
+      <p>비밀번호를 넣어 주세요.</p>
+      <input type="password" id="gate-pass" autocomplete="current-password" placeholder="비밀번호" required>
+      <button class="btn" type="submit" id="gate-go">들어가기</button>
+      <span class="gate-msg" id="gate-msg"></span>
+    </form>
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -611,12 +636,19 @@ function imageField(obj, key, label, hint, fit, placeholder) {
   const box = input(obj, key, { placeholder: placeholder || 'hero-gunslinger.webp 또는 파일 이름' });
   box.addEventListener('input', paint);
   paint();
+  const upload = h('button', { class: 'btn quiet', type: 'button', style: 'margin-top:8px',
+    onclick: async () => {
+      const path = await pickAndUpload('assets/portfolio');
+      if (!path) return;
+      obj[key] = path; box.value = path; paint(); markDirty();
+    } }, '＋ 파일 올리기');
   return h('div', { class: 'thumb-preview' + (fit ? ' is-fit' : '') },
     preview,
     h('div', { class: 'field' },
       h('label', { text: label }),
       box,
-      h('span', { class: 'hint', text: hint || '지금은 저장소에 올려 둔 파일 이름을 적습니다. 업로드 기능은 다음 단계에서 붙습니다.' })));
+      h('span', { class: 'hint', text: hint || '저장소에 올려 둔 파일 이름을 적거나, 아래에서 새 파일을 올리세요.' }),
+      upload));
 }
 
 /* ── 탭: 개인정보 ─────────────────────────────────────────── */
@@ -996,7 +1028,9 @@ function tabWorks() {
         box.show ? h('div', { class: 'grid2', style: 'margin-top:14px' },
           field('제목', null, input(box, 'title', { placeholder: 'Coming soon' })),
           field('부제', null, input(box, 'sub', { placeholder: 'Next character project' }))) : null);
-    })()
+    })(),
+
+    folderCard()
   ];
 }
 
@@ -1075,7 +1109,13 @@ function docRow(key, doc, note) {
       h('span', { text: has ? doc.url : note })),
     h('div', { class: 'row-tools' },
       h('span', { class: 'state ' + (has ? 'on' : 'off'), text: has ? '연결됨' : '미연결' }),
-      h('button', { class: 'btn quiet', type: 'button', disabled: true, title: '업로드는 다음 단계에서 붙입니다' }, '파일 올리기')));
+      h('button', { class: 'btn quiet', type: 'button', onclick: async () => {
+        const path = await pickAndUpload('assets', 'application/pdf');
+        if (!path) return;
+        doc.url = path; markDirty(); render();
+      } }, has ? '바꾸기' : '파일 올리기'),
+      has ? h('button', { class: 'icon-btn danger', type: 'button', title: '연결 끊기',
+        onclick: () => { doc.url = null; markDirty(); render(); } }, '✕') : null));
 }
 
 function tabDocs() {
@@ -1393,6 +1433,84 @@ function normalizeHex(value) {
   return '#' + (raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw).toLowerCase();
 }
 
+/* ── 폴더 확인 도우미 ─────────────────────────────────────
+   assets/portfolio 폴더를 읽어, 올려는 뒀는데 아직 어느 작품에도 안 쓰인 파일을
+   알려 줍니다. 깃허브에 직접 올려 둔 그림을 관리자에서 찾기 쉬우라고 둔 것이지,
+   사이트가 폴더를 들여다보는 것은 아닙니다(사이트는 site.json 만 봅니다). */
+function usedImageNames() {
+  const used = new Set();
+  const add = value => {
+    const name = String(value || '').trim();
+    if (!name) return;
+    used.add(name.replace(/^assets\/portfolio\//, '').replace(/\.(webp|png|jpg|jpeg|mp4)$/i, ''));
+  };
+  const data = state.data;
+  (data.hero.slides || []).forEach(slide => { add(slide.img); add(slide.vid); });
+  add(data.profile.logo); add(data.profile.favicon);
+  [...(data.works || []), ...(data.labs || [])].forEach(item => {
+    add(item.image);
+    const detail = item.detail || {};
+    add(detail.image); add(detail.video);
+    (detail.breakdown || []).forEach(cut => add(cut.img));
+    (detail.gallery || []).forEach(add);
+    (detail.steps || []).forEach(step => {
+      (step.rows || []).forEach(row => (row.items || []).forEach(cell => { add(cell.img); add(cell.vid); }));
+      (step.aside || []).forEach(cell => { add(cell.img); add(cell.vid); });
+    });
+  });
+  return used;
+}
+
+let folderCache = null;
+
+function folderCard() {
+  const box = h('div', { class: 'rows' });
+  const paint = () => {
+    box.replaceChildren();
+    if (!folderCache) { box.append(h('div', { class: 'empty', text: '아직 확인하지 않았습니다.' })); return; }
+    const used = usedImageNames();
+    const spare = folderCache.files
+      .map(file => file.name)
+      .filter(name => !/^\./.test(name))
+      .filter(name => !used.has(name.replace(/\.[^.]+$/, '')));
+    if (!spare.length) {
+      box.append(h('div', { class: 'empty', text: `폴더의 ${folderCache.files.length}개 파일이 모두 쓰이고 있습니다.` }));
+      return;
+    }
+    box.append(h('div', { class: 'hint', style: 'margin-bottom:4px',
+      text: `폴더에 ${folderCache.files.length}개 중 아직 안 쓰인 파일 ${spare.length}개:` }));
+    spare.forEach(name => box.append(h('div', { class: 'row' },
+      h('div', { style: 'display:flex;align-items:center;gap:10px;min-width:0' },
+        h('img', { src: ASSET_BASE + name, alt: '',
+          style: 'width:34px;height:34px;object-fit:cover;border-radius:7px;background:var(--soft)',
+          onerror: event => { event.target.style.visibility = 'hidden'; } }),
+        h('span', { style: 'font-size:13px;overflow:hidden;text-overflow:ellipsis', text: name })),
+      h('div', { class: 'row-tools' },
+        h('button', { class: 'btn quiet', type: 'button', onclick: () => {
+          navigator.clipboard?.writeText(name.replace(/\.[^.]+$/, ''))
+            .then(() => toast('이름을 복사했습니다: ' + name.replace(/\.[^.]+$/, '')))
+            .catch(() => toast('복사하지 못했습니다'));
+        } }, '이름 복사')))));
+  };
+  paint();
+
+  return h('section', { class: 'card' },
+    h('h2', { text: '폴더 확인' }),
+    h('p', { class: 'desc', text: '깃허브의 assets/portfolio 폴더를 읽어, 올려는 뒀는데 아직 어느 작품에도 안 쓰인 파일을 알려 줍니다. 직접 올린 그림을 찾을 때 쓰세요.' }),
+    h('button', { class: 'btn quiet', type: 'button', style: 'margin-bottom:14px', onclick: async event => {
+      const button = event.target;
+      button.disabled = true; button.textContent = '읽는 중…';
+      try { folderCache = await callApi('list', { folder: 'assets/portfolio' }); paint(); }
+      catch (error) {
+        alert(error.message === 'NO_API'
+          ? '이 주소에서는 폴더를 읽을 수 없습니다. Vercel 주소로 접속해 주세요.'
+          : '폴더를 읽지 못했습니다.\n\n' + error.message);
+      }
+      finally { button.disabled = false; button.textContent = '↻ 폴더 확인'; }
+    } }, '↻ 폴더 확인'),
+    box);
+}
+
 /* ── 탭: 데이터 보기 ──────────────────────────────────────── */
 function tabJson() {
   const text = JSON.stringify(exportData(), null, 2);
@@ -1461,11 +1579,163 @@ $('#btn-reload').addEventListener('click', () => {
   clearDirty(); render(); toast('처음 상태로 되돌렸습니다');
 });
 
-$('#btn-save').addEventListener('click', () => toast('저장은 다음 단계에서 붙입니다'));
+$('#btn-save').addEventListener('click', saveToGithub);
 
 window.addEventListener('beforeunload', event => {
   if (state.dirty) { event.preventDefault(); event.returnValue = ''; }
 });
+
+/* ── 서버(Vercel 함수)와 이야기하기 ──────────────────────────
+   저장·업로드는 모두 /api/admin 을 거칩니다. 깃허브 토큰은 그 함수의 환경변수에만
+   있고 브라우저로 내려오지 않습니다. 비밀번호는 이 탭이 닫힐 때까지만 기억합니다. */
+const API_URL = '/api/admin';
+let adminPassword = sessionStorage.getItem('kjh-admin-pass') || '';
+let apiReady = false;
+
+async function callApi(action, extra = {}) {
+  let response;
+  try {
+    response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, password: adminPassword, ...extra })
+    });
+  } catch (error) {
+    throw new Error('서버에 닿지 못했습니다. 인터넷 연결을 확인해 주세요.');
+  }
+  let body = null;
+  try { body = await response.json(); } catch { body = null; }
+  /* 우리 함수는 성공이든 실패든 늘 {ok:…} 짜리 JSON 을 돌려줍니다.
+     그게 아니면 서버 함수가 없는 주소입니다(404·405·501 등 서버마다 다릅니다). */
+  if (!body || typeof body.ok !== 'boolean') throw new Error('NO_API');
+  if (!body.ok) throw new Error(body.error || `처리하지 못했습니다 (HTTP ${response.status})`);
+  return body;
+}
+
+async function saveToGithub() {
+  const button = $('#btn-save');
+  button.disabled = true;
+  button.textContent = '저장하는 중…';
+  try {
+    const result = await callApi('save', { data: exportData() });
+    state.origin = structuredClone(state.data);
+    clearDirty();
+    toast('저장했습니다. 사이트에 보이기까지 1~2분 걸립니다');
+    console.info('커밋', result.commit);
+  } catch (error) {
+    alert(error.message === 'NO_API'
+      ? '이 주소에서는 저장할 수 없습니다. Vercel 주소로 접속해 주세요.'
+      : '저장하지 못했습니다.\n\n' + error.message);
+  } finally {
+    button.textContent = '저장';
+    button.disabled = !apiReady;
+  }
+}
+
+function unlock() {
+  apiReady = true;
+  $('#gate').hidden = true;
+  const button = $('#btn-save');
+  button.disabled = false;
+  button.textContent = '저장';
+  button.title = '깃허브에 커밋합니다. 사이트 반영까지 1~2분';
+}
+
+/* 서버 함수가 없는 곳(GitHub Pages 등)에서도 화면은 볼 수 있게 둡니다. */
+function readOnly(reason) {
+  apiReady = false;
+  $('#gate').hidden = true;
+  const button = $('#btn-save');
+  button.disabled = true;
+  button.textContent = '저장할 수 없음';
+  button.title = reason;
+  $('#dirty-badge').textContent = '보기 전용';
+}
+
+function askPassword(message) {
+  $('#gate').hidden = false;
+  $('#gate-msg').textContent = message || '';
+  setTimeout(() => $('#gate-pass').focus(), 50);
+}
+
+$('#gate-form').addEventListener('submit', async event => {
+  event.preventDefault();
+  const input = $('#gate-pass'), go = $('#gate-go');
+  adminPassword = input.value;
+  go.disabled = true; go.textContent = '확인하는 중…';
+  try {
+    await callApi('check');
+    sessionStorage.setItem('kjh-admin-pass', adminPassword);
+    input.value = '';
+    unlock();
+    toast('들어왔습니다');
+  } catch (error) {
+    adminPassword = '';
+    sessionStorage.removeItem('kjh-admin-pass');
+    if (error.message === 'NO_API') readOnly('서버 함수가 없는 주소입니다');
+    else $('#gate-msg').textContent = error.message;
+  } finally {
+    go.disabled = false; go.textContent = '들어가기';
+  }
+});
+
+/* 페이지를 열면 서버가 있는지, 기억해 둔 비밀번호가 아직 맞는지 먼저 봅니다. */
+async function checkIn() {
+  try { await callApi('check'); unlock(); }
+  catch (error) {
+    if (error.message === 'NO_API') readOnly('이 주소에는 저장 기능이 없습니다. Vercel 주소로 접속하세요.');
+    else askPassword(adminPassword ? '다시 넣어 주세요.' : '');
+  }
+}
+
+/* ── 파일 올리기 ──────────────────────────────────────────
+   Vercel 서버 함수가 한 번에 받을 수 있는 크기가 4.5MB 남짓이고, 파일을 글자로
+   바꿔 보내면 약 1.37배로 불어납니다. 그래서 원본 3MB 를 넘으면 미리 막습니다.
+   영상은 용량이 커서 이 길로는 못 올립니다 - 깃허브에 직접 올리세요. */
+const UPLOAD_LIMIT = 3 * 1024 * 1024;
+
+function readAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result).split(',')[1]);
+    reader.onerror = () => reject(new Error('파일을 읽지 못했습니다'));
+    reader.readAsDataURL(file);
+  });
+}
+
+/* 깃허브 경로로 쓸 수 있게 파일 이름을 다듬습니다(한글·공백 → 하이픈). */
+function safeName(name) {
+  const dot = name.lastIndexOf('.');
+  const base = (dot > 0 ? name.slice(0, dot) : name)
+    .toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'file';
+  const ext = dot > 0 ? name.slice(dot).toLowerCase() : '';
+  return base + ext;
+}
+
+/* 파일 고르기 → 올리기 → 올라간 경로 돌려주기. 실패하면 null. */
+async function pickAndUpload(folder, accept) {
+  if (!apiReady) { alert('저장 기능이 없는 주소입니다. Vercel 주소로 접속해 주세요.'); return null; }
+  const file = await new Promise(resolve => {
+    const input = h('input', { type: 'file', accept: accept || 'image/*',
+      onchange: event => resolve(event.target.files[0] || null) });
+    input.click();
+  });
+  if (!file) return null;
+  if (file.size > UPLOAD_LIMIT) {
+    alert(`파일이 너무 큽니다 (${(file.size / 1024 / 1024).toFixed(1)}MB).\n3MB 아래로 줄이거나 깃허브에 직접 올려 주세요.`);
+    return null;
+  }
+  const path = `${folder}/${safeName(file.name)}`;
+  toast('올리는 중…');
+  try {
+    await callApi('upload', { path, content: await readAsBase64(file) });
+    toast('올렸습니다: ' + path);
+    return path;
+  } catch (error) {
+    alert('올리지 못했습니다.\n\n' + error.message);
+    return null;
+  }
+}
 
 /* ── 데이터 읽기 ──────────────────────────────────────────── */
 function useData(json) {
@@ -1496,7 +1766,8 @@ function showLoadFallback(reason) {
 fetch(DATA_URL, { cache: 'no-store' })
   .then(response => { if (!response.ok) throw new Error('HTTP ' + response.status); return response.json(); })
   .then(useData)
-  .catch(error => showLoadFallback(DATA_URL + ' 를 읽지 못했습니다 (' + error.message + ')'));
+  .catch(error => showLoadFallback(DATA_URL + ' 를 읽지 못했습니다 (' + error.message + ')'))
+  .then(checkIn);
 </script>
 </body>
 </html>
